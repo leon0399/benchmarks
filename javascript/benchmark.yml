@@ -1,0 +1,12 @@
+title: 'JavaScript'
+
+strategy:
+  matrix:
+    command:
+      - 'node %s'
+
+    files:
+      - primes/Simple.js
+      - primes/Atkin.js
+
+      - collatz/MaxSequence.js

@@ -1,0 +1,10 @@
+title: 'Java'
+
+strategy:
+  matrix:
+    command:
+      - title: 'Naive'
+        command: 'java -jar %s'
+
+    files:
+      - primes/Simple.jar

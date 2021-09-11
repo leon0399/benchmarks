@@ -29,7 +29,7 @@ def deep_set(d, key, value):
 def runBenchmark(command):
     start = time.time()
 
-    with subprocess.Popen(['/bin/sh', '-c', command, '> /dev/null 2>&1'], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL) as proc:
+    with subprocess.Popen(['/bin/sh', '-c', command], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL) as proc:
         proc.wait()
 
     diff = (time.time() - start)
@@ -65,6 +65,8 @@ for _ in range(times):
                 scriptFilename = fileInfo
                 scriptName = os.path.splitext(scriptFilename)[0]
 
+                subprocess.run(['/bin/sh', '-c', 'make', scriptFilename], cwd=dir, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+
                 if (scriptName not in results):
                     results[scriptName] = {}
 
@@ -73,7 +75,6 @@ for _ in range(times):
 
                 if (commandTitle not in results[scriptName][title]):
                     results[scriptName][title][commandTitle] = {'values': []}
-
 
                 print('Running:\t%s - %s - %s (%s)' % (title, commandTitle, scriptName, _))
 

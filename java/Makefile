@@ -1,5 +1,5 @@
 JC = javac
-CLASSES = $(wildcard **/*.java)
+SCRIPTS = $(wildcard **/*.java)
 
 %.class: %.java
 	$(JC) $<
@@ -7,7 +7,7 @@ CLASSES = $(wildcard **/*.java)
 %.jar: %.class
 	jar cfe $@ $* **/*.class
 
-all: $(CLASSES:%.java=%.jar)
+all: $(SCRIPTS:%.java=%.jar)
 
 .PHONY: clean
 clean:

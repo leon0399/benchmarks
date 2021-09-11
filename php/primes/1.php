@@ -186,5 +186,5 @@ function find($upperBound, $prefix)
 }
 
 (function () {
-    find(UPPER_BOUND, PREFIX);
+    print_r(find(UPPER_BOUND, PREFIX));
 })();

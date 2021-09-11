@@ -2,8 +2,7 @@
 
 const NUMBER = 100000;
 
-function printPrimes($count)
-{
+function printPrimes($count) {
     // Traverse each number from 1 to N with the help of for loop
     for ($i = 1; $i <= $count; $i++)
     {

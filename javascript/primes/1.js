@@ -126,5 +126,5 @@ function find(upperBound, prefix) {
 }
 
 (async function() {
-    find(UPPER_BOUND, PREFIX);
+    console.log(find(UPPER_BOUND, PREFIX));
 })();

@@ -1,6 +1,6 @@
 <?php
 
-const NUMBER = 5000000;
+const NUMBER = 100000;
 
 function printPrimes($count)
 {

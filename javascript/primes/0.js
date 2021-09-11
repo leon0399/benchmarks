@@ -1,4 +1,4 @@
-const NUMBER = 5000000;
+const NUMBER = 500000;
 
 function printPrimes(number)
 {

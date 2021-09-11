@@ -22,9 +22,11 @@ function printPrimes($count)
         }
 
         if ($isPrime) {
-            echo $i . ' ';
+            echo $i . "\n";
         }
     }
 }
 
-printPrimes(NUMBER);
+(function () {
+    printPrimes(NUMBER);
+})();

@@ -1,4 +1,6 @@
-const NUMBER = 500000;
+'use strict';
+
+const NUMBER = 100000;
 
 function printPrimes(number)
 {
@@ -21,9 +23,11 @@ function printPrimes(number)
         }
 
         if (isPrime) {
-            console.log(i + ' ');
+            console.log(i);
         }
     }
 }
 
-printPrimes(NUMBER);
+(async function() {
+    printPrimes(NUMBER);
+})();

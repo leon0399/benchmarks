@@ -2,40 +2,40 @@
 
 | Language | Time, s |
 | :------- | ------: |
-| PHP (Naive) | 3.323<sub>±0.02</sub> |
-| PHP (JIT - tracing) | 1.512<sub>±0.017</sub> |
-| PHP (JIT - function) | 1.723<sub>±0.253</sub> |
-| Java (Naive) | 0.267<sub>±0.089</sub> |
-| JavaScript (node %s) | 0.538<sub>±0.017</sub> |
+| PHP (Naive) | 3.286<sub>±0.035</sub> |
+| PHP (JIT - tracing) | 1.517<sub>±0.021</sub> |
+| PHP (JIT - function) | 1.722<sub>±0.033</sub> |
+| JavaScript (node %s) | 0.534<sub>±0.021</sub> |
 
 
 ### primes/Atkin
 
 | Language | Time, s |
 | :------- | ------: |
-| PHP (Naive) | 1.731<sub>±0.047</sub> |
-| PHP (JIT - tracing) | 1.863<sub>±0.048</sub> |
-| PHP (JIT - function) | 1.329<sub>±0.083</sub> |
-| JavaScript (node %s) | 0.494<sub>±0.05</sub> |
+| PHP (Naive) | 1.764<sub>±0.156</sub> |
+| PHP (JIT - tracing) | 1.873<sub>±0.115</sub> |
+| PHP (JIT - function) | 1.302<sub>±0.128</sub> |
+| Java (Naive) | 0.259<sub>±0.074</sub> |
+| JavaScript (node %s) | 0.498<sub>±0.03</sub> |
 
 
 ### collatz/MaxSequence
 
 | Language | Time, s |
 | :------- | ------: |
-| PHP (Naive) | 1.307<sub>±0.027</sub> |
-| PHP (JIT - tracing) | 0.444<sub>±0.006</sub> |
-| PHP (JIT - function) | 0.587<sub>±0.087</sub> |
-| JavaScript (node %s) | 0.981<sub>±0.013</sub> |
+| PHP (Naive) | 1.31<sub>±0.025</sub> |
+| PHP (JIT - tracing) | 0.45<sub>±0.038</sub> |
+| PHP (JIT - function) | 0.582<sub>±0.01</sub> |
+| JavaScript (node %s) | 0.987<sub>±0.012</sub> |
 
 
 ### mandelbrot/Simple
 
 | Language | Time, s |
 | :------- | ------: |
-| PHP (Naive) | 0.526<sub>±0.07</sub> |
-| PHP (JIT - tracing) | 0.17<sub>±0.01</sub> |
-| PHP (JIT - function) | 0.219<sub>±0.01</sub> |
-| JavaScript (node %s) | 0.092<sub>±0.011</sub> |
+| PHP (Naive) | 0.525<sub>±0.011</sub> |
+| PHP (JIT - tracing) | 0.171<sub>±0.037</sub> |
+| PHP (JIT - function) | 0.22<sub>±0.019</sub> |
+| JavaScript (node %s) | 0.093<sub>±0.006</sub> |
 
 

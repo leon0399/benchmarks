@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 
-public final class Simple {
+public final class Atkin {
     private static final int UPPER_BOUND = 5000000;
     private static final int PREFIX = 32338;
 

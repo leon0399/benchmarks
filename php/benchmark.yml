@@ -15,3 +15,5 @@ strategy:
       - primes/Atkin.php
 
       - collatz/MaxSequence.php
+
+      - mandelbrot/Simple.php

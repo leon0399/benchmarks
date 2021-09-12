@@ -70,6 +70,8 @@ for configurationFilename in configurations:
 
             print()
 
+            scriptResults.sort()
+
             median = statistics.median(scriptResults)
             delta = max(map(lambda x : abs(x - median), scriptResults))
 

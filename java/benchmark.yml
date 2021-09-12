@@ -7,4 +7,5 @@ strategy:
         command: 'java -jar %s'
 
     files:
+      - primes/Simple.jar
       - primes/Atkin.jar

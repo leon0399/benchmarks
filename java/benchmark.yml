@@ -9,3 +9,7 @@ strategy:
     files:
       - primes/Simple.jar
       - primes/Atkin.jar
+
+      - collatz/MaxSequence.jar
+
+      - mandelbrot/Simple.jar

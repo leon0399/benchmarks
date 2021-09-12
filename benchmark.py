@@ -14,17 +14,8 @@ import statistics
 times = 10
 
 configurations = glob.glob('*/benchmark.yml')
-hasMem = os.path.isfile('proc/self/statm')
 
 results = {}
-
-def deep_set(d, key, value):
-    dd = d
-    keys = key.split('.')
-    latest = keys.pop()
-    for k in keys:
-        dd = dd.setdefault(k, {})
-    dd[latest] = value
 
 def runBenchmark(command):
     start = time.time()
@@ -34,9 +25,9 @@ def runBenchmark(command):
 
     diff = (time.time() - start)
 
-    return (diff)
+    return diff
 
-def runConfiguration(filename, command = './%s'):
+def runScript(filename, command = './%s'):
     return runBenchmark(command % (filename))
 
 def loadConfiguration(filename):
@@ -46,47 +37,68 @@ def loadConfiguration(filename):
 
     return conf
 
-for _ in range(times):
-    for configurationFilename in configurations:
-        dir = os.path.dirname(configurationFilename)
-        conf = loadConfiguration(configurationFilename)
+for configurationFilename in configurations:
+    dir = os.path.dirname(configurationFilename)
+    conf = loadConfiguration(configurationFilename)
 
-        title = conf['title']
-        matrix = conf['strategy']['matrix']
+    title = conf['title']
+    matrix = conf['strategy']['matrix']
 
-        for commandInfo in matrix['command']:
-            commandTitle = command = commandInfo
+    for commandInfo in matrix['command']:
+        commandTitle = command = commandInfo
 
-            if (isinstance(commandInfo, dict)):
-                commandTitle = commandInfo['title']
-                command = commandInfo['command']
+        if (isinstance(commandInfo, dict)):
+            commandTitle = commandInfo['title']
+            command = commandInfo['command']
 
-            for fileInfo in matrix['files']:
-                scriptFilename = fileInfo
-                scriptName = os.path.splitext(scriptFilename)[0]
+        for fileInfo in matrix['files']:
+            scriptFilename = fileInfo
+            scriptName = os.path.splitext(scriptFilename)[0]
 
+            if (os.path.isfile(dir + '/Makefile')):
+                # print('Running make for %s' % (scriptFilename))
                 subprocess.run(['/bin/sh', '-c', 'make', scriptFilename], cwd=dir, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
-                if (scriptName not in results):
-                    results[scriptName] = {}
+            scriptResults = []
 
-                if (title not in results[scriptName]):
-                    results[scriptName][title] = {}
+            print('Running: %s - %s - %s:' % (scriptName, title, commandTitle), end='\t', flush=True)
 
-                if (commandTitle not in results[scriptName][title]):
-                    results[scriptName][title][commandTitle] = {'values': []}
+            for _ in range(times):
+                result = runScript(dir + '/' + scriptFilename, command)
+                print('%f' % (result), end=' ', flush=True)
+                scriptResults.append(result)
 
-                print('Running:\t%s - %s - %s (%s)' % (title, commandTitle, scriptName, _))
+            print()
 
-                result = runConfiguration(dir + '/' + scriptFilename, command)
+            median = statistics.median(scriptResults)
+            delta = max(map(lambda x : abs(x - median), scriptResults))
 
-                results[scriptName][title][commandTitle]['values'].append(result)
-                results[scriptName][title][commandTitle]['median'] = median = statistics.median(results[scriptName][title][commandTitle]['values'])
-                results[scriptName][title][commandTitle]['delta'] = delta = max(map(
-                    lambda secs : abs(secs - median),
-                    results[scriptName][title][commandTitle]['values']
-                ))
+            result = {
+                'time': {
+                    'results': scriptResults,
+                    'median': median,
+                    'delta': delta,
+                }
+            }
 
-                print('Result:\t(median: %s \t delta: %s)' % (median, delta))
+            print('\tFinal: %f ± %f' % (median, delta))
 
-    # print(results)
+            if (scriptName not in results):
+                results[scriptName] = {}
+            if (title not in results[scriptName]):
+                results[scriptName][title] = {}
+
+            results[scriptName][title][commandTitle] = result
+
+with open('RESULTS.md', 'w') as file:
+    for (scriptName, languages) in results.items():
+        file.write('### %s\n\n' % (scriptName))
+
+        file.write('| Language | Time, s |\n')
+        file.write('| :------- | ------: |\n')
+
+        for (language, configurations) in languages.items():
+            for (configuration, result) in configurations.items():
+                file.write('| %s (%s) | %s<sub>±%s</sub> |\n' % (language, configuration, round(result['time']['median'], 3), round(result['time']['delta'], 3)))
+
+        file.write('\n\n')

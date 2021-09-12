@@ -4,9 +4,9 @@ strategy:
   matrix:
     command:
       - title: 'Naive'
-        command: 'php --file %s'
-      # - title: 'JIT'
-      #   command: 'php -dopcache.enable_cli=1 -dopcache.jit_buffer_size=100M --file %s'
+        command: 'php -dxdebug.mode=off --file %s'
+      - title: 'JIT'
+        command: 'php -dxdebug.mode=off -dopcache.enable_cli=1 -dopcache.jit_buffer_size=100M --file %s'
 
     files:
       - primes/Simple.php

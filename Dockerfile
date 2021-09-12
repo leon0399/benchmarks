@@ -43,4 +43,11 @@ RUN wget --progress=dot:giga -O - \
     | tar -xz
 ENV PATH="/opt/jdk-${JDK}/bin:${PATH}"
 
+# Go
+ARG GO=1.17.1
+RUN wget --progress=dot:giga -O - \
+    https://golang.org/dl/go${GO}.linux-amd64.tar.gz \
+    | tar -xz
+ENV PATH="/opt/go/bin/:${PATH}"
+
 WORKDIR /app

@@ -12,7 +12,7 @@ public final class Simple {
             boolean isPrime = true;
 
             for (var j = 2; j <= i / 2; ++j) {
-                if (i% j == 0) {
+                if (i % j == 0) {
                     isPrime = false;
                     break;
                 }

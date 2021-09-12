@@ -18,4 +18,4 @@ all: $(BINARIES)
 
 .PHONY: clean
 clean:
-	rm $(ALL_BINARIES)
+	rm -f $(BINARIES)

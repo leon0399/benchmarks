@@ -1,0 +1,21 @@
+title: 'C++'
+
+strategy:
+  matrix:
+    command:
+      - title: 'clang'
+        command: './%s-clang'
+      # - title: 'clang & static'
+      #   command: './%s-clang-static'
+      # - title: 'gcc'
+      #   command: './%s-gcc'
+      # - title: 'gcc & static'
+      #   command: './%s-gcc-static'
+
+    files:
+      - primes/Simple
+      - primes/Atkin
+
+      - collatz/MaxSequence
+
+      - mandelbrot/Simple

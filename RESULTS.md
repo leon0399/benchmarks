@@ -2,43 +2,47 @@
 
 | Language | Time, s |
 | :------- | ------: |
-| PHP (Naive) | 2.98<sub>±0.702</sub> |
-| PHP (JIT - tracing) | 1.487<sub>±0.011</sub> |
-| PHP (JIT - function) | 1.709<sub>±0.037</sub> |
-| Java (Naive) | 0.486<sub>±0.09</sub> |
-| JavaScript (node %s) | 0.555<sub>±0.06</sub> |
+| C++ (clang) | 0.416<sub>±0.053</sub> |
+| Java (Naive) | 0.516<sub>±0.1</sub> |
+| JavaScript (node %s) | 0.566<sub>±0.054</sub> |
+| PHP (Naive) | 3.025<sub>±0.004</sub> |
+| PHP (JIT - tracing) | 1.519<sub>±0.003</sub> |
+| PHP (JIT - function) | 1.72<sub>±0.1</sub> |
 
 
 ### primes/Atkin
 
 | Language | Time, s |
 | :------- | ------: |
-| PHP (Naive) | 1.735<sub>±0.049</sub> |
-| PHP (JIT - tracing) | 1.88<sub>±0.029</sub> |
-| PHP (JIT - function) | 1.308<sub>±0.041</sub> |
-| Java (Naive) | 0.258<sub>±0.11</sub> |
-| JavaScript (node %s) | 0.451<sub>±0.013</sub> |
+| C++ (clang) | 0.265<sub>±0.001</sub> |
+| Java (Naive) | 0.265<sub>±0.051</sub> |
+| JavaScript (node %s) | 0.466<sub>±0.05</sub> |
+| PHP (Naive) | 1.721<sub>±0.051</sub> |
+| PHP (JIT - tracing) | 1.872<sub>±0.051</sub> |
+| PHP (JIT - function) | 1.32<sub>±0.082</sub> |
 
 
 ### collatz/MaxSequence
 
 | Language | Time, s |
 | :------- | ------: |
-| PHP (Naive) | 1.039<sub>±0.013</sub> |
-| PHP (JIT - tracing) | 0.43<sub>±0.043</sub> |
-| PHP (JIT - function) | 0.576<sub>±0.027</sub> |
-| Java (Naive) | 0.148<sub>±0.007</sub> |
-| JavaScript (node %s) | 0.991<sub>±0.007</sub> |
+| C++ (clang) | 0.215<sub>±0.0</sub> |
+| Java (Naive) | 0.165<sub>±0.001</sub> |
+| JavaScript (node %s) | 1.018<sub>±0.053</sub> |
+| PHP (Naive) | 1.068<sub>±0.001</sub> |
+| PHP (JIT - tracing) | 0.466<sub>±0.001</sub> |
+| PHP (JIT - function) | 0.616<sub>±0.062</sub> |
 
 
 ### mandelbrot/Simple
 
 | Language | Time, s |
 | :------- | ------: |
-| PHP (Naive) | 0.514<sub>±0.008</sub> |
-| PHP (JIT - tracing) | 0.161<sub>±0.017</sub> |
-| PHP (JIT - function) | 0.211<sub>±0.006</sub> |
-| Java (Naive) | 0.085<sub>±0.037</sub> |
-| JavaScript (node %s) | 0.091<sub>±0.028</sub> |
+| C++ (clang) | 0.065<sub>±0.0</sub> |
+| Java (Naive) | 0.115<sub>±0.049</sub> |
+| JavaScript (node %s) | 0.115<sub>±0.05</sub> |
+| PHP (Naive) | 0.517<sub>±0.05</sub> |
+| PHP (JIT - tracing) | 0.165<sub>±0.051</sub> |
+| PHP (JIT - function) | 0.215<sub>±0.001</sub> |
 
 

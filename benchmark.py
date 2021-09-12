@@ -14,6 +14,7 @@ import statistics
 times = 10
 
 configurations = glob.glob('*/benchmark.yml')
+configurations.sort()
 
 results = {}
 
@@ -21,7 +22,11 @@ def runBenchmark(command):
     start = time.time()
 
     with subprocess.Popen(['/bin/sh', '-c', command], stdout=subprocess.DEVNULL) as proc:
-        proc.wait()
+        try:
+            proc.wait(60)
+        except subprocess.TimeoutExpired:
+            proc.kill()
+            return -1
 
     diff = (time.time() - start)
 
@@ -44,6 +49,10 @@ for configurationFilename in configurations:
     title = conf['title']
     matrix = conf['strategy']['matrix']
 
+    if (os.path.isfile(dir + '/Makefile')):
+        # print('Running make for %s' % (scriptFilename))
+        subprocess.run(['/bin/sh', '-c', 'make', 'all'], cwd=dir, stdout=subprocess.DEVNULL)
+
     for commandInfo in matrix['command']:
         commandTitle = command = commandInfo
 
@@ -55,10 +64,6 @@ for configurationFilename in configurations:
             scriptFilename = fileInfo
             scriptName = os.path.splitext(scriptFilename)[0]
 
-            if (os.path.isfile(dir + '/Makefile')):
-                # print('Running make for %s' % (scriptFilename))
-                subprocess.run(['/bin/sh', '-c', 'make', scriptFilename], cwd=dir, stdout=subprocess.DEVNULL)
-
             scriptResults = []
 
             print('Running: %s - %s - %s:' % (scriptName, title, commandTitle), end='\t', flush=True)
@@ -66,31 +71,37 @@ for configurationFilename in configurations:
             for _ in range(times):
                 result = runScript(dir + '/' + scriptFilename, command)
                 print('%f' % (result), end=' ', flush=True)
-                scriptResults.append(result)
+
+                if (result > 0):
+                    scriptResults.append(result)
 
             print()
 
-            scriptResults.sort()
+            if scriptResults:
+                scriptResults.sort()
 
-            median = statistics.median(scriptResults)
-            delta = max(map(lambda x : abs(x - median), scriptResults))
+                median = statistics.median(scriptResults)
+                delta = max(map(lambda x : abs(x - median), scriptResults))
 
-            result = {
-                'time': {
-                    'results': scriptResults,
-                    'median': median,
-                    'delta': delta,
+                result = {
+                    'time': {
+                        'results': scriptResults,
+                        'median': median,
+                        'delta': delta,
+                    }
                 }
-            }
 
-            print('\tFinal: %f ± %f' % (median, delta))
+                print('\tFinal: %f ± %f' % (median, delta))
 
-            if (scriptName not in results):
-                results[scriptName] = {}
-            if (title not in results[scriptName]):
-                results[scriptName][title] = {}
+                if (scriptName not in results):
+                    results[scriptName] = {}
+                if (title not in results[scriptName]):
+                    results[scriptName][title] = {}
 
-            results[scriptName][title][commandTitle] = result
+                results[scriptName][title][commandTitle] = result
+
+            else:
+                print('\tSkipping...')
 
 with open('RESULTS.md', 'w') as file:
     for (scriptName, languages) in results.items():

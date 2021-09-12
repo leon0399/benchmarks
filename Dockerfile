@@ -2,6 +2,8 @@ ARG IMAGE=debian:11
 
 FROM ${IMAGE}
 
+ARG DEBIAN_FRONTEND=noninteractive
+
 RUN apt update \
     && apt install -y \
         curl \
@@ -49,5 +51,10 @@ RUN wget --progress=dot:giga -O - \
     https://golang.org/dl/go${GO}.linux-amd64.tar.gz \
     | tar -xz
 ENV PATH="/opt/go/bin/:${PATH}"
+
+# C++
+RUN apt install -y \
+        gcc \
+        clang
 
 WORKDIR /app

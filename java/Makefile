@@ -1,8 +1,7 @@
-JC = javac
 SCRIPTS = $(wildcard **/*.java)
 
 %.class: %.java
-	$(JC) $<
+	javac $<
 
 %.jar: %.class
 	jar cfe $@ $* $**.class

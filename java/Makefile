@@ -5,7 +5,7 @@ SCRIPTS = $(wildcard **/*.java)
 	$(JC) $<
 
 %.jar: %.class
-	jar cfe $@ $* **/*.class
+	jar cfe $@ $* $**.class
 
 all: $(SCRIPTS:%.java=%.jar)
 

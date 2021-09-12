@@ -20,7 +20,7 @@ results = {}
 def runBenchmark(command):
     start = time.time()
 
-    with subprocess.Popen(['/bin/sh', '-c', command], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL) as proc:
+    with subprocess.Popen(['/bin/sh', '-c', command], stdout=subprocess.DEVNULL) as proc:
         proc.wait()
 
     diff = (time.time() - start)
@@ -57,7 +57,7 @@ for configurationFilename in configurations:
 
             if (os.path.isfile(dir + '/Makefile')):
                 # print('Running make for %s' % (scriptFilename))
-                subprocess.run(['/bin/sh', '-c', 'make', scriptFilename], cwd=dir, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                subprocess.run(['/bin/sh', '-c', 'make', scriptFilename], cwd=dir, stdout=subprocess.DEVNULL)
 
             scriptResults = []
 

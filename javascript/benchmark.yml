@@ -10,3 +10,5 @@ strategy:
       - primes/Atkin.js
 
       - collatz/MaxSequence.js
+
+      - mandelbrot/Simple.js

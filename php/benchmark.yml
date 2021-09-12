@@ -5,8 +5,10 @@ strategy:
     command:
       - title: 'Naive'
         command: 'php -dxdebug.mode=off --file %s'
-      - title: 'JIT'
+      - title: 'JIT - tracing'
         command: 'php -dxdebug.mode=off -dopcache.enable_cli=1 -dopcache.jit_buffer_size=100M --file %s'
+      - title: 'JIT - function'
+        command: 'php -dxdebug.mode=off -dopcache.enable_cli=1 -dopcache.jit_buffer_size=100M -dopcache.jit=function --file %s'
 
     files:
       - primes/Simple.php

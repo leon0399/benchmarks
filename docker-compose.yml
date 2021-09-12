@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   benchmark:
-    image: ghcr.io/leon0399/benchmark:latest
+    image: ghcr.io/leon0399/benchmarks:latest
     build:
       context: .
       dockerfile: Dockerfile

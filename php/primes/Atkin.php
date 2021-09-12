@@ -1,3 +1,5 @@
+#!/usr/bin/env php
+
 <?php
 
 const UPPER_BOUND = 5000000;

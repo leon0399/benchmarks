@@ -1,3 +1,5 @@
+#!/usr/bin/env php
+
 <?php
 
 const NUMBER = 100000;

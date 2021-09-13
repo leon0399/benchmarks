@@ -17,3 +17,6 @@ strategy:
       - collatz/MaxSequence.php
 
       - mandelbrot/Simple.php
+
+      - io/Load.php
+      - io/NoLoad.php

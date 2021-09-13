@@ -9,3 +9,10 @@ strategy:
     files:
       - primes/Simple
       - primes/Atkin
+
+      - collatz/MaxSequence
+
+      - mandelbrot/Simple
+
+      - io/Load
+      - io/NoLoad

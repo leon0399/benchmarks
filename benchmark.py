@@ -13,7 +13,7 @@ import statistics
 
 times = 10
 
-configurations = glob.glob('rust/benchmark.yml')
+configurations = glob.glob('*/benchmark.yml')
 configurations.sort()
 
 results = {}

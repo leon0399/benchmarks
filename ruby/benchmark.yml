@@ -7,6 +7,14 @@ strategy:
         command: 'ruby %s'
       - title: 'JIT'
         command: 'ruby --jit %s'
+      - title: 'GraalVM'
+        command: 'graalvm-ruby %s'
+      - title: 'JRuby'
+        command: 'jruby %s'
+      - title: 'TruffleRuby'
+        command: 'truffleruby %s'
+      - title: 'TruffleRuby JVM'
+        command: 'truffleruby --jvm %s'
 
     files:
       - primes/Atkin.rb

@@ -6,6 +6,7 @@ import psutil
 import os.path
 import glob
 import yaml
+import json
 
 import time
 import statistics
@@ -127,6 +128,9 @@ for configurationFilename in configurations:
 
             else:
                 print('\tSkipping...')
+
+with open('.results/results.json', 'w') as file:
+    json.dump(results, file, indent=2)
 
 with open('RESULTS.md', 'w') as file:
     for (scriptName, languages) in results.items():

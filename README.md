@@ -6,7 +6,7 @@ World's complete programming language benchmark
 
 > See [`RESULTS.md`](RESULTS.md)
 
-## Usage
+## Running benchmark
 
 ### Docker
 

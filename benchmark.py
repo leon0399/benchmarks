@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 
 import subprocess
-import resource
 import psutil
 
 import os.path
@@ -20,20 +19,23 @@ results = {}
 
 def runBenchmark(command):
     start = time.time()
+    maxMemory = 0
 
-    with subprocess.Popen(['/bin/sh', '-c', command], stdout=subprocess.DEVNULL) as proc:
+    with subprocess.Popen(command.split(), stdout=subprocess.DEVNULL) as proc:
         try:
-            proc.wait(60)
+            process = psutil.Process(proc.pid)
+            while proc.poll() is None:
+                memory = process.memory_info()
+                if memory.rss > maxMemory:
+                    maxMemory = memory.rss
         except subprocess.TimeoutExpired:
             proc.kill()
-            return -1
+            return (-1, maxMemory)
 
         if (proc.returncode != 0):
-            return -1
+            return (-1, maxMemory)
 
-    diff = (time.time() - start)
-
-    return diff
+    return ((time.time() - start), maxMemory)
 
 def runScript(filename, command = './%s'):
     return runBenchmark(command % (filename))
@@ -54,47 +56,67 @@ for configurationFilename in configurations:
 
     if (os.path.isfile(dir + '/Makefile')):
         # print('Running make for %s' % (scriptFilename))
-        subprocess.run(['/bin/sh', '-c', 'make', 'all'], cwd=dir, stdout=subprocess.DEVNULL)
+        subprocess.run(['make', 'all'], cwd=dir, shell=True, stdout=subprocess.DEVNULL)
 
-    for commandInfo in matrix['command']:
-        commandTitle = command = commandInfo
+    for fileInfo in matrix['files']:
+        scriptFilename = fileInfo
+        scriptName = os.path.splitext(scriptFilename)[0]
 
-        if (isinstance(commandInfo, dict)):
-            commandTitle = commandInfo['title']
-            command = commandInfo['command']
+        for commandInfo in matrix['command']:
+            commandTitle = command = commandInfo
 
-        for fileInfo in matrix['files']:
-            scriptFilename = fileInfo
-            scriptName = os.path.splitext(scriptFilename)[0]
+            if (isinstance(commandInfo, dict)):
+                commandTitle = commandInfo['title']
+                command = commandInfo['command']
 
-            scriptResults = []
+            split = command.split()
+            executable = split[0]
+
+            if not os.path.isfile(executable):
+                executable, err = subprocess.Popen(['which', executable], stdout=subprocess.PIPE).communicate()
+
+                if executable:
+                    split[0] = executable.decode("utf-8").replace('\n', '')
+                    command = ' '.join(split)
 
             print('Running: %s - %s - %s:' % (scriptName, title, commandTitle), end='\t', flush=True)
 
-            for _ in range(times):
-                result = runScript(dir + '/' + scriptFilename, command)
-                print('%f' % (result), end=' ', flush=True)
+            timeResults = []
+            memoryResults = []
 
-                if (result > 0):
-                    scriptResults.append(result)
+            for _ in range(times):
+                elapsed, memory = runScript(dir + '/' + scriptFilename, command)
+                print('%f' % elapsed, end=' ', flush=True)
+
+                if (elapsed > 0):
+                    timeResults.append(elapsed)
+                    memoryResults.append(memory)
 
             print()
 
-            if scriptResults:
-                scriptResults.sort()
+            if timeResults and memoryResults:
+                timeResults.sort()
+                timeMedian = statistics.median(timeResults)
+                timeDelta = max(map(lambda x : abs(x - timeMedian), timeResults))
 
-                median = statistics.median(scriptResults)
-                delta = max(map(lambda x : abs(x - median), scriptResults))
+                memoryResults.sort()
+                memoryMedian = statistics.median(memoryResults)
+                memoryDelta = max(map(lambda x : abs(x - memoryMedian), memoryResults))
 
                 result = {
                     'time': {
-                        'results': scriptResults,
-                        'median': median,
-                        'delta': delta,
-                    }
+                        'results': timeResults,
+                        'median': timeMedian,
+                        'delta': timeDelta,
+                    },
+                    'memory': {
+                        'results': memoryResults,
+                        'median': memoryMedian,
+                        'delta': memoryDelta,
+                    },
                 }
 
-                print('\tFinal: %f ± %f' % (median, delta))
+                print('\tFinal: %f ± %f' % (timeMedian, timeDelta))
 
                 if (scriptName not in results):
                     results[scriptName] = {}
@@ -110,12 +132,20 @@ with open('RESULTS.md', 'w') as file:
     for (scriptName, languages) in results.items():
         file.write('### %s\n\n' % (scriptName))
 
-        file.write('| Language | Time, s |\n')
-        file.write('| :------- | ------: |\n')
+        file.write('| Language | Time, s | Memory, MiB |\n')
+        file.write('| :------- | ------: | ----------: |\n')
 
         for (language, configurations) in languages.items():
-            for (configuration, result) in configurations.items():
+            for (configuration, elapsed) in configurations.items():
                 langugageTitle = ('%s' % (language)) if language == configuration else ('%s (%s)' % (language, configuration))
-                file.write('| %s | %s<sub>±%s</sub> |\n' % (langugageTitle, round(result['time']['median'], 3), round(result['time']['delta'], 3)))
+
+                file.write('| %s | %s<sub>±%s</sub> | %s<sub>±%s</sub> |\n' % (
+                        langugageTitle,
+                        "{:6.3f}".format(elapsed['time']['median']),
+                        "{:.3f}".format(elapsed['time']['delta']),
+                        "{:10.2f}".format(elapsed['memory']['median'] / 1024 / 1024),
+                        "{:.2f}".format(elapsed['memory']['delta'] / 1024 / 1024),
+                    )
+                )
 
         file.write('\n\n')

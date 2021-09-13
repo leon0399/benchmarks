@@ -1,0 +1,12 @@
+title: 'Ruby'
+
+strategy:
+  matrix:
+    command:
+      - title: 'Naive'
+        command: 'ruby %s'
+      - title: 'JIT'
+        command: 'ruby --jit %s'
+
+    files:
+      - primes/Atkin.rb

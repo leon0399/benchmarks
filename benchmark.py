@@ -13,7 +13,7 @@ import statistics
 
 times = 10
 
-configurations = glob.glob('*/benchmark.yml')
+configurations = glob.glob('rust/benchmark.yml')
 configurations.sort()
 
 results = {}
@@ -112,6 +112,7 @@ with open('RESULTS.md', 'w') as file:
 
         for (language, configurations) in languages.items():
             for (configuration, result) in configurations.items():
-                file.write('| %s (%s) | %s<sub>±%s</sub> |\n' % (language, configuration, round(result['time']['median'], 3), round(result['time']['delta'], 3)))
+                langugageTitle = ('%s' % (language)) if language == configuration else ('%s (%s)' % (language, configuration))
+                file.write('| %s | %s<sub>±%s</sub> |\n' % (langugageTitle, round(result['time']['median'], 3), round(result['time']['delta'], 3)))
 
         file.write('\n\n')

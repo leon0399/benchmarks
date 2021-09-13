@@ -3,7 +3,8 @@ title: 'JavaScript'
 strategy:
   matrix:
     command:
-      - 'node %s'
+      - title: 'JavaScript'
+        command: 'node %s'
 
     files:
       - primes/Simple.js

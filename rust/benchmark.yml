@@ -1,0 +1,11 @@
+title: 'Rust'
+
+strategy:
+  matrix:
+    command:
+      - title: 'Rust'
+        command: './%s'
+
+    files:
+      - primes/Simple
+      - primes/Atkin

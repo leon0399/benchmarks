@@ -99,7 +99,6 @@ ARG GRAALVM=21.2.0
 RUN wget --progress=dot:giga -O - \
 	    https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-$GRAALVM/graalvm-ce-java11-linux-amd64-$GRAALVM.tar.gz | tar -xz \
     && ln -s /opt/graalvm-ce-java11-${GRAALVM}/bin/gu /usr/bin/gu \
-    && ln -s /opt/graalvm-ce-java11-${GRAALVM}/bin/ruby /usr/bin/graalvm-ruby \
     && ln -s /opt/graalvm-ce-java11-${GRAALVM}/bin/java /usr/bin/graalvm-java \
     && ln -s /opt/graalvm-ce-java11-${GRAALVM}/bin/javac /usr/bin/graalvm-javac
 

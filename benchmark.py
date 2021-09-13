@@ -28,6 +28,9 @@ def runBenchmark(command):
             proc.kill()
             return -1
 
+        if (proc.returncode != 0):
+            return -1
+
     diff = (time.time() - start)
 
     return diff

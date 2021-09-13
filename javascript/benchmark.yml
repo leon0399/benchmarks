@@ -5,6 +5,8 @@ strategy:
     command:
       - title: 'JavaScript'
         command: 'node %s'
+      - title: 'GraalVM'
+        command: '/opt/graalvm-ce-java11-21.2.0/bin/js %s'
 
     files:
       - primes/Simple.js

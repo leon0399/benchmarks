@@ -2,8 +2,6 @@
 
 'use strict';
 
-const net = require('net');
-
 const UPPER_BOUND = 5000000;
 const PREFIX = 32338;
 

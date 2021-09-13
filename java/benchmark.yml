@@ -4,12 +4,14 @@ strategy:
   matrix:
     command:
       - title: 'Naive'
-        command: 'java -jar %s'
+        command: 'java -jar %s.jar'
+      - title: 'Naive (GraalVM)'
+        command: 'graalvm-java -jar %s.jar'
 
     files:
-      - primes/Simple.jar
-      - primes/Atkin.jar
+      - primes/Simple
+      - primes/Atkin
 
-      - collatz/MaxSequence.jar
+      - collatz/MaxSequence
 
-      - mandelbrot/Simple.jar
+      - mandelbrot/Simple

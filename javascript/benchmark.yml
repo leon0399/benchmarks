@@ -15,3 +15,6 @@ strategy:
       - collatz/MaxSequence.js
 
       - mandelbrot/Simple.js
+
+      - io/Load.js
+      - io/NoLoad.js

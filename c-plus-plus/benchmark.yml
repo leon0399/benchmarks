@@ -19,3 +19,6 @@ strategy:
       - collatz/MaxSequence
 
       - mandelbrot/Simple
+
+      - io/Load
+      - io/NoLoad

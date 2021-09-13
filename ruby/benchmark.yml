@@ -16,3 +16,6 @@ strategy:
 
     files:
       - primes/Atkin.rb
+
+      - io/Load.rb
+      - io/NoLoad.rb

@@ -10,6 +10,7 @@ RUN apt update \
         wget \
         unzip \
         gnupg2 \
+        libssl-dev \
         lsb-release \
         ca-certificates \
         apt-transport-https \
@@ -86,5 +87,21 @@ RUN wget --progress=dot:giga -O - \
 	&& ./configure --prefix=/opt/ruby && make -j && make install \
 	&& cd .. && rm -rf ruby-${RUBY}
 ENV PATH="/opt/ruby/bin:${PATH}"
+
+# Ruby (JRuby)
+ARG JRUBY=9.2.19.0
+RUN wget --progress=dot:giga -O - \
+	https://repo1.maven.org/maven2/org/jruby/jruby-dist/$JRUBY/jruby-dist-$JRUBY-bin.tar.gz | tar -xz
+ENV PATH="/opt/jruby-${JRUBY}/bin/:${PATH}"
+
+# Graalvm
+ARG GRAALVM=21.2.0
+RUN wget --progress=dot:giga -O - \
+	https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-$GRAALVM/graalvm-ce-java11-linux-amd64-$GRAALVM.tar.gz | tar -xz
+ENV PATH="/opt/graalvm-ce-java11-${GRAALVM}/bin:${PATH}"
+
+# Truffle
+RUN gu install ruby \
+	&& /opt/graalvm-ce-java11-$GRAALVM/languages/ruby/lib/truffle/post_install_hook.sh
 
 WORKDIR /app

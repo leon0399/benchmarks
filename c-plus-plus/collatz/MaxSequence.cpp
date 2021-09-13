@@ -24,7 +24,6 @@ std::pair<int, int> findMaxCollatz(int to) {
 
     for (int number = 1; number <= to; number++) {
         auto len = collatz(number);
-        std::cout << number << ": " << len << std::endl;
 
         if (len > result.second) {
             result = std::make_pair(number, len);

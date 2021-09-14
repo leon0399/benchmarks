@@ -36,7 +36,7 @@ RUN echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | tee /etc
 # JavaScript
 ARG NODE=16.9.0
 RUN wget --progress=dot:giga -O - \
-	    https://nodejs.org/dist/v$NODE/node-v$NODE-linux-x64.tar.xz | tar -xJ
+        https://nodejs.org/dist/v$NODE/node-v$NODE-linux-x64.tar.xz | tar -xJ
 ENV PATH="/opt/node-v$NODE-linux-x64/bin/:${PATH}"
 
 # Java
@@ -68,7 +68,7 @@ RUN apt install -y \
 # Kotlin
 ARG KOTLIN=1.5.30
 RUN wget --progress=dot:giga \
-	    https://github.com/JetBrains/kotlin/releases/download/v$KOTLIN/kotlin-compiler-$KOTLIN.zip \
+        https://github.com/JetBrains/kotlin/releases/download/v$KOTLIN/kotlin-compiler-$KOTLIN.zip \
 	&& unzip kotlin-compiler-$KOTLIN.zip \
 	&& rm kotlin-compiler-$KOTLIN.zip
 ENV PATH="/opt/kotlinc/bin/:${PATH}"
@@ -82,7 +82,7 @@ ENV PATH="/opt/scala3-$SCALA/bin/:${PATH}"
 # Ruby
 ARG RUBY=3.0.2
 RUN wget --progress=dot:giga -O - \
-	    https://cache.ruby-lang.org/pub/ruby/3.0/ruby-${RUBY}.tar.gz | tar -xz \
+        https://cache.ruby-lang.org/pub/ruby/3.0/ruby-${RUBY}.tar.gz | tar -xz \
 	&& cd ruby-${RUBY} \
 	&& ./configure --prefix=/opt/ruby && make -j && make install \
 	&& cd .. && rm -rf ruby-${RUBY}
@@ -91,20 +91,35 @@ ENV PATH="/opt/ruby/bin:${PATH}"
 # Ruby (JRuby)
 ARG JRUBY=9.2.19.0
 RUN wget --progress=dot:giga -O - \
-	    https://repo1.maven.org/maven2/org/jruby/jruby-dist/$JRUBY/jruby-dist-$JRUBY-bin.tar.gz | tar -xz \
+        https://repo1.maven.org/maven2/org/jruby/jruby-dist/$JRUBY/jruby-dist-$JRUBY-bin.tar.gz | tar -xz \
     && ln -s /opt/jruby-${JRUBY}/bin/jruby /usr/bin/jruby
 
-# Graalvm
+# GraalVM
 ARG GRAALVM=21.2.0
 RUN wget --progress=dot:giga -O - \
-	    https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-$GRAALVM/graalvm-ce-java11-linux-amd64-$GRAALVM.tar.gz | tar -xz \
+        https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-$GRAALVM/graalvm-ce-java11-linux-amd64-$GRAALVM.tar.gz | tar -xz \
     && ln -s /opt/graalvm-ce-java11-${GRAALVM}/bin/gu /usr/bin/gu \
-    && ln -s /opt/graalvm-ce-java11-${GRAALVM}/bin/java /usr/bin/graalvm-java \
-    && ln -s /opt/graalvm-ce-java11-${GRAALVM}/bin/javac /usr/bin/graalvm-javac
+    && ln -s /opt/graalvm-ce-java11-${GRAALVM}/bin/js /usr/bin/graalvm.js \
+    && ln -s /opt/graalvm-ce-java11-${GRAALVM}/bin/java /usr/bin/graalvm.java \
+    && ln -s /opt/graalvm-ce-java11-${GRAALVM}/bin/javac /usr/bin/graalvm.javac
+
+RUN gu install \
+        R \
+        ruby \
+        wasm \
+        nodejs \
+        python \
+        llvm-toolchain \
+    && ln -s /opt/graalvm-ce-java11-${GRAALVM}/bin/R /usr/bin/graalvm.R \
+    && ln -s /opt/graalvm-ce-java11-${GRAALVM}/bin/ruby /usr/bin/graalvm.ruby \
+    && ln -s /opt/graalvm-ce-java11-${GRAALVM}/bin/wasm /usr/bin/graalvm.wasm \
+    && ln -s /opt/graalvm-ce-java11-${GRAALVM}/bin/node /usr/bin/graalvm.node \
+    && ln -s /opt/graalvm-ce-java11-${GRAALVM}/bin/graalpython /usr/bin/graalvm.python \
+    && ln -s /opt/graalvm-ce-java11-${GRAALVM}/bin/lli /usr/bin/graalvm.lli \
+    && export GRAALVM_LLVM_TOOLCHAIN=$(graalvm.lli --print-toolchain-path)
 
 # TruffleRuby
-RUN gu install ruby \
-	&& /opt/graalvm-ce-java11-${GRAALVM}/languages/ruby/lib/truffle/post_install_hook.sh \
+RUN /opt/graalvm-ce-java11-${GRAALVM}/languages/ruby/lib/truffle/post_install_hook.sh \
     && ln -s /opt/graalvm-ce-java11-${GRAALVM}/bin/truffleruby /usr/bin/truffleruby
 
 WORKDIR /app

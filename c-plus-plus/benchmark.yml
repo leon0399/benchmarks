@@ -11,6 +11,8 @@ strategy:
       #   command: './%s-gcc'
       # - title: 'gcc & static'
       #   command: './%s-gcc-static'
+      # - title: 'GraalVM'
+      #   command: 'graalvm.lli %s-graalvm'
 
     files:
       - primes/Simple

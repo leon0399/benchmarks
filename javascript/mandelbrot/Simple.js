@@ -5,7 +5,7 @@
 function index()
 {
     for (var y = -39; y < 39; y++) {
-        console.log("\n");
+        process.stdout.write("\n");
 
         for (var x = -39; x < 39; x++) {
             var i = mandelbrot(
@@ -14,14 +14,14 @@ function index()
             );
 
             if (i == 0) {
-                console.log("*");
+                process.stdout.write("*");
             } else {
-                console.log(" ");
+                process.stdout.write(" ");
             }
         }
     }
 
-    console.log("\n");
+    process.stdout.write("\n");
 }
 
 function mandelbrot(x, y)

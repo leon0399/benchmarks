@@ -3,10 +3,10 @@ title: 'JavaScript'
 strategy:
   matrix:
     command:
-      - title: 'JavaScript'
+      - title: 'Node'
         command: 'node %s'
-      - title: 'GraalVM'
-        command: 'graalvm.js %s'
+      - title: 'GraalVM Node'
+        command: 'graalvm.node %s'
 
     files:
       - primes/Simple.js

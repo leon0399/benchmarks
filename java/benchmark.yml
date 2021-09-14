@@ -5,7 +5,7 @@ strategy:
     command:
       - title: 'Naive'
         command: 'java -jar %s.jar'
-      - title: 'Naive (GraalVM)'
+      - title: 'GraalVM: Naive'
         command: 'graalvm.java -jar %s.jar'
 
     files:

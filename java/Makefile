@@ -1,7 +1,7 @@
 SCRIPTS = $(wildcard **/*.java)
 
 %.class: %.java
-	graalvm-javac $<
+	graalvm.javac $<
 
 %.jar: %.class
 	jar cfe $@ $* $**.class

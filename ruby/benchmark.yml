@@ -13,6 +13,8 @@ strategy:
         command: 'truffleruby %s'
       - title: 'TruffleRuby JVM'
         command: 'truffleruby --jvm %s'
+      - title: 'GraalVM'
+        command: 'graalvm.ruby --jvm %s'
 
     files:
       - primes/Atkin.rb

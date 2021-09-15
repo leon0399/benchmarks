@@ -11,7 +11,7 @@ import json
 import time
 import statistics
 
-times = 10
+times = 50
 
 configurations = glob.glob('*/benchmark.yml')
 configurations.sort()
@@ -22,7 +22,7 @@ def runBenchmark(command):
     start = time.time()
     maxMemory = 0
 
-    with subprocess.Popen(command.split(), stdout=subprocess.DEVNULL) as proc:
+    with subprocess.Popen(command.split(), stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL) as proc:
         try:
             process = psutil.Process(proc.pid)
             while proc.poll() is None:
@@ -87,7 +87,7 @@ for configurationFilename in configurations:
 
             for _ in range(times):
                 elapsed, memory = runScript(dir + '/' + scriptFilename, command)
-                print('%f' % elapsed, end=' ', flush=True)
+                print("{:.5f}".format(elapsed), end=' ', flush=True)
 
                 if (elapsed > 0):
                     timeResults.append(elapsed)

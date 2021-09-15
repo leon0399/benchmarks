@@ -2,107 +2,113 @@
 
 | Language | Time, s | Memory, MiB |
 | :------- | ------: | ----------: |
-| C++ (clang) |  0.442<sub>±0.003</sub> |       2.28<sub>±0.92</sub> |
-| Java (Naive) |  0.488<sub>±0.053</sub> |      39.74<sub>±1.88</sub> |
-| Java (GraalVM: Naive) |  0.845<sub>±0.037</sub> |     132.93<sub>±6.00</sub> |
-| JavaScript (Node) |  0.529<sub>±0.071</sub> |      37.23<sub>±1.93</sub> |
-| JavaScript (GraalVM Node) |  2.346<sub>±0.269</sub> |     787.00<sub>±38.11</sub> |
-| PHP (Naive) |  3.069<sub>±0.302</sub> |      17.30<sub>±0.32</sub> |
-| PHP (JIT: tracing) |  1.503<sub>±0.324</sub> |      20.48<sub>±0.33</sub> |
-| PHP (JIT: function) |  1.775<sub>±0.156</sub> |      20.44<sub>±0.44</sub> |
-| Rust |  0.441<sub>±0.005</sub> |       1.74<sub>±0.07</sub> |
+| C++ (clang) |  0.344<sub>±0.047</sub> |       2.96<sub>±1.55</sub> |
+| Java (Naive) |  0.389<sub>±0.071</sub> |      39.57<sub>±1.78</sub> |
+| Java (GraalVM: Naive) |  0.736<sub>±0.057</sub> |     130.70<sub>±15.26</sub> |
+| JavaScript (Node) |  0.430<sub>±0.113</sub> |      38.05<sub>±1.46</sub> |
+| JavaScript (GraalVM Node) |  1.914<sub>±0.396</sub> |     778.52<sub>±46.92</sub> |
+| PHP (Naive) |  2.439<sub>±0.148</sub> |      17.33<sub>±0.46</sub> |
+| PHP (JIT: tracing) |  1.221<sub>±1.449</sub> |      20.40<sub>±0.35</sub> |
+| PHP (JIT: function) |  1.406<sub>±0.235</sub> |      20.37<sub>±0.36</sub> |
+| Rust |  0.347<sub>±0.052</sub> |       1.71<sub>±1.13</sub> |
 
 
 ### primes/Atkin
 
 | Language | Time, s | Memory, MiB |
 | :------- | ------: | ----------: |
-| C++ (clang) |  0.219<sub>±0.158</sub> |      88.86<sub>±0.16</sub> |
-| Java (Naive) |  0.264<sub>±0.068</sub> |     171.54<sub>±15.41</sub> |
-| Java (GraalVM: Naive) |  0.730<sub>±0.057</sub> |     286.32<sub>±31.45</sub> |
-| JavaScript (Node) |  0.483<sub>±0.034</sub> |     205.58<sub>±2.13</sub> |
-| JavaScript (GraalVM Node) |  2.237<sub>±0.186</sub> |     979.76<sub>±72.08</sub> |
-| PHP (Naive) |  1.901<sub>±0.134</sub> |     344.24<sub>±1.37</sub> |
-| PHP (JIT: tracing) |  2.045<sub>±0.177</sub> |     347.98<sub>±5.82</sub> |
-| PHP (JIT: function) |  1.301<sub>±0.050</sub> |     353.29<sub>±0.29</sub> |
-| Ruby (Naive) |  3.138<sub>±0.457</sub> |     163.64<sub>±0.35</sub> |
-| Ruby (JIT) |  2.850<sub>±0.209</sub> |     164.27<sub>±0.51</sub> |
-| Ruby (JRuby) |  4.730<sub>±0.527</sub> |     522.49<sub>±53.35</sub> |
-| Ruby (TruffleRuby) |  2.052<sub>±0.359</sub> |     930.73<sub>±55.94</sub> |
-| Ruby (TruffleRuby JVM) |  6.513<sub>±0.570</sub> |     911.21<sub>±67.91</sub> |
-| Ruby (GraalVM) |  6.136<sub>±0.647</sub> |     928.62<sub>±65.93</sub> |
-| Rust |  0.215<sub>±0.036</sub> |      77.50<sub>±0.29</sub> |
+| C++ (clang) |  0.202<sub>±0.055</sub> |      88.87<sub>±0.26</sub> |
+| Java (Naive) |  0.244<sub>±0.155</sub> |     161.73<sub>±14.71</sub> |
+| Java (GraalVM: Naive) |  0.732<sub>±0.127</sub> |     287.44<sub>±23.02</sub> |
+| JavaScript (Node) |  0.411<sub>±0.089</sub> |     205.74<sub>±5.26</sub> |
+| JavaScript (GraalVM Node) |  3.871<sub>±1.675</sub> |     859.25<sub>±16.82</sub> |
+| PHP (Naive) |  1.484<sub>±0.234</sub> |     350.10<sub>±3.00</sub> |
+| PHP (JIT: tracing) |  1.612<sub>±0.164</sub> |     353.64<sub>±0.34</sub> |
+| PHP (JIT: function) |  1.134<sub>±0.080</sub> |     353.30<sub>±0.33</sub> |
+| Ruby (Naive) |  2.416<sub>±0.156</sub> |     163.59<sub>±0.55</sub> |
+| Ruby (JIT) |  2.239<sub>±0.103</sub> |     164.19<sub>±0.55</sub> |
+| Ruby (JRuby) |  4.252<sub>±0.532</sub> |     496.12<sub>±60.62</sub> |
+| Ruby (TruffleRuby) |  2.343<sub>±0.438</sub> |     861.17<sub>±22.77</sub> |
+| Ruby (TruffleRuby JVM) |  6.475<sub>±4.737</sub> |     860.51<sub>±37.79</sub> |
+| Ruby (GraalVM) |  6.187<sub>±1.688</sub> |     855.49<sub>±37.08</sub> |
+| Rust |  0.175<sub>±0.063</sub> |      77.46<sub>±0.12</sub> |
 
 
 ### collatz/MaxSequence
 
 | Language | Time, s | Memory, MiB |
 | :------- | ------: | ----------: |
-| C++ (clang) |  0.075<sub>±0.059</sub> |       1.47<sub>±1.70</sub> |
-| Java (Naive) |  0.145<sub>±0.113</sub> |      36.08<sub>±0.20</sub> |
-| Java (GraalVM: Naive) |  0.496<sub>±0.050</sub> |      75.04<sub>±4.52</sub> |
-| JavaScript (Node) |  0.988<sub>±0.029</sub> |      31.51<sub>±1.96</sub> |
-| JavaScript (GraalVM Node) |  1.278<sub>±0.042</sub> |     465.62<sub>±12.08</sub> |
-| PHP (Naive) |  1.064<sub>±0.176</sub> |      17.25<sub>±0.28</sub> |
-| PHP (JIT: tracing) |  0.434<sub>±0.025</sub> |      20.66<sub>±0.33</sub> |
-| PHP (JIT: function) |  0.575<sub>±0.016</sub> |      20.34<sub>±0.37</sub> |
-| Rust |  0.077<sub>±0.003</sub> |       1.79<sub>±0.11</sub> |
+| C++ (clang) |  0.059<sub>±0.050</sub> |       3.02<sub>±1.60</sub> |
+| Java (Naive) |  0.119<sub>±0.083</sub> |      35.92<sub>±0.81</sub> |
+| Java (GraalVM: Naive) |  0.462<sub>±0.096</sub> |      74.82<sub>±6.52</sub> |
+| JavaScript (Node) |  0.768<sub>±0.135</sub> |      32.12<sub>±1.83</sub> |
+| JavaScript (GraalVM Node) |  1.009<sub>±0.204</sub> |     470.14<sub>±20.10</sub> |
+| PHP (Naive) |  0.829<sub>±0.095</sub> |      17.38<sub>±0.33</sub> |
+| PHP (JIT: tracing) |  0.341<sub>±0.059</sub> |      20.64<sub>±0.36</sub> |
+| PHP (JIT: function) |  0.462<sub>±0.076</sub> |      20.43<sub>±0.87</sub> |
+| Rust |  0.060<sub>±0.008</sub> |       1.71<sub>±0.17</sub> |
 
 
 ### mandelbrot/Simple
 
 | Language | Time, s | Memory, MiB |
 | :------- | ------: | ----------: |
-| C++ (clang) |  0.043<sub>±0.000</sub> |       3.07<sub>±1.61</sub> |
-| Java (Naive) |  0.083<sub>±0.052</sub> |      37.17<sub>±0.66</sub> |
-| Java (GraalVM: Naive) |  0.438<sub>±0.004</sub> |      74.94<sub>±5.28</sub> |
-| JavaScript (Node) |  0.089<sub>±0.073</sub> |      38.36<sub>±2.03</sub> |
-| JavaScript (GraalVM Node) |  0.484<sub>±0.037</sub> |     502.80<sub>±8.80</sub> |
-| PHP (Naive) |  0.513<sub>±0.075</sub> |      17.35<sub>±0.41</sub> |
-| PHP (JIT: tracing) |  0.160<sub>±0.004</sub> |      20.70<sub>±0.33</sub> |
-| PHP (JIT: function) |  0.210<sub>±0.026</sub> |      20.59<sub>±0.27</sub> |
-| Rust |  0.042<sub>±0.000</sub> |       1.69<sub>±0.08</sub> |
+| C++ (clang) |  0.034<sub>±0.067</sub> |       1.54<sub>±1.69</sub> |
+| Java (Naive) |  0.070<sub>±0.054</sub> |      37.12<sub>±0.51</sub> |
+| Java (GraalVM: Naive) |  0.415<sub>±0.088</sub> |      75.14<sub>±5.93</sub> |
+| JavaScript (Node) |  0.072<sub>±0.106</sub> |      37.30<sub>±5.68</sub> |
+| JavaScript (GraalVM Node) |  0.399<sub>±0.085</sub> |     503.86<sub>±9.67</sub> |
+| PHP (Naive) |  0.409<sub>±0.072</sub> |      17.37<sub>±0.37</sub> |
+| PHP (JIT: tracing) |  0.127<sub>±0.054</sub> |      20.63<sub>±0.65</sub> |
+| PHP (JIT: function) |  0.170<sub>±0.106</sub> |      20.49<sub>±0.89</sub> |
+| Rust |  0.033<sub>±0.082</sub> |       1.71<sub>±0.17</sub> |
 
 
 ### io/Load
 
 | Language | Time, s | Memory, MiB |
 | :------- | ------: | ----------: |
-| C++ (clang) |  0.095<sub>±0.072</sub> |       1.50<sub>±1.66</sub> |
-| Java (Naive) |  0.237<sub>±0.022</sub> |      76.87<sub>±10.12</sub> |
-| Java (GraalVM: Naive) |  0.806<sub>±0.271</sub> |     171.93<sub>±13.82</sub> |
-| JavaScript (Node) |  1.423<sub>±0.051</sub> |      60.95<sub>±1.65</sub> |
-| JavaScript (GraalVM Node) |  4.497<sub>±0.354</sub> |     872.94<sub>±35.26</sub> |
-| PHP (Naive) |  0.109<sub>±0.040</sub> |      17.39<sub>±0.37</sub> |
-| PHP (JIT: tracing) |  0.104<sub>±0.022</sub> |      20.51<sub>±0.19</sub> |
-| PHP (JIT: function) |  0.107<sub>±0.016</sub> |      20.50<sub>±0.34</sub> |
-| Ruby (Naive) |  0.263<sub>±0.031</sub> |      13.66<sub>±0.11</sub> |
-| Ruby (JIT) |  0.346<sub>±0.324</sub> |      14.02<sub>±0.13</sub> |
-| Ruby (JRuby) |  2.500<sub>±0.201</sub> |     190.43<sub>±15.77</sub> |
-| Ruby (TruffleRuby) |  1.323<sub>±0.124</sub> |     688.78<sub>±45.24</sub> |
-| Ruby (TruffleRuby JVM) |  4.980<sub>±0.398</sub> |     607.36<sub>±54.26</sub> |
-| Ruby (GraalVM) |  5.063<sub>±0.538</sub> |     613.37<sub>±32.52</sub> |
-| Rust |  0.094<sub>±0.065</sub> |       1.70<sub>±0.14</sub> |
+| C++ (clang) |  0.074<sub>±0.064</sub> |       3.00<sub>±1.58</sub> |
+| Go |  0.123<sub>±0.056</sub> |       2.65<sub>±2.00</sub> |
+| Java (Naive) |  0.199<sub>±0.058</sub> |      67.01<sub>±9.43</sub> |
+| Java (GraalVM: Naive) |  0.731<sub>±0.122</sub> |     172.41<sub>±22.19</sub> |
+| JavaScript (Node) |  1.133<sub>±0.091</sub> |      62.68<sub>±2.53</sub> |
+| JavaScript (GraalVM Node) |  3.869<sub>±0.341</sub> |     823.98<sub>±54.93</sub> |
+| PHP (Naive) |  0.086<sub>±0.041</sub> |      17.43<sub>±0.47</sub> |
+| PHP (JIT: tracing) |  0.082<sub>±0.020</sub> |      20.54<sub>±0.35</sub> |
+| PHP (JIT: function) |  0.082<sub>±0.022</sub> |      20.37<sub>±0.43</sub> |
+| Python (Python 3) |  0.109<sub>±0.022</sub> |       7.28<sub>±0.53</sub> |
+| Python (GraalVM Python) |  2.768<sub>±0.498</sub> |     790.27<sub>±35.95</sub> |
+| Ruby (Naive) |  0.211<sub>±0.065</sub> |      13.65<sub>±0.15</sub> |
+| Ruby (JIT) |  0.269<sub>±0.094</sub> |      14.07<sub>±0.28</sub> |
+| Ruby (JRuby) |  2.046<sub>±0.338</sub> |     195.48<sub>±15.37</sub> |
+| Ruby (TruffleRuby) |  1.058<sub>±0.408</sub> |     687.97<sub>±45.96</sub> |
+| Ruby (TruffleRuby JVM) |  4.154<sub>±0.533</sub> |     597.88<sub>±52.87</sub> |
+| Ruby (GraalVM) |  4.367<sub>±0.305</sub> |     610.00<sub>±53.33</sub> |
+| Rust |  0.074<sub>±0.044</sub> |       1.73<sub>±1.14</sub> |
 
 
 ### io/NoLoad
 
 | Language | Time, s | Memory, MiB |
 | :------- | ------: | ----------: |
-| C++ (clang) |  0.001<sub>±0.000</sub> |       1.46<sub>±1.70</sub> |
-| Java (Naive) |  0.029<sub>±0.002</sub> |      34.28<sub>±0.18</sub> |
-| Java (GraalVM: Naive) |  0.383<sub>±0.305</sub> |      62.55<sub>±12.15</sub> |
-| JavaScript (Node) |  0.032<sub>±0.062</sub> |      34.87<sub>±2.04</sub> |
-| JavaScript (GraalVM Node) |  0.281<sub>±0.063</sub> |     406.14<sub>±35.36</sub> |
-| PHP (Naive) |  0.014<sub>±0.001</sub> |      17.48<sub>±0.43</sub> |
-| PHP (JIT: tracing) |  0.013<sub>±0.003</sub> |      20.47<sub>±0.28</sub> |
-| PHP (JIT: function) |  0.014<sub>±0.006</sub> |      20.42<sub>±0.22</sub> |
-| Ruby (Naive) |  0.070<sub>±0.012</sub> |      13.34<sub>±0.16</sub> |
-| Ruby (JIT) |  0.291<sub>±0.059</sub> |      13.63<sub>±0.16</sub> |
-| Ruby (JRuby) |  1.993<sub>±0.086</sub> |     181.62<sub>±19.49</sub> |
-| Ruby (TruffleRuby) |  0.100<sub>±0.043</sub> |     220.61<sub>±9.45</sub> |
-| Ruby (TruffleRuby JVM) |  2.626<sub>±0.317</sub> |     513.92<sub>±7.97</sub> |
-| Ruby (GraalVM) |  2.650<sub>±0.362</sub> |     515.57<sub>±7.23</sub> |
-| Rust |  0.001<sub>±0.000</sub> |       1.67<sub>±1.08</sub> |
+| C++ (clang) |  0.001<sub>±0.001</sub> |       1.48<sub>±1.75</sub> |
+| Go |  0.001<sub>±0.001</sub> |       2.65<sub>±2.65</sub> |
+| Java (Naive) |  0.025<sub>±0.086</sub> |      34.26<sub>±0.24</sub> |
+| Java (GraalVM: Naive) |  0.373<sub>±0.315</sub> |      63.79<sub>±7.41</sub> |
+| JavaScript (Node) |  0.026<sub>±0.104</sub> |      35.14<sub>±4.12</sub> |
+| JavaScript (GraalVM Node) |  0.231<sub>±0.157</sub> |     407.63<sub>±36.78</sub> |
+| PHP (Naive) |  0.010<sub>±0.003</sub> |      17.27<sub>±0.38</sub> |
+| PHP (JIT: tracing) |  0.010<sub>±0.044</sub> |      20.43<sub>±0.31</sub> |
+| PHP (JIT: function) |  0.010<sub>±0.005</sub> |      20.43<sub>±0.37</sub> |
+| Python (Python 3) |  0.024<sub>±0.073</sub> |       7.12<sub>±0.45</sub> |
+| Python (GraalVM Python) |  0.207<sub>±0.118</sub> |     327.65<sub>±38.65</sub> |
+| Ruby (Naive) |  0.055<sub>±0.065</sub> |      13.31<sub>±0.13</sub> |
+| Ruby (JIT) |  0.239<sub>±0.108</sub> |      13.69<sub>±0.12</sub> |
+| Ruby (JRuby) |  1.693<sub>±0.470</sub> |     183.47<sub>±23.38</sub> |
+| Ruby (TruffleRuby) |  0.082<sub>±0.231</sub> |     222.66<sub>±12.48</sub> |
+| Ruby (TruffleRuby JVM) |  2.262<sub>±0.133</sub> |     515.02<sub>±8.14</sub> |
+| Ruby (GraalVM) |  2.244<sub>±0.359</sub> |     514.29<sub>±13.82</sub> |
+| Rust |  0.001<sub>±0.001</sub> |       0.65<sub>±1.20</sub> |
 
 

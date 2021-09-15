@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'socket'
-
 UPPER_BOUND = 5_000_000
 PREFIX = 32_338
 

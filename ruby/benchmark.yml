@@ -19,5 +19,7 @@ strategy:
     files:
       - primes/Atkin.rb
 
+      - treap/Naive.rb
+
       - io/Load.rb
       - io/NoLoad.rb

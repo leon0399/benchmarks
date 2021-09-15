@@ -16,5 +16,7 @@ strategy:
 
       - mandelbrot/Simple.js
 
+      - treap/Naive.js
+
       - io/Load.js
       - io/NoLoad.js

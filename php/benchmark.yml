@@ -18,5 +18,7 @@ strategy:
 
       - mandelbrot/Simple.php
 
+      - treap/Naive.php
+
       - io/Load.php
       - io/NoLoad.php

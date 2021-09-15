@@ -7,6 +7,7 @@ services:
       context: .
       dockerfile: Dockerfile
     tty: true
+    stdin_open: true
     working_dir: /app
     volumes:
       - ./:/app

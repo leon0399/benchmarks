@@ -1,0 +1,13 @@
+title: 'Python'
+
+strategy:
+  matrix:
+    command:
+      - title: 'Python 3'
+        command: 'python3 %s'
+      - title: 'GraalVM Python'
+        command: 'graalvm.python %s'
+
+    files:
+      - io/Load.py
+      - io/NoLoad.py

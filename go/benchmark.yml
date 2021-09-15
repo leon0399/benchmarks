@@ -1,0 +1,11 @@
+title: 'Go'
+
+strategy:
+  matrix:
+    command:
+      - title: 'Go'
+        command: './%s'
+
+    files:
+      - io/Load
+      - io/NoLoad

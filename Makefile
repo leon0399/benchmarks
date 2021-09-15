@@ -1,5 +1,6 @@
 LANGS = \
 	c-plus-plus \
+	go \
 	java \
 	rust \
 

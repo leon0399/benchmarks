@@ -2,7 +2,13 @@ CXXFLAGS = --std=c++17 -flto -s
 
 SCRIPTS = $(wildcard **/*.cpp)
 
-BINARIES = $(SCRIPTS:%.cpp=%-clang) $(SCRIPTS:%.cpp=%-clang-static) $(SCRIPTS:%.cpp=%-gcc) $(SCRIPTS:%.cpp=%-gcc-static) $(SCRIPTS:%.cpp=%-graalvm) # $(SCRIPTS:%.cpp=%-graalvm-static)
+BINARIES =  $(SCRIPTS:%.cpp=%-clang) \
+			$(SCRIPTS:%.cpp=%-clang-static) \
+			$(SCRIPTS:%.cpp=%-gcc) \
+			$(SCRIPTS:%.cpp=%-gcc-static) \
+			# $(SCRIPTS:%.cpp=%-graalvm) \
+			# $(SCRIPTS:%.cpp=%-graalvm-static) \
+
 
 %-clang: %.cpp
 	clang++ -O3 $(CXXFLAGS) -o $@ $<

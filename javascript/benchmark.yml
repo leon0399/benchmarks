@@ -20,5 +20,7 @@ strategy:
 
       - treap/Naive.js
 
+      - recursion/Tak.js
+
       - io/Load.js
       - io/NoLoad.js

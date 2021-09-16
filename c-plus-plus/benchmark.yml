@@ -24,5 +24,7 @@ strategy:
 
       - treap/Naive
 
+      - recursion/Tak
+
       - io/Load
       - io/NoLoad

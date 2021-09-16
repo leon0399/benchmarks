@@ -8,12 +8,11 @@ strategy:
       - title: 'PyPy'
         command: 'pypy3 %s'
         tags:
-          - alternative
+          - Alternative
       - title: 'GraalVM'
         command: 'graalvm.python %s'
         tags:
-          - graalvm
-          - alternative
+          - GraalVM
 
     files:
       - primes/Atkin.py

@@ -8,8 +8,7 @@ strategy:
       - title: 'GraalVM Node'
         command: 'graalvm.node %s'
         tags:
-          - graalvm
-          - alternative
+          - GraalVM
 
     files:
       - primes/Simple.js

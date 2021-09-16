@@ -55,8 +55,7 @@
       },
       "GraalVM: Naive": {
         "tags": [
-          "graalvm",
-          "alternative"
+          "GraalVM"
         ],
         "time": {
           "results": [
@@ -110,8 +109,7 @@
       },
       "GraalVM Node": {
         "tags": [
-          "graalvm",
-          "alternative"
+          "GraalVM"
         ],
         "time": {
           "results": [
@@ -165,7 +163,7 @@
       },
       "JIT: tracing": {
         "tags": [
-          "jit"
+          "JIT"
         ],
         "time": {
           "results": [
@@ -192,7 +190,7 @@
       },
       "JIT: function": {
         "tags": [
-          "jit"
+          "JIT"
         ],
         "time": {
           "results": [
@@ -246,7 +244,7 @@
       },
       "JIT": {
         "tags": [
-          "jit"
+          "JIT"
         ],
         "time": {
           "results": [
@@ -273,7 +271,7 @@
       },
       "JRuby": {
         "tags": [
-          "alternative"
+          "Alternative"
         ],
         "time": {
           "results": [
@@ -300,7 +298,7 @@
       },
       "TruffleRuby": {
         "tags": [
-          "alternative"
+          "Alternative"
         ],
         "time": {
           "results": [
@@ -327,7 +325,7 @@
       },
       "TruffleRuby JVM": {
         "tags": [
-          "alternative"
+          "Alternative"
         ],
         "time": {
           "results": [
@@ -354,8 +352,7 @@
       },
       "GraalVM": {
         "tags": [
-          "graalvm",
-          "alternative"
+          "GraalVM"
         ],
         "time": {
           "results": [
@@ -382,8 +379,7 @@
       },
       "GraalVM JVM": {
         "tags": [
-          "graalvm",
-          "alternative"
+          "GraalVM"
         ],
         "time": {
           "results": [
@@ -493,8 +489,7 @@
       },
       "GraalVM: Naive": {
         "tags": [
-          "graalvm",
-          "alternative"
+          "GraalVM"
         ],
         "time": {
           "results": [
@@ -548,8 +543,7 @@
       },
       "GraalVM Node": {
         "tags": [
-          "graalvm",
-          "alternative"
+          "GraalVM"
         ],
         "time": {
           "results": [
@@ -603,7 +597,7 @@
       },
       "JIT: tracing": {
         "tags": [
-          "jit"
+          "JIT"
         ],
         "time": {
           "results": [
@@ -630,7 +624,7 @@
       },
       "JIT: function": {
         "tags": [
-          "jit"
+          "JIT"
         ],
         "time": {
           "results": [
@@ -684,7 +678,7 @@
       },
       "PyPy": {
         "tags": [
-          "alternative"
+          "Alternative"
         ],
         "time": {
           "results": [
@@ -711,8 +705,7 @@
       },
       "GraalVM": {
         "tags": [
-          "graalvm",
-          "alternative"
+          "GraalVM"
         ],
         "time": {
           "results": [
@@ -766,7 +759,7 @@
       },
       "JIT": {
         "tags": [
-          "jit"
+          "JIT"
         ],
         "time": {
           "results": [
@@ -793,7 +786,7 @@
       },
       "JRuby": {
         "tags": [
-          "alternative"
+          "Alternative"
         ],
         "time": {
           "results": [
@@ -820,7 +813,7 @@
       },
       "TruffleRuby": {
         "tags": [
-          "alternative"
+          "Alternative"
         ],
         "time": {
           "results": [
@@ -847,7 +840,7 @@
       },
       "TruffleRuby JVM": {
         "tags": [
-          "alternative"
+          "Alternative"
         ],
         "time": {
           "results": [
@@ -874,8 +867,7 @@
       },
       "GraalVM": {
         "tags": [
-          "graalvm",
-          "alternative"
+          "GraalVM"
         ],
         "time": {
           "results": [
@@ -902,8 +894,7 @@
       },
       "GraalVM JVM": {
         "tags": [
-          "graalvm",
-          "alternative"
+          "GraalVM"
         ],
         "time": {
           "results": [
@@ -1013,8 +1004,7 @@
       },
       "GraalVM: Naive": {
         "tags": [
-          "graalvm",
-          "alternative"
+          "GraalVM"
         ],
         "time": {
           "results": [
@@ -1068,8 +1058,7 @@
       },
       "GraalVM Node": {
         "tags": [
-          "graalvm",
-          "alternative"
+          "GraalVM"
         ],
         "time": {
           "results": [
@@ -1123,7 +1112,7 @@
       },
       "JIT: tracing": {
         "tags": [
-          "jit"
+          "JIT"
         ],
         "time": {
           "results": [
@@ -1150,7 +1139,7 @@
       },
       "JIT: function": {
         "tags": [
-          "jit"
+          "JIT"
         ],
         "time": {
           "results": [
@@ -1204,7 +1193,7 @@
       },
       "JIT": {
         "tags": [
-          "jit"
+          "JIT"
         ],
         "time": {
           "results": [
@@ -1231,7 +1220,7 @@
       },
       "JRuby": {
         "tags": [
-          "alternative"
+          "Alternative"
         ],
         "time": {
           "results": [
@@ -1258,7 +1247,7 @@
       },
       "TruffleRuby": {
         "tags": [
-          "alternative"
+          "Alternative"
         ],
         "time": {
           "results": [
@@ -1285,7 +1274,7 @@
       },
       "TruffleRuby JVM": {
         "tags": [
-          "alternative"
+          "Alternative"
         ],
         "time": {
           "results": [
@@ -1312,8 +1301,7 @@
       },
       "GraalVM": {
         "tags": [
-          "graalvm",
-          "alternative"
+          "GraalVM"
         ],
         "time": {
           "results": [
@@ -1340,8 +1328,7 @@
       },
       "GraalVM JVM": {
         "tags": [
-          "graalvm",
-          "alternative"
+          "GraalVM"
         ],
         "time": {
           "results": [
@@ -1451,8 +1438,7 @@
       },
       "GraalVM: Naive": {
         "tags": [
-          "graalvm",
-          "alternative"
+          "GraalVM"
         ],
         "time": {
           "results": [
@@ -1506,8 +1492,7 @@
       },
       "GraalVM Node": {
         "tags": [
-          "graalvm",
-          "alternative"
+          "GraalVM"
         ],
         "time": {
           "results": [
@@ -1561,7 +1546,7 @@
       },
       "JIT: tracing": {
         "tags": [
-          "jit"
+          "JIT"
         ],
         "time": {
           "results": [
@@ -1588,7 +1573,7 @@
       },
       "JIT: function": {
         "tags": [
-          "jit"
+          "JIT"
         ],
         "time": {
           "results": [
@@ -1642,7 +1627,7 @@
       },
       "JIT": {
         "tags": [
-          "jit"
+          "JIT"
         ],
         "time": {
           "results": [
@@ -1669,7 +1654,7 @@
       },
       "JRuby": {
         "tags": [
-          "alternative"
+          "Alternative"
         ],
         "time": {
           "results": [
@@ -1696,7 +1681,7 @@
       },
       "TruffleRuby": {
         "tags": [
-          "alternative"
+          "Alternative"
         ],
         "time": {
           "results": [
@@ -1723,7 +1708,7 @@
       },
       "TruffleRuby JVM": {
         "tags": [
-          "alternative"
+          "Alternative"
         ],
         "time": {
           "results": [
@@ -1750,8 +1735,7 @@
       },
       "GraalVM": {
         "tags": [
-          "graalvm",
-          "alternative"
+          "GraalVM"
         ],
         "time": {
           "results": [
@@ -1778,8 +1762,7 @@
       },
       "GraalVM JVM": {
         "tags": [
-          "graalvm",
-          "alternative"
+          "GraalVM"
         ],
         "time": {
           "results": [
@@ -1916,8 +1899,7 @@
       },
       "GraalVM Node": {
         "tags": [
-          "graalvm",
-          "alternative"
+          "GraalVM"
         ],
         "time": {
           "results": [
@@ -1971,7 +1953,7 @@
       },
       "JIT: tracing": {
         "tags": [
-          "jit"
+          "JIT"
         ],
         "time": {
           "results": [
@@ -1998,7 +1980,7 @@
       },
       "JIT: function": {
         "tags": [
-          "jit"
+          "JIT"
         ],
         "time": {
           "results": [
@@ -2052,7 +2034,7 @@
       },
       "PyPy": {
         "tags": [
-          "alternative"
+          "Alternative"
         ],
         "time": {
           "results": [
@@ -2079,8 +2061,7 @@
       },
       "GraalVM": {
         "tags": [
-          "graalvm",
-          "alternative"
+          "GraalVM"
         ],
         "time": {
           "results": [
@@ -2134,7 +2115,7 @@
       },
       "JIT": {
         "tags": [
-          "jit"
+          "JIT"
         ],
         "time": {
           "results": [
@@ -2161,7 +2142,7 @@
       },
       "JRuby": {
         "tags": [
-          "alternative"
+          "Alternative"
         ],
         "time": {
           "results": [
@@ -2188,7 +2169,7 @@
       },
       "TruffleRuby": {
         "tags": [
-          "alternative"
+          "Alternative"
         ],
         "time": {
           "results": [
@@ -2215,7 +2196,7 @@
       },
       "TruffleRuby JVM": {
         "tags": [
-          "alternative"
+          "Alternative"
         ],
         "time": {
           "results": [
@@ -2242,8 +2223,7 @@
       },
       "GraalVM": {
         "tags": [
-          "graalvm",
-          "alternative"
+          "GraalVM"
         ],
         "time": {
           "results": [
@@ -2270,8 +2250,7 @@
       },
       "GraalVM JVM": {
         "tags": [
-          "graalvm",
-          "alternative"
+          "GraalVM"
         ],
         "time": {
           "results": [
@@ -2381,8 +2360,7 @@
       },
       "GraalVM: Naive": {
         "tags": [
-          "graalvm",
-          "alternative"
+          "GraalVM"
         ],
         "time": {
           "results": [
@@ -2436,8 +2414,7 @@
       },
       "GraalVM Node": {
         "tags": [
-          "graalvm",
-          "alternative"
+          "GraalVM"
         ],
         "time": {
           "results": [
@@ -2491,7 +2468,7 @@
       },
       "JIT: tracing": {
         "tags": [
-          "jit"
+          "JIT"
         ],
         "time": {
           "results": [
@@ -2518,7 +2495,7 @@
       },
       "JIT: function": {
         "tags": [
-          "jit"
+          "JIT"
         ],
         "time": {
           "results": [
@@ -2572,7 +2549,7 @@
       },
       "PyPy": {
         "tags": [
-          "alternative"
+          "Alternative"
         ],
         "time": {
           "results": [
@@ -2599,8 +2576,7 @@
       },
       "GraalVM": {
         "tags": [
-          "graalvm",
-          "alternative"
+          "GraalVM"
         ],
         "time": {
           "results": [
@@ -2654,7 +2630,7 @@
       },
       "JIT": {
         "tags": [
-          "jit"
+          "JIT"
         ],
         "time": {
           "results": [
@@ -2681,7 +2657,7 @@
       },
       "JRuby": {
         "tags": [
-          "alternative"
+          "Alternative"
         ],
         "time": {
           "results": [
@@ -2708,7 +2684,7 @@
       },
       "TruffleRuby": {
         "tags": [
-          "alternative"
+          "Alternative"
         ],
         "time": {
           "results": [
@@ -2735,7 +2711,7 @@
       },
       "TruffleRuby JVM": {
         "tags": [
-          "alternative"
+          "Alternative"
         ],
         "time": {
           "results": [
@@ -2762,8 +2738,7 @@
       },
       "GraalVM": {
         "tags": [
-          "graalvm",
-          "alternative"
+          "GraalVM"
         ],
         "time": {
           "results": [
@@ -2790,8 +2765,7 @@
       },
       "GraalVM JVM": {
         "tags": [
-          "graalvm",
-          "alternative"
+          "GraalVM"
         ],
         "time": {
           "results": [
@@ -2928,8 +2902,7 @@
       },
       "GraalVM: Naive": {
         "tags": [
-          "graalvm",
-          "alternative"
+          "GraalVM"
         ],
         "time": {
           "results": [
@@ -2983,8 +2956,7 @@
       },
       "GraalVM Node": {
         "tags": [
-          "graalvm",
-          "alternative"
+          "GraalVM"
         ],
         "time": {
           "results": [
@@ -3038,7 +3010,7 @@
       },
       "JIT: tracing": {
         "tags": [
-          "jit"
+          "JIT"
         ],
         "time": {
           "results": [
@@ -3065,7 +3037,7 @@
       },
       "JIT: function": {
         "tags": [
-          "jit"
+          "JIT"
         ],
         "time": {
           "results": [
@@ -3119,7 +3091,7 @@
       },
       "PyPy": {
         "tags": [
-          "alternative"
+          "Alternative"
         ],
         "time": {
           "results": [
@@ -3146,8 +3118,7 @@
       },
       "GraalVM": {
         "tags": [
-          "graalvm",
-          "alternative"
+          "GraalVM"
         ],
         "time": {
           "results": [
@@ -3201,7 +3172,7 @@
       },
       "JIT": {
         "tags": [
-          "jit"
+          "JIT"
         ],
         "time": {
           "results": [
@@ -3228,7 +3199,7 @@
       },
       "JRuby": {
         "tags": [
-          "alternative"
+          "Alternative"
         ],
         "time": {
           "results": [
@@ -3255,7 +3226,7 @@
       },
       "TruffleRuby": {
         "tags": [
-          "alternative"
+          "Alternative"
         ],
         "time": {
           "results": [
@@ -3282,7 +3253,7 @@
       },
       "TruffleRuby JVM": {
         "tags": [
-          "alternative"
+          "Alternative"
         ],
         "time": {
           "results": [
@@ -3309,8 +3280,7 @@
       },
       "GraalVM": {
         "tags": [
-          "graalvm",
-          "alternative"
+          "GraalVM"
         ],
         "time": {
           "results": [
@@ -3337,8 +3307,7 @@
       },
       "GraalVM JVM": {
         "tags": [
-          "graalvm",
-          "alternative"
+          "GraalVM"
         ],
         "time": {
           "results": [

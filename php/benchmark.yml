@@ -8,11 +8,11 @@ strategy:
       - title: 'JIT: tracing'
         command: 'php -dxdebug.mode=off -dopcache.enable_cli=1 -dopcache.jit_buffer_size=100M --file %s'
         tags:
-          - jit
+          - JIT
       - title: 'JIT: function'
         command: 'php -dxdebug.mode=off -dopcache.enable_cli=1 -dopcache.jit_buffer_size=100M -dopcache.jit=function --file %s'
         tags:
-          - jit
+          - JIT
 
     files:
       - primes/Simple.php

@@ -8,29 +8,29 @@ strategy:
       - title: 'JIT'
         command: 'ruby --jit %s'
         tags:
-          - jit
+          - JIT
       - title: 'JRuby'
         command: 'jruby %s'
         tags:
-          - alternative
+          - Alternative
       - title: 'TruffleRuby'
         command: 'truffleruby %s'
         tags:
-          - alternative
+          - Alternative
       - title: 'TruffleRuby JVM'
         command: 'truffleruby --jvm %s'
         tags:
-          - alternative
+          - Alternative
       - title: 'GraalVM'
         command: 'graalvm.ruby %s'
         tags:
-          - graalvm
-          - alternative
+          - GraalVM
+          - Alternative
       - title: 'GraalVM JVM'
         command: 'graalvm.ruby --jvm %s'
         tags:
-          - graalvm
-          - alternative
+          - GraalVM
+          - Alternative
 
     files:
       - primes/Simple.rb

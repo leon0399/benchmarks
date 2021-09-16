@@ -7,5 +7,7 @@ strategy:
         command: './%s'
 
     files:
+      - treap/Naive
+
       - io/Load
       - io/NoLoad

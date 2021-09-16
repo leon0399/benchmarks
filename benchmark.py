@@ -11,7 +11,7 @@ import json
 import time
 import statistics
 
-times = 10
+times = 5
 
 configurations = glob.glob('*/benchmark.yml')
 configurations.sort()

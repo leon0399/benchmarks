@@ -3,9 +3,13 @@ title: 'Python'
 strategy:
   matrix:
     command:
-      - title: 'Python 3'
+      - title: 'CPython'
         command: 'python3 %s'
-      - title: 'GraalVM Python'
+      - title: 'PyPy'
+        command: 'pypy3 %s'
+        tags:
+          - alternative
+      - title: 'GraalVM'
         command: 'graalvm.python %s'
         tags:
           - graalvm
@@ -13,6 +17,8 @@ strategy:
 
     files:
       - primes/Atkin.py
+
+      - treap/Naive.py
 
       - io/Load.py
       - io/NoLoad.py

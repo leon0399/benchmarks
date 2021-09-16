@@ -14,10 +14,17 @@ strategy:
       - title: 'TruffleRuby JVM'
         command: 'truffleruby --jvm %s'
       - title: 'GraalVM'
+        command: 'graalvm.ruby %s'
+      - title: 'GraalVM JVM'
         command: 'graalvm.ruby --jvm %s'
 
     files:
+      - primes/Simple.rb
       - primes/Atkin.rb
+
+      - collatz/MaxSequence.rb
+
+      - mandelbrot/Simple.rb
 
       - treap/Naive.rb
 

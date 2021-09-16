@@ -11,7 +11,7 @@ import json
 import time
 import statistics
 
-times = 50
+times = 10
 
 configurations = glob.glob('*/benchmark.yml')
 configurations.sort()
@@ -65,10 +65,13 @@ for configurationFilename in configurations:
 
         for commandInfo in matrix['command']:
             commandTitle = command = commandInfo
+            tags = []
 
             if (isinstance(commandInfo, dict)):
                 commandTitle = commandInfo['title']
                 command = commandInfo['command']
+                if "tags" in commandInfo:
+                    tags = commandInfo['tags']
 
             split = command.split()
             executable = split[0]
@@ -105,6 +108,7 @@ for configurationFilename in configurations:
                 memoryDelta = max(map(lambda x : abs(x - memoryMedian), memoryResults))
 
                 result = {
+                    'tags': tags,
                     'time': {
                         'results': timeResults,
                         'median': timeMedian,

@@ -6,17 +6,29 @@ ARG DEBIAN_FRONTEND=noninteractive
 
 RUN apt update \
     && apt install -y \
+        git \
         curl \
         wget \
         unzip \
         gnupg2 \
         libssl-dev \
         lsb-release \
+        build-essential \
         ca-certificates \
         apt-transport-https \
         software-properties-common
 
 WORKDIR /opt
+
+# C++
+RUN apt install -y \
+        gcc \
+        clang
+
+# RUN git clone https://github.com/gsauthof/cgmemtime.git \
+#     && make --dir cgmemtime \
+#     && ln -s /opt/cgmemtime/cgmemtime /usr/bin/cgmemtime \
+#     && cgmemtime --setup -g $(getent group $(id -g) | cut -d: -f1) --perm 775
 
 # Python
 RUN apt install -y \
@@ -50,11 +62,6 @@ ARG GO=1.17.1
 RUN wget --progress=dot:giga -O - \
         https://golang.org/dl/go${GO}.linux-amd64.tar.gz | tar -xz
 ENV PATH="/opt/go/bin/:${PATH}"
-
-# C++
-RUN apt install -y \
-        gcc \
-        clang
 
 # Rust
 ENV CARGO_HOME="/opt/.cargo"

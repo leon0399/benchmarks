@@ -12,5 +12,7 @@ strategy:
           - alternative
 
     files:
+      - primes/Atkin.py
+
       - io/Load.py
       - io/NoLoad.py

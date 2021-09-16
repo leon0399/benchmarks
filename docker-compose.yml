@@ -6,6 +6,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    command: tail -F anything
     tty: true
     stdin_open: true
     working_dir: /app

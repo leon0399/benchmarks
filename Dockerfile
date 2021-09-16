@@ -35,7 +35,17 @@ RUN apt install -y \
         python3 \
         python3-pip \
         python3-numpy \
+        python2 \
     && pip install pyyaml docker psutil
+
+# PyPy
+ARG PYPY=v7.3.5
+RUN wget --progress=dot:giga -O - \
+        https://downloads.python.org/pypy/pypy3.7-$PYPY-linux64.tar.bz2 | tar -xj \
+    && ln -s /opt/pypy3.7-$PYPY-linux64/bin/pypy3 /usr/bin/pypy3
+RUN wget --progress=dot:giga -O - \
+        https://downloads.python.org/pypy/pypy2.7-$PYPY-linux64.tar.bz2 | tar -xj \
+    && ln -s /opt/pypy2.7-$PYPY-linux64/bin/pypy /usr/bin/pypy2
 
 # PHP
 ARG PHP=8.0

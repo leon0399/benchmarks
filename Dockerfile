@@ -12,6 +12,7 @@ RUN apt update \
         unzip \
         gnupg2 \
         libssl-dev \
+        libncurses5 \
         lsb-release \
         build-essential \
         ca-certificates \
@@ -89,6 +90,11 @@ RUN wget --progress=dot:giga \
 	&& unzip kotlin-compiler-$KOTLIN.zip \
 	&& rm kotlin-compiler-$KOTLIN.zip
 ENV PATH="/opt/kotlinc/bin/:${PATH}"
+
+RUN wget --progress=dot:giga -O - \
+        https://github.com/JetBrains/kotlin/releases/download/v1.5.30/kotlin-native-linux-x86_64-${KOTLIN}.tar.gz | tar -xz \
+    && ln -s /opt/kotlin-native-linux-x86_64-${KOTLIN}/bin/kotlinc-native /usr/bin/kotlinc-native \
+    && ln -s /opt/kotlin-native-linux-x86_64-${KOTLIN}/bin/run_konan /usr/bin/run_konan
 
 # Scala
 ARG SCALA=3.0.2

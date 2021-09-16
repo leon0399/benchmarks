@@ -18,5 +18,7 @@ strategy:
 
       - mandelbrot/Simple
 
+      - treap/Naive
+
       - io/Load
       - io/NoLoad

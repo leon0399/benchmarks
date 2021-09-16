@@ -1,0 +1,12 @@
+title: 'Java'
+
+strategy:
+  matrix:
+    command:
+      - title: 'JVM'
+        command: 'java -jar %s.jar'
+      - title: 'Native'
+        command: './%s.kexe'
+
+    files:
+      - treap/Naive

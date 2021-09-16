@@ -2,6 +2,7 @@ LANGS = \
 	c-plus-plus \
 	go \
 	java \
+	kotlin \
 	rust \
 
 .PHONY: all $(LANGS) clean

@@ -7,16 +7,30 @@ strategy:
         command: 'ruby %s'
       - title: 'JIT'
         command: 'ruby --jit %s'
+        tags:
+          - jit
       - title: 'JRuby'
         command: 'jruby %s'
+        tags:
+          - alternative
       - title: 'TruffleRuby'
         command: 'truffleruby %s'
+        tags:
+          - alternative
       - title: 'TruffleRuby JVM'
         command: 'truffleruby --jvm %s'
+        tags:
+          - alternative
       - title: 'GraalVM'
         command: 'graalvm.ruby %s'
+        tags:
+          - graalvm
+          - alternative
       - title: 'GraalVM JVM'
         command: 'graalvm.ruby --jvm %s'
+        tags:
+          - graalvm
+          - alternative
 
     files:
       - primes/Simple.rb

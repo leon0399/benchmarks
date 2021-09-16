@@ -7,6 +7,9 @@ strategy:
         command: 'java -jar %s.jar'
       - title: 'GraalVM: Naive'
         command: 'graalvm.java -jar %s.jar'
+        tags:
+          - graalvm
+          - alternative
 
     files:
       - primes/Simple

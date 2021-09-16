@@ -7,6 +7,9 @@ strategy:
         command: 'node %s'
       - title: 'GraalVM Node'
         command: 'graalvm.node %s'
+        tags:
+          - graalvm
+          - alternative
 
     files:
       - primes/Simple.js

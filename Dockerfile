@@ -25,10 +25,10 @@ RUN apt install -y \
         gcc \
         clang
 
-# RUN git clone https://github.com/gsauthof/cgmemtime.git \
-#     && make --dir cgmemtime \
-#     && ln -s /opt/cgmemtime/cgmemtime /usr/bin/cgmemtime \
-#     && cgmemtime --setup -g $(getent group $(id -g) | cut -d: -f1) --perm 775
+RUN git clone https://github.com/gsauthof/cgmemtime.git \
+    && make --dir cgmemtime \
+    && ln -s /opt/cgmemtime/cgmemtime /usr/bin/cgmemtime
+    # && cgmemtime --setup -g $(getent group $(id -g) | cut -d: -f1) --perm 775
 
 # Python
 RUN apt install -y \

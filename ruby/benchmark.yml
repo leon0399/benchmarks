@@ -3,7 +3,7 @@ title: 'Ruby'
 strategy:
   matrix:
     command:
-      - title: 'Naive'
+      - title: 'Ruby'
         command: 'ruby %s'
       - title: 'JIT'
         command: 'ruby --jit %s'

@@ -5,7 +5,7 @@ strategy:
     command:
       - title: 'Node'
         command: 'node %s'
-      - title: 'GraalVM Node'
+      - title: 'GraalVM'
         command: 'graalvm.node %s'
         tags:
           - GraalVM

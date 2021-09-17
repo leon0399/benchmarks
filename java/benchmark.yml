@@ -3,9 +3,9 @@ title: 'Java'
 strategy:
   matrix:
     command:
-      - title: 'Naive'
+      - title: 'Java'
         command: 'java -jar %s.jar'
-      - title: 'GraalVM: Naive'
+      - title: 'GraalVM'
         command: 'graalvm.java -jar %s.jar'
         tags:
           - GraalVM

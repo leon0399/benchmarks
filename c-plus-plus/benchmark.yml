@@ -7,8 +7,8 @@ strategy:
         command: './%s-clang'
       # - title: 'clang & static'
       #   command: './%s-clang-static'
-      # - title: 'gcc'
-      #   command: './%s-gcc'
+      - title: 'gcc'
+        command: './%s-gcc'
       # - title: 'gcc & static'
       #   command: './%s-gcc-static'
       # - title: 'GraalVM'
@@ -28,3 +28,7 @@ strategy:
 
       - io/Load
       - io/NoLoad
+
+    exclude:
+      - command: 'gcc'
+        file: collatz/MaxSequence

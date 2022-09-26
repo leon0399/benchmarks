@@ -11,6 +11,8 @@ strategy:
           - GraalVM
 
     files:
+      - linpack/Linpack.js
+
       - primes/Simple.js
       - primes/Atkin.js
 

@@ -60,7 +60,7 @@ def linpack(array_size : int):
     "Norma" : norma,
     "Residual" : resid,
     "NormalisedResidual" : residn_result,
-    "Eepsilon" : eps_result,
+    "Epsilon" : eps_result,
     "Time" : time_result,
     "MFLOPS" : mflops_result
   }

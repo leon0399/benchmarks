@@ -49,7 +49,7 @@ RUN wget --progress=dot:giga -O - \
     && ln -s /opt/pypy2.7-$PYPY-linux64/bin/pypy /usr/bin/pypy2
 
 # PHP
-ARG PHP=8.1.9
+ARG PHP=8.1
 RUN echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | tee /etc/apt/sources.list.d/sury-php.list \
     && wget -qO - https://packages.sury.org/php/apt.gpg | apt-key add - \
     && apt update \

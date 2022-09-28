@@ -40,7 +40,7 @@ RUN apt install -y \
     && pip install pyyaml docker psutil
 
 # PyPy
-ARG PYPY=v7.3.5
+ARG PYPY=v7.3.9
 RUN wget --progress=dot:giga -O - \
         https://downloads.python.org/pypy/pypy3.7-$PYPY-linux64.tar.bz2 | tar -xj \
     && ln -s /opt/pypy3.7-$PYPY-linux64/bin/pypy3 /usr/bin/pypy3
@@ -49,7 +49,7 @@ RUN wget --progress=dot:giga -O - \
     && ln -s /opt/pypy2.7-$PYPY-linux64/bin/pypy /usr/bin/pypy2
 
 # PHP
-ARG PHP=8.0
+ARG PHP=8.1.9
 RUN echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | tee /etc/apt/sources.list.d/sury-php.list \
     && wget -qO - https://packages.sury.org/php/apt.gpg | apt-key add - \
     && apt update \
@@ -57,7 +57,7 @@ RUN echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | tee /etc
         php${PHP}
 
 # JavaScript
-ARG NODE=16.9.0
+ARG NODE=18.9.1
 RUN wget --progress=dot:giga -O - \
         https://nodejs.org/dist/v$NODE/node-v$NODE-linux-x64.tar.xz | tar -xJ
 ENV PATH="/opt/node-v$NODE-linux-x64/bin/:${PATH}"
@@ -65,11 +65,11 @@ ENV PATH="/opt/node-v$NODE-linux-x64/bin/:${PATH}"
 # Java
 ARG JDK=16.0.2
 RUN wget --progress=dot:giga -O - \
-        https://download.java.net/java/GA/jdk16.0.2/d4a915d82b4c4fbb9bde534da945d746/7/GPL/openjdk-${JDK}_linux-x64_bin.tar.gz | tar -xz
+        https://download.java.net/java/GA/jdk${JDK}/d4a915d82b4c4fbb9bde534da945d746/7/GPL/openjdk-${JDK}_linux-x64_bin.tar.gz | tar -xz
 ENV PATH="/opt/jdk-${JDK}/bin:${PATH}"
 
 # Go
-ARG GO=1.17.1
+ARG GO=1.19.1
 RUN wget --progress=dot:giga -O - \
         https://golang.org/dl/go${GO}.linux-amd64.tar.gz | tar -xz
 ENV PATH="/opt/go/bin/:${PATH}"
@@ -84,7 +84,7 @@ RUN apt install -y \
         groovy
 
 # Kotlin
-ARG KOTLIN=1.5.30
+ARG KOTLIN=1.7.10
 RUN wget --progress=dot:giga \
         https://github.com/JetBrains/kotlin/releases/download/v$KOTLIN/kotlin-compiler-$KOTLIN.zip \
 	&& unzip kotlin-compiler-$KOTLIN.zip \
@@ -103,7 +103,7 @@ RUN wget --progress=dot:giga -O - \
 ENV PATH="/opt/scala3-$SCALA/bin/:${PATH}"
 
 # Ruby
-ARG RUBY=3.0.2
+ARG RUBY=3.2.0
 RUN wget --progress=dot:giga -O - \
         https://cache.ruby-lang.org/pub/ruby/3.0/ruby-${RUBY}.tar.gz | tar -xz \
 	&& cd ruby-${RUBY} \

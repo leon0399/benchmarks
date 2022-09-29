@@ -92,7 +92,7 @@ RUN wget --progress=dot:giga \
 ENV PATH="/opt/kotlinc/bin/:${PATH}"
 
 RUN wget --progress=dot:giga -O - \
-        https://github.com/JetBrains/kotlin/releases/download/v1.5.30/kotlin-native-linux-x86_64-${KOTLIN}.tar.gz | tar -xz \
+        https://github.com/JetBrains/kotlin/releases/download/v${KOTLIN}/kotlin-native-linux-x86_64-${KOTLIN}.tar.gz | tar -xz \
     && ln -s /opt/kotlin-native-linux-x86_64-${KOTLIN}/bin/kotlinc-native /usr/bin/kotlinc-native \
     && ln -s /opt/kotlin-native-linux-x86_64-${KOTLIN}/bin/run_konan /usr/bin/run_konan
 

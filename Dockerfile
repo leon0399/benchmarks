@@ -103,9 +103,9 @@ RUN wget --progress=dot:giga -O - \
 ENV PATH="/opt/scala3-$SCALA/bin/:${PATH}"
 
 # Ruby
-ARG RUBY=3.2.0
+ARG RUBY=3.1.2
 RUN wget --progress=dot:giga -O - \
-        https://cache.ruby-lang.org/pub/ruby/3.0/ruby-${RUBY}.tar.gz | tar -xz \
+        https://cache.ruby-lang.org/pub/ruby/${RUBY%.*}/ruby-${RUBY}.tar.gz | tar -xz \
 	&& cd ruby-${RUBY} \
 	&& ./configure --prefix=/opt/ruby && make -j && make install \
 	&& cd .. && rm -rf ruby-${RUBY}

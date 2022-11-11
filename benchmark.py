@@ -134,7 +134,7 @@ for configurationFilename in configurations:
                 run['command']['title'],
                 run['script']['title'],
             ),
-            end='\t',
+            end='\n\t',
             flush=True
         )
 
@@ -143,7 +143,7 @@ for configurationFilename in configurations:
 
         for _ in range(times):
             elapsed, memory = runScript(dir + '/' + run['script']['file'], run['command']['command'])
-            print("{:.5f}".format(elapsed), end=' ', flush=True)
+            print("{:.5f}".format(elapsed), end='\t', flush=True)
 
             if (elapsed > 0):
                 timeResults.append(elapsed)

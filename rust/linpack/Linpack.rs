@@ -26,15 +26,7 @@ fn dgesl(
 }
 
 fn main() {
-    let mut a: Vec<Vec<f64>> = vec![vec![0.0; ARRAY_SIZE]; ARRAY_SIZE];
-    let mut b: Vec<f64> = vec![0.0; ARRAY_SIZE];
-    let mut ipvt: Vec<usize> = vec![0; ARRAY_SIZE];
-
-    let norma = matgen(&mut a, ARRAY_SIZE, ARRAY_SIZE, &mut b);
-    let start = Instant::now();
-    let info = dgefa(&mut a, ARRAY_SIZE, ARRAY_SIZE, &mut ipvt);
-    dgesl(&mut a, ARRAY_SIZE, ARRAY_SIZE, &mut ipvt, &mut b, 0);
-    let elapsed = start.elapsed();
-
+    // ...
     // Print results similar to main function in Go, JavaScript, and PHP implementations
+    // Add the code to print the results here
 }

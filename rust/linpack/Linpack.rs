@@ -14,7 +14,14 @@ fn dgefa(a: &mut Vec<Vec<f64>>, lda: usize, n: usize, ipvt: &mut Vec<usize>) -> 
     // Implementation similar to dgefa function in Go, JavaScript, and PHP implementations
 }
 
-fn dgesl(a: &mut Vec<Vec<f64>>, lda: usize, n: usize, ipvt: &mut Vec<usize>, b: &mut Vec<f64>, job: usize) {
+fn dgesl(
+    a: &mut Vec<Vec<f64>>,
+    lda: usize,
+    n: usize,
+    ipvt: &mut Vec<usize>,
+    b: &mut Vec<f64>,
+    job: usize,
+) {
     // Implementation similar to dgesl function in Go, JavaScript, and PHP implementations
 }
 

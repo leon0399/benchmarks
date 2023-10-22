@@ -16,3 +16,4 @@ strategy:
 
       - io/Load
       - io/NoLoad
+      - linpack/Linpack

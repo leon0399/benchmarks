@@ -1,10 +1,10 @@
-title: 'Rust'
+title: "Rust"
 
 strategy:
   matrix:
     command:
-      - title: 'Rust'
-        command: './%s'
+      - title: "Rust"
+        command: "./%s"
 
     files:
       - primes/Simple

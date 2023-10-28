@@ -1,14 +1,20 @@
-title: 'Rust'
+title: Rust
 
 strategy:
   matrix:
     command:
-      - title: 'Rust'
-        command: './%s'
-      - title: 'Rust Linpack'
-        command: './%s'
+      - title: Rust
+        command: ./%s
+      - title: Rust Linpack
+        command: ./%s
 
-    files:
+      - primes/Simple
+      - primes/Atkin
+      - collatz/MaxSequence
+      - mandelbrot/Simple
+      - io/Load
+      - io/NoLoad
+      - linpack/Linpack
       - primes/Simple
       - primes/Atkin
 
@@ -48,14 +54,3 @@ strategy:
       - io/Load
       - io/NoLoad
 =======
-    files:
-      - primes/Simple
-      - primes/Atkin
-
-      - collatz/MaxSequence
-
-      - mandelbrot/Simple
-
-      - io/Load
-      - io/NoLoad
-      - linpack/Linpack

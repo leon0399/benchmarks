@@ -72,7 +72,53 @@ fn lran(iseed: &mut [i32; 4]) -> f64 {
 }
 
 fn linpack(array_size: usize) -> LinpackResult {
-    // Implement the Linpack benchmark here
+    let mut a = vec![vec![0.0; array_size]; array_size];
+    let mut b = vec![0.0; array_size];
+    let mut x = vec![0.0; array_size];
+    let mut ipvt = vec![0; array_size];
+
+    let ops = (2.0e0 * array_size as f64).powi(3) + 2.0 * (array_size as f64).powi(2);
+    let mut norma = matgen(&mut a, array_size, array_size, &mut b);
+
+    let start = Instant::now();
+    let info = dgefa(&mut a, array_size, array_size, &mut ipvt);
+    dgesl(&mut a, array_size, array_size, &mut ipvt, &mut b, 0);
+    let total = start.elapsed().as_secs_f64();
+
+    for i in 0..array_size {
+        x[i] = b[i];
+    }
+
+    norma = matgen(&mut a, array_size, array_size, &mut b);
+    for i in 0..array_size {
+        b[i] = -b[i];
+    }
+
+    dmxpy(array_size, &mut b, array_size, array_size, &x, &a);
+    let mut resid = 0.0;
+    let mut normx = 0.0;
+    for i in 0..array_size {
+        resid = resid.max(b[i].abs());
+        normx = normx.max(x[i].abs());
+    }
+
+    let eps = epslon(1.0);
+    let residn = resid / ((array_size as f64 * norma * normx * eps).max(1.0));
+    let time = total;
+    let mflops = ops / (1.0e6 * total);
+
+    LinpackResult {
+        norma,
+        residual: resid,
+        residn_result: residn,
+        eps_result: eps,
+        time_result: time,
+        mflops_result: mflops,
+    }
+}
+
+fn main() {
+    println!("{:?}", linpack(ARRAY_SIZE));
 }
 
 fn main() {

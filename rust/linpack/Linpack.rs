@@ -1,5 +1,5 @@
-use std::time::Instant;
 use rand::Rng;
+use std::time::Instant;
 
 const ARRAY_SIZE: usize = 2000;
 

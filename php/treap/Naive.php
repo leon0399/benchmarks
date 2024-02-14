@@ -131,5 +131,12 @@ function main() {
 }
 
 (function () {
+    $startTimeMs = microtime(true);
+
     main();
+
+    $endTimeMs = microtime(true);
+    $durationMs = $endTimeMs - $startTimeMs;
+  
+    echo "Execution time: " . $durationMs . "ms\n";
 })();

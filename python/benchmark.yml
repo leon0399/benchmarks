@@ -22,6 +22,3 @@ strategy:
       - treap/Naive.py
 
       - recursion/Tak.py
-
-      - io/Load.py
-      - io/NoLoad.py

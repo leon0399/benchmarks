@@ -434,5 +434,12 @@ function second() {
 }
 
 (function () {
+  $startTimeMs = microtime(true);
+
   linpack(ARRAY_SIZE);
+
+  $endTimeMs = microtime(true);
+  $durationMs = $endTimeMs - $startTimeMs;
+
+  echo "Execution time: " . $durationMs . "ms\n";
 })();

@@ -17,30 +17,46 @@ times = 5
 if 'TIMES' in os.environ:
     times = int(os.environ['TIMES'])
 
-configurations = glob.glob('*/benchmark.yml')
+configurations = glob.glob('*/benchmark.yml') + glob.glob('*/benchmark.yaml')
 configurations.sort()
 
 results = {}
 
 def runBenchmark(command):
     start = time.time()
-    maxMemory = 0
+    topMemory = 0
+    reportedDuration = -1
 
-    with subprocess.Popen(command.split(), stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL) as proc:
+    with subprocess.Popen(command.split(), stdout=subprocess.PIPE, stderr=subprocess.DEVNULL) as proc:
         try:
             process = psutil.Process(proc.pid)
             while proc.poll() is None:
                 memory = process.memory_info()
-                if memory.rss > maxMemory:
-                    maxMemory = memory.rss
+                if memory.rss > topMemory:
+                    topMemory = memory.rss
         except subprocess.TimeoutExpired:
             proc.kill()
-            return (-1, maxMemory)
+            return (-1, -1, topMemory)
 
         if (proc.returncode != 0):
-            return (-1, maxMemory)
+            return (-1, -1, topMemory)
 
-    return ((time.time() - start), maxMemory)
+        stdout = proc.communicate()[0]
+        decoded = stdout.decode('utf-8')
+        lines = decoded.split('\n')
+
+        # Find the `Execution time: %dms` line
+        for line in lines:
+            if 'Execution time' in line:
+                timeStr = line.split(' ')[-1]
+                timeStr = timeStr.replace('ms', '')
+                reportedDuration = float(timeStr) / 1000
+                break
+            
+    scriptDuration = time.time() - start
+
+
+    return (scriptDuration, reportedDuration, topMemory)
 
 def runScript(filename, command = './%s'):
     return runBenchmark(command % (filename))
@@ -139,14 +155,16 @@ for configurationFilename in configurations:
         )
 
         timeResults = []
+        reportedResults = []
         memoryResults = []
 
         for _ in range(times):
-            elapsed, memory = runScript(dir + '/' + run['script']['file'], run['command']['command'])
+            elapsed, reported, memory = runScript(dir + '/' + run['script']['file'], run['command']['command'])
             print("{:.5f}".format(elapsed), end='\t', flush=True)
 
             if (elapsed > 0):
                 timeResults.append(elapsed)
+                reportedResults.append(reported)
                 memoryResults.append(memory)
 
         print()
@@ -154,27 +172,36 @@ for configurationFilename in configurations:
         if timeResults and memoryResults:
             timeResults.sort()
             timeMedian = statistics.median(timeResults)
-            timeDelta = max(map(lambda x : abs(x - timeMedian), timeResults))
+            timeStdev = statistics.stdev(timeResults)
+
+            reportedResults.sort()
+            reportedMedian = statistics.median(reportedResults)
+            reportedStdev = statistics.stdev(reportedResults)
 
             memoryResults.sort()
             memoryMedian = statistics.median(memoryResults)
-            memoryDelta = max(map(lambda x : abs(x - memoryMedian), memoryResults))
+            memoryStdev = statistics.stdev(memoryResults)
 
             result = {
                 'tags': run['tags'],
-                'time': {
+                'total_time': {
                     'results': timeResults,
                     'median': timeMedian,
-                    'delta': timeDelta,
+                    'stdev': timeStdev,
+                },
+                'time': {
+                    'results': reportedResults,
+                    'median': reportedMedian,
+                    'stdev': reportedStdev,
                 },
                 'memory': {
                     'results': memoryResults,
                     'median': memoryMedian,
-                    'delta': memoryDelta,
+                    'stdev': memoryStdev,
                 },
             }
 
-            print('\tFinal: %f ± %f' % (timeMedian, timeDelta))
+            print('\tFinal: %f ± %f' % (timeMedian, timeStdev))
 
             if (run['script']['title'] not in results):
                 results[run['script']['title']] = {}
@@ -193,19 +220,21 @@ with open('RESULTS.md', 'w') as file:
     for (scriptName, languages) in results.items():
         file.write('### %s\n\n' % (scriptName))
 
-        file.write('| Language | Time, s | Memory, MiB |\n')
-        file.write('| :------- | ------: | ----------: |\n')
+        file.write('| Language | Time, s | Total time, s | Memory, MiB |\n')
+        file.write('| :------- | ------: | ------------: | ----------: |\n')
 
         for (language, configurations) in languages.items():
             for (configuration, elapsed) in configurations.items():
                 langugageTitle = ('%s' % (language)) if language == configuration else ('%s (%s)' % (language, configuration))
 
-                file.write('| %s | %s<sub>±%s</sub> | %s<sub>±%s</sub> |\n' % (
+                file.write('| %s | %s<sub>±%s</sub> | %s<sub>±%s</sub> | %s<sub>±%s</sub> |\n' % (
                         langugageTitle,
                         "{:6.3f}".format(elapsed['time']['median']),
-                        "{:.3f}".format(elapsed['time']['delta']),
+                        "{:.3f}".format(elapsed['time']['stdev']),
+                        "{:6.3f}".format(elapsed['total_time']['median']),
+                        "{:.3f}".format(elapsed['total_time']['stdev']),
                         "{:10.2f}".format(elapsed['memory']['median'] / 1024 / 1024),
-                        "{:.2f}".format(elapsed['memory']['delta'] / 1024 / 1024),
+                        "{:.2f}".format(elapsed['memory']['stdev'] / 1024 / 1024),
                     )
                 )
 

@@ -36,6 +36,12 @@ function findMaxCollatz(to) {
 }
 
 (async function() {
+    const startTimeMs = new Date().getTime();
+    
     console.log(findMaxCollatz(NUMBER));
+
+    const endTimeMs = new Date().getTime();
+    const durationMs = endTimeMs - startTimeMs;
+    console.log(`Execution time: ${durationMs}ms`);
 })();
 

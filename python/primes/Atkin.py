@@ -1,6 +1,7 @@
+import time
+
 UPPER_BOUND = 5000000
 PREFIX = 32338
-
 
 class Node:
     def __init__(self):
@@ -97,6 +98,12 @@ def find(upper_bound, prefix):
 
 
 def run():
+    startTimeMs = int(round(time.time() * 1000))
+
     print(find(UPPER_BOUND, PREFIX))
+
+    endTimeMs = int(round(time.time() * 1000))
+    executionTime = endTimeMs - startTimeMs
+    print(f"Execution time: {executionTime}ms")
 
 run()

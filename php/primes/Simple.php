@@ -29,5 +29,12 @@ function printPrimes($count) {
 }
 
 (function () {
+    $startTimeMs = microtime(true);
+
     printPrimes(NUMBER);
+
+    $endTimeMs = microtime(true);
+    $durationMs = $endTimeMs - $startTimeMs;
+  
+    echo "Execution time: " . $durationMs . "ms\n";
 })();

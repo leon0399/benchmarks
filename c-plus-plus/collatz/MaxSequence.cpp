@@ -1,5 +1,6 @@
 #include <iostream>
 #include <utility>
+#include <chrono>
 
 static const auto NUMBER = 500000;
 
@@ -34,7 +35,13 @@ std::pair<int, int> findMaxCollatz(int to) {
 }
 
 int main() {
-    auto result = findMaxCollatz(NUMBER);
-
+    const auto start_time = std::chrono::high_resolution_clock::now();
+    
+    const auto result = findMaxCollatz(NUMBER);
     std::cout << "[" << result.first << ", " << result.second << "]" << std::endl;
+    
+    const auto end_time = std::chrono::high_resolution_clock::now();
+    const auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time).count();
+
+    std::cout << "Execution time: " << duration << "ms" << std::endl;
 }

@@ -377,5 +377,11 @@ function linpack(array_size) {
 }
 
 (async function() {
+  const startTimeMs = new Date().getTime();
+    
   linpack(ARRAY_SIZE);
+
+  const endTimeMs = new Date().getTime();
+  const durationMs = endTimeMs - startTimeMs;
+  console.log(`Execution time: ${durationMs}ms`);
 })();

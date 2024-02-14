@@ -38,6 +38,13 @@ public final class MaxSequence {
     }
 
     public static void main(String[] args) {
+        long start = System.currentTimeMillis();
+
         System.out.println(findMaxCollatz(NUMBER));
+
+        long end = System.currentTimeMillis();
+        long duration = end - start;
+
+        System.out.println("Execution time: " + duration + "ms");
     }
 }

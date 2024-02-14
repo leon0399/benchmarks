@@ -1,4 +1,4 @@
-import random
+import random, time
 
 class Node:
     __slots__ = ['x', 'y', 'left', 'right']
@@ -79,6 +79,8 @@ class Tree:
         self.root = merge(splited.lower, splited.greater)
 
 def main():
+    startTimeMs = int(round(time.time() * 1000))
+
     tree = Tree()
     cur = 5
     res = 0
@@ -93,5 +95,9 @@ def main():
         elif a == 2:
             res += 1 if tree.has_value(cur) else 0
     print(res)
+
+    endTimeMs = int(round(time.time() * 1000))
+    executionTime = endTimeMs - startTimeMs
+    print(f"Execution time: {executionTime}ms")
 
 main()

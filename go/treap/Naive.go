@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"math/rand"
+	"time"
 )
 
 type Node struct {
@@ -98,6 +99,8 @@ func split(original *Node, value int) SplitResult {
 }
 
 func main() {
+	startTimeMs := time.Now().UnixMilli()
+
 	t := &Tree{}
 
 	cur := 5
@@ -119,4 +122,9 @@ func main() {
 	}
 
 	fmt.Println(res)
+
+	endTimeMs := time.Now().UnixMilli()
+	durationMs := endTimeMs - startTimeMs
+
+	fmt.Printf("Execution time: %dms\n", durationMs)
 }

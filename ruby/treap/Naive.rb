@@ -105,4 +105,11 @@ def main
   p res
 end
 
+startTimeMs = Time.now.to_f * 1000
+
 main()
+
+endTimeMs = Time.now.to_f * 1000
+durationMs = (endTimeMs - startTimeMs).to_i
+
+puts "Execution time: #{durationMs}ms"

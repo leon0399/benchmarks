@@ -126,5 +126,11 @@ function find(upperBound, prefix) {
 }
 
 (async function() {
+    const startTimeMs = new Date().getTime();
+      
     console.log(find(UPPER_BOUND, PREFIX));
+
+    const endTimeMs = new Date().getTime();
+    const durationMs = endTimeMs - startTimeMs;
+    console.log(`Execution time: ${durationMs}ms`);
 })();

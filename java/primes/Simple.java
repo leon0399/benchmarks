@@ -25,6 +25,13 @@ public final class Simple {
     }
 
     public static void main(String[] args) {
+        long start = System.currentTimeMillis();
+
         printPrimes(NUMBER);
+
+        long end = System.currentTimeMillis();
+        long duration = end - start;
+
+        System.out.println("Execution time: " + duration + "ms");
     }
 }

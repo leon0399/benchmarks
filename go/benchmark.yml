@@ -10,6 +10,3 @@ strategy:
       - linpack/Linpack
 
       - treap/Naive
-
-      - io/Load
-      - io/NoLoad

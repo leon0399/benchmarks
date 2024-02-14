@@ -142,6 +142,13 @@ public final class Atkin {
     }
 
     public static void main(String[] args) {
+        long start = System.currentTimeMillis();
+
         System.out.println(find(UPPER_BOUND, PREFIX));
+
+        long end = System.currentTimeMillis();
+        long duration = end - start;
+
+        System.out.println("Execution time: " + duration + "ms");
     }
 }

@@ -143,5 +143,10 @@ fn find(upper_bound: usize, prefix: i32) -> Vec<i32> {
 }
 
 fn main() {
+    let start = std::time::Instant::now();
+
     println!("{:?}", find(UPPER_BOUND, PREFIX));
+
+    let elapsed = start.elapsed();
+    println!("Execution time: {}ms", elapsed.as_millis());
 }

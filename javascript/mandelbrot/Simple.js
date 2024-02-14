@@ -54,5 +54,11 @@ function mandelbrot(x, y)
 }
 
 (async function() {
+    const startTimeMs = new Date().getTime();
+      
     index();
+
+    const endTimeMs = new Date().getTime();
+    const durationMs = endTimeMs - startTimeMs;
+    console.log(`Execution time: ${durationMs}ms`);
 })();

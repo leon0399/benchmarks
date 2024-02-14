@@ -27,6 +27,3 @@ strategy:
       - treap/Naive.php
 
       - recursion/Tak.php
-
-      - io/Load.php
-      - io/NoLoad.php

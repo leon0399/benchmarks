@@ -26,9 +26,6 @@ strategy:
 
       - recursion/Tak
 
-      - io/Load
-      - io/NoLoad
-
     exclude:
       - command: 'gcc'
         file: collatz/MaxSequence

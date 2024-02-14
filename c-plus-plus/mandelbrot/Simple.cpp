@@ -1,4 +1,5 @@
 #include <iostream>
+#include <chrono>
 
 int mandelbrot(double x, double y) {
     double cr = y - 0.5;
@@ -52,5 +53,12 @@ void index()
 }
 
 int main() {
+    const auto start_time = std::chrono::high_resolution_clock::now();
+
     index();
+    
+    const auto end_time = std::chrono::high_resolution_clock::now();
+    const auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time).count();
+
+    std::cout << "Execution time: " << duration << "ms" << std::endl;
 }

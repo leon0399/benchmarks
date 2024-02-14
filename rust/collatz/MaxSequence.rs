@@ -31,5 +31,10 @@ fn find_max_collatz(to: i64) -> (i64, i64) {
 }
 
 fn main() {
+    let start = std::time::Instant::now();
+
     println!("{:?}", find_max_collatz(NUMBER as i64));
+
+    let elapsed = start.elapsed();
+    println!("Execution time: {}ms", elapsed.as_millis());
 }

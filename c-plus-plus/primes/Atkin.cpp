@@ -6,6 +6,7 @@
 #include <map>
 #include <utility>
 #include <vector>
+#include <chrono>
 
 static const auto UPPER_BOUND = 5'000'000;
 static const auto PREFIX = 32'338;
@@ -139,5 +140,12 @@ std::string to_string(const std::vector<int>& a) {
 }
 
 int main() {
+  const auto start_time = std::chrono::high_resolution_clock::now();
+
   std::cout << to_string(find(UPPER_BOUND, PREFIX)) << std::endl;
+  
+  const auto end_time = std::chrono::high_resolution_clock::now();
+  const auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time).count();
+
+  std::cout << "Execution time: " << duration << "ms" << std::endl;
 }

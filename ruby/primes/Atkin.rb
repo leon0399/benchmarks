@@ -115,4 +115,11 @@ def find(upper_bound, prefix)
   result
 end
 
+startTimeMs = Time.now.to_f * 1000
+
 puts find(UPPER_BOUND, PREFIX).inspect
+
+endTimeMs = Time.now.to_f * 1000
+durationMs = (endTimeMs - startTimeMs).to_i
+
+puts "Execution time: #{durationMs}ms"

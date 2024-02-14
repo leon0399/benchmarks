@@ -43,6 +43,3 @@ strategy:
       - treap/Naive.rb
 
       - recursion/Tak.rb
-
-      - io/Load.rb
-      - io/NoLoad.rb

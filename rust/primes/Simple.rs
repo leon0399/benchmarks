@@ -22,5 +22,10 @@ fn print_primes(count: i32) {
 }
 
 fn main() {
+    let start = std::time::Instant::now();
+
     print_primes(NUMBER);
+
+    let elapsed = start.elapsed();
+    println!("Execution time: {}ms", elapsed.as_millis());
 }

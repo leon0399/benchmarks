@@ -6,4 +6,10 @@ function tak(x, y, z) {
     }
 }
 
+const startTimeMs = new Date().getTime()
+      
 console.log(tak(30, 22, 12))
+
+const endTimeMs = new Date().getTime()
+const durationMs = endTimeMs - startTimeMs
+console.log(`Execution time: ${durationMs}ms`)

@@ -54,5 +54,12 @@ function mandelbrot($x, $y)
 }
 
 (function () {
+    $startTimeMs = microtime(true);
+
     index();
+
+    $endTimeMs = microtime(true);
+    $durationMs = $endTimeMs - $startTimeMs;
+  
+    echo "Execution time: " . $durationMs . "ms\n";
 })();

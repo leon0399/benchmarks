@@ -30,4 +30,11 @@ def findMaxCollatz(to)
     return result
 end
 
+startTimeMs = Time.now.to_f * 1000
+
 puts findMaxCollatz(NUMBER)
+
+endTimeMs = Time.now.to_f * 1000
+durationMs = (endTimeMs - startTimeMs).to_i
+
+puts "Execution time: #{durationMs}ms"

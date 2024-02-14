@@ -427,5 +427,12 @@ func linpack(array_size int) *LinpackResult {
 }
 
 func main() {
+	startTimeMs := time.Now().UnixMilli()
+
 	linpack(ARRAY_SIZE)
+
+	endTimeMs := time.Now().UnixMilli()
+	durationMs := endTimeMs - startTimeMs
+
+	fmt.Printf("Execution time: %dms\n", durationMs)
 }

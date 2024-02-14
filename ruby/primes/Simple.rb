@@ -23,4 +23,11 @@ def printPrimes(count)
   end
 end
 
+startTimeMs = Time.now.to_f * 1000
+
 printPrimes(NUMBER)
+
+endTimeMs = Time.now.to_f * 1000
+durationMs = (endTimeMs - startTimeMs).to_i
+
+puts "Execution time: #{durationMs}ms"

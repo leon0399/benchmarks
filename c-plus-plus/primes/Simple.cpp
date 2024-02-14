@@ -1,4 +1,5 @@
 #include <iostream>
+#include <chrono>
 
 static const auto NUMBER = 100000;
 
@@ -25,5 +26,12 @@ void printPrimes(int count) {
 }
 
 int main() {
+    const auto start_time = std::chrono::high_resolution_clock::now();
+
     printPrimes(NUMBER);
+  
+    const auto end_time = std::chrono::high_resolution_clock::now();
+    const auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time).count();
+
+    std::cout << "Execution time: " << duration << "ms" << std::endl;
 }

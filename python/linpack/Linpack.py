@@ -269,6 +269,12 @@ def __dmxpy(n1 : int, y, n2 : int, ldm : int, x, m) -> None:
       i += 1
 
 def run():
+  startTimeMs = int(round(time.time() * 1000))
+
   linpack(ARRAY_SIZE)
+
+  endTimeMs = int(round(time.time() * 1000))
+  executionTime = endTimeMs - startTimeMs
+  print(f"Execution time: {executionTime}ms")
 
 run()

@@ -1,5 +1,6 @@
 #include <iostream>
 #include <memory>
+#include <chrono>
 
 class Tree
 {
@@ -124,6 +125,8 @@ void Tree::split(NodePtr orig, NodePtr& lower, NodePtr& equal, NodePtr& greater,
 
 int main()
 {
+    const auto start_time = std::chrono::high_resolution_clock::now();
+
     srand(time(0));
 
     Tree tree;
@@ -149,5 +152,11 @@ int main()
         }
     }
     std::cout << res << std::endl;
+  
+    const auto end_time = std::chrono::high_resolution_clock::now();
+    const auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time).count();
+
+    std::cout << "Execution time: " << duration << "ms" << std::endl;
+
     return 0;
 }

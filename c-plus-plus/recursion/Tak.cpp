@@ -1,4 +1,5 @@
 #include <iostream>
+#include <chrono>
 
 int tak(int x, int y, int z) {
     return y < x
@@ -7,5 +8,12 @@ int tak(int x, int y, int z) {
 }
 
 int main() {
+    const auto start_time = std::chrono::high_resolution_clock::now();
+
     std::cout << tak(30, 22, 12) << std::endl;
+  
+    const auto end_time = std::chrono::high_resolution_clock::now();
+    const auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time).count();
+
+    std::cout << "Execution time: " << duration << "ms" << std::endl;
 }

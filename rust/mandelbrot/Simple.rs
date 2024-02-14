@@ -47,5 +47,10 @@ fn index() {
 }
 
 fn main() {
+    let start = std::time::Instant::now();
+
     index();
+
+    let elapsed = start.elapsed();
+    println!("Execution time: {}ms", elapsed.as_millis());
 }

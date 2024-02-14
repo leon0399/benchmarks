@@ -119,5 +119,11 @@ function main() {
 }
 
 (async function() {
+    const startTimeMs = new Date().getTime();
+      
     main();
+
+    const endTimeMs = new Date().getTime();
+    const durationMs = endTimeMs - startTimeMs;
+    console.log(`Execution time: ${durationMs}ms`);
 })();

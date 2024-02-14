@@ -104,6 +104,8 @@ public final class Naive {
     }
 
     public static void main(String[] args) {
+        long start = System.currentTimeMillis();
+
         Tree tree = new Tree();
         int cur = 5;
         int res = 0;
@@ -122,5 +124,10 @@ public final class Naive {
             }
         }
         System.out.println(res);
+
+        long end = System.currentTimeMillis();
+        long duration = end - start;
+
+        System.out.println("Execution time: " + duration + "ms");
     }
 }

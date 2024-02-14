@@ -31,5 +31,11 @@ function printPrimes(number)
 }
 
 (async function() {
+    const startTimeMs = new Date().getTime();
+      
     printPrimes(NUMBER);
+
+    const endTimeMs = new Date().getTime();
+    const durationMs = endTimeMs - startTimeMs;
+    console.log(`Execution time: ${durationMs}ms`);
 })();

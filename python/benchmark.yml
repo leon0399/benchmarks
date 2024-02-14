@@ -9,10 +9,6 @@ strategy:
         command: 'pypy3 %s'
         tags:
           - Alternative
-      - title: 'GraalVM'
-        command: 'graalvm.python %s'
-        tags:
-          - GraalVM
 
     files:
       - linpack/Linpack.py

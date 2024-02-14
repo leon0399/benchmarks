@@ -7,7 +7,7 @@ BINARIES =  $(SCRIPTS:%-JVM.kt=%.jar) \
 	kotlinc -include-runtime -d $@ $<
 
 %.kexe: %-Native.kt
-	kotlinc-native -opt -linker-options -s -output $@ $<
+	kotlinc-native -opt-in=kotlin.time.ExperimentalTime -opt-in=kotlinx.cinterop.ExperimentalForeignApi -opt -linker-options -s -output $@ $<
 
 all: $(BINARIES)
 

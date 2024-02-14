@@ -13,24 +13,6 @@ strategy:
         command: 'jruby %s'
         tags:
           - Alternative
-      - title: 'TruffleRuby'
-        command: 'truffleruby %s'
-        tags:
-          - Alternative
-      - title: 'TruffleRuby JVM'
-        command: 'truffleruby --jvm %s'
-        tags:
-          - Alternative
-      - title: 'GraalVM'
-        command: 'graalvm.ruby %s'
-        tags:
-          - GraalVM
-          - Alternative
-      - title: 'GraalVM JVM'
-        command: 'graalvm.ruby --jvm %s'
-        tags:
-          - GraalVM
-          - Alternative
 
     files:
       - primes/Simple.rb

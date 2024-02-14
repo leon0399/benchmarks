@@ -11,11 +11,11 @@ World's complete programming language benchmark
 ### Docker
 
 ```bash
-docker-compose run benchmark ./benchmark.py
+docker-compose run benchmark python3 ./benchmark.py
 ```
 
 ### Running manually
 
 ```bash
-./benchmark.py
+python3 ./benchmark.py
 ```

@@ -1,4 +1,5 @@
 import kotlin.io.*
+import kotlin.time.TimeSource
 import platform.posix.*
 
 class Node(var x: Int)
@@ -90,6 +91,11 @@ class Tree
 
 fun main(args: Array<String>)
 {
+    val timeSource = TimeSource.Monotonic
+
+    // current time in ms
+    val start = timeSource.markNow()
+
     srand(time(null).toUInt())
     val tree = Tree()
     var cur = 5;
@@ -107,4 +113,10 @@ fun main(args: Array<String>)
         }
     }
     println(res)
+
+    val end = timeSource.markNow()
+    val execTime = (end - start)
+    // convert to ms
+
+    println("Execution time: ${execTime.inWholeMilliseconds}ms")
 }

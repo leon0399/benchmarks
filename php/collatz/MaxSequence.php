@@ -35,11 +35,11 @@ function findMaxCollatz($to) {
 }
 
 (function () {
-    $startTimeMs = microtime(true);
+    $startTimeMs = floor(microtime(true) * 1000);
 
     print_r(findMaxCollatz(NUMBER));
 
-    $endTimeMs = microtime(true);
+    $endTimeMs = floor(microtime(true) * 1000);
     $durationMs = $endTimeMs - $startTimeMs;
 
     echo "Execution time: " . $durationMs . "ms\n";

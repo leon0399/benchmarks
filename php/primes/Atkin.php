@@ -188,11 +188,11 @@ function find($upperBound, $prefix)
 }
 
 (function () {
-    $startTimeMs = microtime(true);
+    $startTimeMs = floor(microtime(true) * 1000);
 
     print_r(find(UPPER_BOUND, PREFIX));
 
-    $endTimeMs = microtime(true);
+    $endTimeMs = floor(microtime(true) * 1000);
     $durationMs = $endTimeMs - $startTimeMs;
   
     echo "Execution time: " . $durationMs . "ms\n";

@@ -6,11 +6,11 @@ function tak($x, $y, $z) {
 }
 
 (function () {
-    $startTimeMs = microtime(true);
+    $startTimeMs = floor(microtime(true) * 1000);
 
     echo tak(30, 22, 12), "\n";
 
-    $endTimeMs = microtime(true);
+    $endTimeMs = floor(microtime(true) * 1000);
     $durationMs = $endTimeMs - $startTimeMs;
   
     echo "Execution time: " . $durationMs . "ms\n";

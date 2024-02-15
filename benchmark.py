@@ -127,11 +127,19 @@ def loadConfiguration(filename):
 
 for configurationFilename in configurations:
     dir = os.path.dirname(configurationFilename)
-    conf = loadConfiguration(configurationFilename)
 
     if (os.path.isfile(dir + '/Makefile')):
-        # print('Running make for %s' % (scriptFilename))
-        subprocess.run(['make', 'all'], cwd=dir, shell=True, stdout=subprocess.DEVNULL)
+        print('Making %s' % (dir))
+        made = subprocess.run(['make', 'all'], cwd=dir, shell=True, stdout=subprocess.DEVNULL)
+
+        if made.returncode != 0:
+            # throw error
+            print('Error in makefile for %s' % (dir))
+            exit(1)
+
+for configurationFilename in configurations:
+    dir = os.path.dirname(configurationFilename)
+    conf = loadConfiguration(configurationFilename)
 
     for run in conf['runs']:
         split = run['command']['command'].split()
@@ -160,7 +168,7 @@ for configurationFilename in configurations:
 
         for _ in range(times):
             elapsed, reported, memory = runScript(dir + '/' + run['script']['file'], run['command']['command'])
-            print("{:.5f}".format(elapsed), end='\t', flush=True)
+            print("{:.3f}".format(reported), end='\t', flush=True)
 
             if (elapsed > 0):
                 timeResults.append(elapsed)
@@ -201,7 +209,7 @@ for configurationFilename in configurations:
                 },
             }
 
-            print('\tFinal: %f ± %f' % (timeMedian, timeStdev))
+            print('\tFinal: {:.3f} ± {:.3f}'.format(reportedMedian, reportedStdev), flush=True)
 
             if (run['script']['title'] not in results):
                 results[run['script']['title']] = {}

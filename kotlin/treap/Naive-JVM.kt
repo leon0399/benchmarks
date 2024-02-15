@@ -92,6 +92,9 @@ class Tree
 
 fun main(args: Array<String>)
 {
+    // current time in ms
+    val start = System.currentTimeMillis()
+
     val tree = Tree()
     var cur = 5;
     var res = 0
@@ -108,4 +111,8 @@ fun main(args: Array<String>)
         }
     }
     println(res)
+
+    val end = System.currentTimeMillis()
+    val execTime = end - start
+    println("Execution time: $execTime" + "ms")
 }

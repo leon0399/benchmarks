@@ -13,3 +13,4 @@ strategy:
       - collatz/MaxSequence
 
       - mandelbrot/Simple
+      - linpack/Linpack

@@ -197,15 +197,21 @@ for configurationFilename in configurations:
         if timeResults and memoryResults:
             timeResults.sort()
             timeMedian = statistics.median(timeResults)
-            timeStdev = statistics.stdev(timeResults)
+            timeStdev = 0
+            if len(timeResults) > 1:
+                timeStdev = statistics.stdev(timeResults)
 
             reportedResults.sort()
             reportedMedian = statistics.median(reportedResults)
-            reportedStdev = statistics.stdev(reportedResults)
+            reportedStdev = 0
+            if len(reportedResults) > 1:
+                reportedStdev = statistics.stdev(reportedResults)
 
             memoryResults.sort()
             memoryMedian = statistics.median(memoryResults)
-            memoryStdev = statistics.stdev(memoryResults)
+            memoryStdev = 0
+            if len(memoryResults) > 1:
+                memoryStdev = statistics.stdev(memoryResults)
 
             result = {
                 'tags': run['tags'],

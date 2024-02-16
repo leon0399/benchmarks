@@ -9,10 +9,10 @@ services:
     command: ./docker-entrypoint.sh
     tty: true
     stdin_open: true
-    cap_add:
-      - SYS_ADMIN
-    security_opt:
-      - apparmor:unconfermed
+    # cap_add:
+    #  - SYS_ADMIN
+    # security_opt:
+    #  - apparmor:unconfermed
     working_dir: /app
     volumes:
       - ./:/app

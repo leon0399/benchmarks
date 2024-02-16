@@ -35,4 +35,4 @@ jobs:
       - name: Run benchmarks for changed files
         if: steps.files.outputs.changed != ''
         run: |
-          docker-compose run benchmark python3 ./run_benchmarks.py ${{ steps.files.outputs.changed }}
+          docker-compose run benchmark python3 ./run_on_changes.py ${{ steps.files.outputs.changed }}

@@ -3,13 +3,11 @@
 
 static const auto NUMBER = 100000;
 
-void printPrimes(int count) {
-    // Traverse each number from 1 to N with the help of for loop
-    for (auto i = 1; i <= count; i++) {
-        if (i == 1 || i == 0) {
-            continue;
-        }
+auto getLastPrime(int count) -> int
+{
+    auto lastPrime = 0;
 
+    for (auto i = 2; i <= count; i++) {
         bool isPrime = true;
 
         for (auto j = 2; j <= i / 2; ++j) {
@@ -20,18 +18,23 @@ void printPrimes(int count) {
         }
 
         if (isPrime) {
-            std::cout << i << std::endl;
+            lastPrime = i;
         }
     }
+
+    return lastPrime;
 }
 
 int main() {
     const auto start_time = std::chrono::high_resolution_clock::now();
 
-    printPrimes(NUMBER);
+    const auto last_prime = getLastPrime(NUMBER);
+    std::cout << "Last prime: " << last_prime << std::endl;
   
     const auto end_time = std::chrono::high_resolution_clock::now();
     const auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time).count();
 
     std::cout << "Execution time: " << duration << "ms" << std::endl;
+
+    return 0;
 }

@@ -18,3 +18,4 @@ strategy:
       - treap/Naive.py
 
       - recursion/Tak.py
+      - primes/Simple.py

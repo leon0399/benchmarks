@@ -25,3 +25,4 @@ strategy:
 
       - io/Load.py
       - io/NoLoad.py
+  - primes/Simple.py

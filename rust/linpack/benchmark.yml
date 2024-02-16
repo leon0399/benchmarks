@@ -1,0 +1,10 @@
+title: 'Linpack'
+
+strategy:
+  matrix:
+    command:
+      - title: 'Linpack Benchmark'
+        command: './%s'
+
+    files:
+      - linpack/Linpack

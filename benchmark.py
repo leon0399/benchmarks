@@ -172,8 +172,8 @@ for configurationFilename in configurations:
         print(
             'Running: %s - %s - %s:' % (
                 conf['title'],
-                run['command']['title'],
                 run['script']['title'],
+                run['command']['title'],
             ),
             end='\n\t',
             flush=True

@@ -9,30 +9,31 @@ on:
 jobs:
   benchmark:
     runs-on: ubuntu-latest
+    
+    permissions:
+      pull-requests: read
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
 
       - name: Pull Docker image
         run: docker-compose pull benchmark
 
       - name: Get changed files
-        id: files
-        run: |
-          if [ "$GITHUB_BASE_REF" ]; then
-            # For PRs
-            echo "PR event detected"
-            git fetch origin ${{ github.base_ref }} --depth=1
-            CHANGED_FILES=$(git diff --name-only FETCH_HEAD $(git merge-base FETCH_HEAD ${{ github.sha }}))
-          else
-            # For pushes
-            echo "Push event detected"
-            CHANGED_FILES=$(git diff --name-only ${{ github.sha }}^1 ${{ github.sha }})
-          fi
-          echo "::set-output name=changed::$CHANGED_FILES"
+        id: changed-files
+        uses: tj-actions/changed-files@v42
+        with:
+          files: |
+            !**/*.md
+            !**/*.yml
+            !**/*.json
 
       - name: Run benchmarks for changed files
-        if: steps.files.outputs.changed != ''
+        if: steps.changed-files.outputs.any_changed == 'true'
+        env:
+          ALL_CHANGED_FILES: ${{ steps.changed-files.outputs.all_changed_files }}
         run: |
-          docker-compose run benchmark python3 ./run_on_changes.py ${{ steps.files.outputs.changed }}
+          docker-compose run benchmark python3 ./run_on_changes.py $ALL_CHANGED_FILES

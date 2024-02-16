@@ -12,16 +12,30 @@ import json
 
 import time
 import statistics
+import argparse
 
-times = 5
-if 'TIMES' in os.environ:
-    times = int(os.environ['TIMES'])
+parser = argparse.ArgumentParser(description='Run benchmarks')
+parser.add_argument('--times', type=int, default=5, help='Number of times to run each benchmark')
+parser.add_argument('--languages', type=str, nargs='+', help='Languages to run')
+parser.add_argument('--scripts', type=str, nargs='+', help='Scripts to run')
+args = parser.parse_args()
 
-configurations = glob.glob('*/benchmark.yml') + glob.glob('*/benchmark.yaml')
+times = args.times
+
+# Load the configuration
+configurations = []
+if args.languages:
+    for language in args.languages:
+        configurations += glob.glob(language + '/benchmark.yml') + glob.glob(language + '/benchmark.yaml')
+else:
+    configurations = glob.glob('*/benchmark.yml') + glob.glob('*/benchmark.yaml')
 configurations.sort()
 
-results = {}
+scripts = ['*']
+if args.scripts:
+    scripts = args.scripts
 
+results = {}
 def runBenchmark(command):
     start = time.time()
     topMemory = 0
@@ -142,6 +156,9 @@ for configurationFilename in configurations:
     conf = loadConfiguration(configurationFilename)
 
     for run in conf['runs']:
+        if run['script']['title'] not in scripts and '*' not in scripts:
+            continue
+
         split = run['command']['command'].split()
         executable = split[0]
 

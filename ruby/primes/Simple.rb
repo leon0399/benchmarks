@@ -2,12 +2,10 @@
 
 NUMBER = 100_000
 
-def printPrimes(count)
-  for i in 1..count
-    if i == 0 || i == 1
-      next
-    end
+def getLastPrime(count)
+  lastPrime = 2
 
+  for i in 2..count
     isPrime = true
 
     for j in 2..i/2
@@ -18,14 +16,17 @@ def printPrimes(count)
     end
 
     if isPrime
-      puts i
+      lastPrime = i
     end
   end
+
+  lastPrime
 end
 
 startTimeMs = Time.now.to_f * 1000
 
-printPrimes(NUMBER)
+lastPrime = getLastPrime(NUMBER)
+puts "Last prime: #{lastPrime}"
 
 endTimeMs = Time.now.to_f * 1000
 durationMs = (endTimeMs - startTimeMs).to_i

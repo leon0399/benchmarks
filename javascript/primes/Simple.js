@@ -4,17 +4,13 @@
 
 const NUMBER = 100000;
 
-function printPrimes(number)
+function getLastPrime(number)
 {
-    // Traverse each number from 1 to N with the help of for loop
-    for (var i = 0; i <= number; i++)
-    {
-        // Skip 0 and 1 as they are neither prime nor composite
-        if (i == 1 || i == 0)
-        {
-            continue;
-        }
+    var lastPrime = 2;
 
+    // Traverse each number from 1 to N with the help of for loop
+    for (var i = 2; i <= number; i++)
+    {
         var isPrime = true;
 
         for (var j = 2; j <= i / 2; ++j) {
@@ -25,15 +21,18 @@ function printPrimes(number)
         }
 
         if (isPrime) {
-            console.log(i);
+            lastPrime = i;
         }
     }
+
+    return lastPrime;
 }
 
 (async function() {
     const startTimeMs = new Date().getTime();
       
-    printPrimes(NUMBER);
+    const lastPrime = getLastPrime(NUMBER);
+    console.log(`Last prime: ${lastPrime}`);
 
     const endTimeMs = new Date().getTime();
     const durationMs = endTimeMs - startTimeMs;

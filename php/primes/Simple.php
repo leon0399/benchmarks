@@ -4,15 +4,12 @@
 
 const NUMBER = 100000;
 
-function printPrimes($count) {
-    // Traverse each number from 1 to N with the help of for loop
-    for ($i = 1; $i <= $count; $i++)
-    {
-        // Skip 0 and 1 as they are neither prime nor composite
-        if ($i == 1 || $i == 0) {
-            continue;
-        }
+function getLastPrime($count) {
+    $lastPrime = 2;
 
+    // Traverse each number from 1 to N with the help of for loop
+    for ($i = 2; $i <= $count; $i++)
+    {
         $isPrime = true;
 
         for ($j = 2; $j <= $i / 2; ++$j) {
@@ -23,15 +20,18 @@ function printPrimes($count) {
         }
 
         if ($isPrime) {
-            echo $i . "\n";
+            $lastPrime = $i;
         }
     }
+
+    return $lastPrime;
 }
 
 (function () {
     $startTimeMs = floor(microtime(true) * 1000);
 
-    printPrimes(NUMBER);
+    $lastPrime = getLastPrime(NUMBER);
+    echo "Last prime: " . $lastPrime . "\n";
 
     $endTimeMs = floor(microtime(true) * 1000);
     $durationMs = $endTimeMs - $startTimeMs;

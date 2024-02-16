@@ -3,12 +3,10 @@ package primes;
 public final class Simple {
     private static final int NUMBER = 100000;
 
-    public static void printPrimes(final int count) {
-        for (var i = 1; i <= count; i++) {
-            if (i == 1 || i == 0) {
-                continue;
-            }
+    public static int printPrimes(final int count) {
+        int lastPrime = 2;
 
+        for (var i = 2; i <= count; i++) {
             boolean isPrime = true;
 
             for (var j = 2; j <= i / 2; ++j) {
@@ -19,15 +17,18 @@ public final class Simple {
             }
 
             if (isPrime) {
-                System.out.println(i);
+                lastPrime = i;
             }
         }
+
+        return lastPrime;
     }
 
     public static void main(String[] args) {
         long start = System.currentTimeMillis();
 
-        printPrimes(NUMBER);
+        long lastPrime = printPrimes(NUMBER);
+        System.out.println("Last prime: " + lastPrime);
 
         long end = System.currentTimeMillis();
         long duration = end - start;

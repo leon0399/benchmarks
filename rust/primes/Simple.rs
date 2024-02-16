@@ -1,11 +1,10 @@
 const NUMBER: i32 = 100000;
 
-fn print_primes(count: i32) {
-    for i in 1..count {
-        if i == 1 || i == 1 {
-            continue;
-        }
+fn get_last_prime(count: i32) -> i32
+{
+    let mut last_prime: i32 = 2;
 
+    for i in 1..count {
         let mut is_prime: bool = true;
 
         for j in 2..(i/2) {
@@ -16,15 +15,19 @@ fn print_primes(count: i32) {
         }
 
         if is_prime {
-            println!("{}", i)
+            last_prime = i;
+            
         }
     }
+
+    last_prime
 }
 
 fn main() {
     let start = std::time::Instant::now();
 
-    print_primes(NUMBER);
+    let last_ptime = get_last_prime(NUMBER);
+    println!("Last prime: {}", last_ptime);
 
     let elapsed = start.elapsed();
     println!("Execution time: {}ms", elapsed.as_millis());

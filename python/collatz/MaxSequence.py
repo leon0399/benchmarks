@@ -5,8 +5,8 @@ NUMBER = 500000
 def collatz(x):
         length = 0
             while x > 1:
-            if x % 2 == 0 :
-                            x = x // 2
+            if x % 2 == 0 : 
+                            x = x // 2 
         else:
                             x = 3 * x + 1
                     length += 1

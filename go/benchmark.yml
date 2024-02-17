@@ -10,3 +10,4 @@ strategy:
       - linpack/Linpack
 
       - treap/Naive
+      - primes/Simple

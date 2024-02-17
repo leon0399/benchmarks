@@ -22,8 +22,11 @@ def findMaxCollatz(to):
 
 if __name__ == "__main__":
     startTimeMs = int(round(time.time() * 1000))
+
     result = findMaxCollatz(NUMBER)
+    print(result)
+    
     endTimeMs = int(round(time.time() * 1000))
     executionTime = endTimeMs - startTimeMs
-    print(result)
+    
     print(f"Execution time: {executionTime}ms")

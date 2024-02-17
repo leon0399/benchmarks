@@ -19,3 +19,4 @@ strategy:
 
       - recursion/Tak.py
       - primes/Simple.py
+      - collatz/MaxSequence.py

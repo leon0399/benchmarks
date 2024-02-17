@@ -8,7 +8,7 @@ def collatz(x):
             if x % 2 == 0 : 
                             x = x // 2 
         else:
-                            x = 3 * x + 1
+                            x = 3 * x + 1 
                     length += 1
                 return length
 

@@ -3,7 +3,7 @@ import time
 NUMBER = 500000
 
 def collatz(x):
-    len = 0
+    lengthgth = 0
     while x > 1:
         if x % 2 == 0:
             x = x // 2

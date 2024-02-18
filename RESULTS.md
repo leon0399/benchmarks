@@ -1,4 +1,6 @@
 ### primes/Simple
+# Commit message: Updated time, total time, and memory for C++ (clang), C++ (gcc), Java, Java (GraalVM), JavaScript (Node), JavaScript (GraalVM), PHP, PHP (JIT: tracing), PHP (JIT: function), Python (CPython), and Python (PyPy)
+# Commit message: Updated time, total time, and memory for C++ (clang), C++ (gcc), Java, Java (GraalVM), JavaScript (Node), JavaScript (GraalVM), PHP, PHP (JIT: tracing), PHP (JIT: function), Python (CPython), and Python (PyPy)
 
 | Language | Time, s | Total time, s | Memory, MiB |
 | :------- | ------: | ------------: | ----------: |
@@ -20,6 +22,8 @@
 
 
 ### primes/Atkin
+# Commit message: Updated time, total time, and memory for C++ (clang), C++ (gcc), Java, Java (GraalVM), JavaScript (Node), and JavaScript (GraalVM)
+# Commit message: Updated time, total time, and memory for C++ (clang), C++ (gcc), Java, Java (GraalVM), JavaScript (Node), JavaScript (GraalVM)
 
 | Language | Time, s | Total time, s | Memory, MiB |
 | :------- | ------: | ------------: | ----------: |
@@ -41,6 +45,8 @@
 
 
 ### collatz/MaxSequence
+# Commit message: Updated time, total time, and memory for C++ (clang), Java, Java (GraalVM), JavaScript (Node), JavaScript (GraalVM), PHP, PHP (JIT: tracing), PHP (JIT: function), Python (CPython), and Python (PyPy)
+# Commit message: Updated time, total time, and memory for C++ (clang), Java, Java (GraalVM), JavaScript (Node), JavaScript (GraalVM), PHP, PHP (JIT: tracing), PHP (JIT: function), Python (CPython), and Python (PyPy)
 
 | Language | Time, s | Total time, s | Memory, MiB |
 | :------- | ------: | ------------: | ----------: |
@@ -61,6 +67,8 @@
 
 
 ### mandelbrot/Simple
+# Commit message: Updated time, total time, and memory for C++ (clang), C++ (gcc), Java, Java (GraalVM), JavaScript (Node), JavaScript (GraalVM), PHP, PHP (JIT: tracing), PHP (JIT: function), Python (CPython), Python (PyPy), Ruby, and Rust
+# Commit message: Updated time, total time, and memory for C++ (clang), C++ (gcc), Java, Java (GraalVM), JavaScript (Node), JavaScript (GraalVM), PHP, PHP (JIT: tracing), PHP (JIT: function), Python (CPython), Python (PyPy), Ruby, and Rust
 
 | Language | Time, s | Total time, s | Memory, MiB |
 | :------- | ------: | ------------: | ----------: |
@@ -82,6 +90,7 @@
 
 
 ### treap/Naive
+# Commit message: Updated time, total time, and memory for C++ (clang), C++ (gcc), and Go
 
 | Language | Time, s | Total time, s | Memory, MiB |
 | :------- | ------: | ------------: | ----------: |
@@ -105,6 +114,7 @@
 
 
 ### recursion/Tak
+# Commit message: Updated time, total time, and memory for C++ (clang), C++ (gcc), JavaScript (Node), JavaScript (GraalVM), PHP, PHP (JIT: tracing), PHP (JIT: function), Python (CPython), Python (PyPy), and Ruby (JIT)
 
 | Language | Time, s | Total time, s | Memory, MiB |
 | :------- | ------: | ------------: | ----------: |
@@ -123,6 +133,7 @@
 
 
 ### linpack/Linpack
+# Commit message: Updated time, total time, and memory for Go, JavaScript (Node), JavaScript (GraalVM), PHP, PHP (JIT: tracing), PHP (JIT: function), Python (CPython), and Python (PyPy)
 
 | Language | Time, s | Total time, s | Memory, MiB |
 | :------- | ------: | ------------: | ----------: |

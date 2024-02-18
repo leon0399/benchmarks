@@ -14,7 +14,9 @@ import time
 import statistics
 import argparse
 
-parser = argparse.ArgumentParser(description='Run benchmarks')
+parser = argparse.ArgumentParser(description='Run benchmarks', formatter_class=argparse.RawTextHelpFormatter)
+parser.add_argument('--branch', type=str, help='Branch name')
+parser.add_argument('--description', type=str, help='Description of the changes')
 parser.add_argument('--times', type=int, default=5, help='Number of times to run each benchmark')
 parser.add_argument('--languages', type=str, nargs='+', help='Languages to run')
 parser.add_argument('--scripts', type=str, nargs='+', help='Scripts to run')

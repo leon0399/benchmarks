@@ -74,7 +74,7 @@ def runBenchmark(command):
 
     return (scriptDuration, reportedDuration, topMemory)
 
-def runScript(filename, command = './%s'):
+def runScript(filename, command = './%s', branch=None, description=None):
     return runBenchmark(command % (filename))
 
 def getScriptInfo(scriptInfo):
@@ -186,7 +186,7 @@ for configurationFilename in configurations:
         memoryResults = []
 
         for _ in range(times):
-            elapsed, reported, memory = runScript(dir + '/' + run['script']['file'], run['command']['command'])
+            elapsed, reported, memory = runScript(dir + '/' + run['script']['file'], run['command']['command'], branch=args.branch, description=args.description)
             print("{:.3f}".format(reported), end='\t', flush=True)
 
             if (elapsed > 0):

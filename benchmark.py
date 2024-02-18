@@ -215,7 +215,7 @@ for configurationFilename in configurations:
             if len(memoryResults) > 1:
                 memoryStdev = statistics.stdev(memoryResults)
 
-            result = {
+            result = {'branch': args.branch, 'description': args.description, 
                 'tags': run['tags'],
                 'total_time': {
                     'results': timeResults,

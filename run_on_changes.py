@@ -14,10 +14,11 @@ for file_path in changed_files:
     language, category, script = parts[0], parts[1], parts[2]
     script_name = script.split('.')[0]  # Extract script name without extension
     # Assuming the benchmark script supports language and script parameters
-    command = f"python3 ./benchmark.py --languages {language} --scripts {category}/{script_name} --times 1"
+    command = f"python3 ./benchmark.py --languages {language} --scripts {category}/{script_name} --times 1 --branch {sys.argv[1]} --description {sys.argv[2]}"
     benchmark_commands.add(command)
 
 # Executing benchmark commands
 for command in benchmark_commands:
     print(f"Executing: {command}")
     subprocess.run(command, shell=True)
+import sys

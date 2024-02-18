@@ -100,7 +100,7 @@ def getCommandInfo(commandInfo):
     return commandInfo
 
 
-def loadConfiguration(filename):
+def loadConfiguration(filename, branch=None, description=None):
     conf = {}
 
     with open(filename) as file:
@@ -116,7 +116,7 @@ def loadConfiguration(filename):
     for scriptInfo in matrix['files']:
         scriptInfo = getScriptInfo(scriptInfo)
 
-        for commandInfo in matrix['command']:
+        for commandInfo in {'title': commandInfo['title'], 'command': commandInfo['command'], 'tags': [], 'branch': branch, 'description': description}, :
             tags = []
             commandInfo = getCommandInfo(commandInfo)
 

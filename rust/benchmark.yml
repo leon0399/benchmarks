@@ -5,6 +5,15 @@ strategy:
     command:
       - title: 'Rust'
         command: './%s'
+        
+    benchmark:
+      - primes/Simple
+      - primes/Atkin
+
+      - collatz/MaxSequence
+
+      - mandelbrot/Simple  
+      - linpack/Linpack
 
     files:
       - primes/Simple
@@ -13,4 +22,3 @@ strategy:
       - collatz/MaxSequence 
 
       - mandelbrot/Simple
-      - linpack/Linpack

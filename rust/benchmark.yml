@@ -10,7 +10,7 @@ strategy:
       - primes/Simple
       - primes/Atkin
 
-      - collatz/MaxSequence
+      - collatz/MaxSequence 
 
       - mandelbrot/Simple
       - linpack/Linpack

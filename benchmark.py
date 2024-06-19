@@ -203,7 +203,7 @@ if args.action == 'run':
         conf = loadConfiguration(configurationFilename)
 
         for run in conf['runs']:
-            if run['script']['title'] not in scripts and '*' not in scripts:
+            if run['script']['title'] not in scripts and run['script']['file'] not in scripts and '*' not in scripts:
                 continue
 
             split = run['command']['command'].split()

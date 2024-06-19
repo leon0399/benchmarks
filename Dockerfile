@@ -9,6 +9,7 @@ RUN apt update \
         git \
         curl \
         wget \
+	cmake \
         libc6 \
         unzip \
         gnulib \

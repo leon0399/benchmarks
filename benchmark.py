@@ -15,6 +15,7 @@ import statistics
 import argparse
 
 parser = argparse.ArgumentParser(description='Run benchmarks')
+parser.add_argument('action', type=str, help='Action to perform', choices=['run', 'results'])
 parser.add_argument('--times', type=int, default=5, help='Number of times to run each benchmark')
 parser.add_argument('--languages', type=str, nargs='+', help='Languages to run')
 parser.add_argument('--scripts', type=str, nargs='+', help='Scripts to run')
@@ -139,134 +140,180 @@ def loadConfiguration(filename):
 
     return configuration
 
-for configurationFilename in configurations:
-    dir = os.path.dirname(configurationFilename)
+def writeResultsMarkdown(results):
+    with open('RESULTS.md', 'w') as file:
+        file.write('# Results\n\n')
 
-    if (os.path.isfile(dir + '/Makefile')):
-        print('Making %s' % (dir))
-        made = subprocess.run(['make', 'all'], cwd=dir, shell=True, stdout=subprocess.DEVNULL)
+        file.write('## Algorithms\n\n')
 
-        if made.returncode != 0:
-            # throw error
-            print('Error in makefile for %s' % (dir))
-            exit(1)
+        for (scriptName, languages) in results.items():
+            file.write('### %s\n\n' % (scriptName))
 
-for configurationFilename in configurations:
-    dir = os.path.dirname(configurationFilename)
-    conf = loadConfiguration(configurationFilename)
+            file.write('| Language | Time, s | Startup time, s | Total time, s | Memory, MiB |\n')
+            file.write('| :------- | ------: | --------------: | ------------: | ----------: |\n')
 
-    for run in conf['runs']:
-        if run['script']['title'] not in scripts and '*' not in scripts:
-            continue
+            for (language, configurations) in languages.items():
+                for (configuration, elapsed) in configurations.items():
+                    langugageTitle = ('%s' % (language)) if language == configuration else ('%s (%s)' % (language, configuration))
 
-        split = run['command']['command'].split()
-        executable = split[0]
+                    file.write('| %s | %s<sub>±%s</sub> | %s<sub>±%s</sub> | %s<sub>±%s</sub> | %s<sub>±%s</sub> |\n' % (
+                            langugageTitle,
+                            "{:6.3f}".format(elapsed['time']['median']),
+                            "{:.3f}".format(elapsed['time']['stdev']),
 
-        if not os.path.isfile(executable):
-            executable, err = subprocess.Popen(['which', executable], stdout=subprocess.PIPE).communicate()
+                            "{:6.3f}".format(elapsed['startup_time']['median']),
+                            "{:.3f}".format(elapsed['startup_time']['stdev']),
 
-            if executable:
-                split[0] = executable.decode("utf-8").replace('\n', '')
-                run['command']['command'] = ' '.join(split)
+                            "{:6.3f}".format(elapsed['total_time']['median']),
+                            "{:.3f}".format(elapsed['total_time']['stdev']),
 
-        print(
-            'Running: %s - %s - %s:' % (
-                conf['title'],
-                run['script']['title'],
-                run['command']['title'],
-            ),
-            end='\n\t',
-            flush=True
-        )
-
-        timeResults = []
-        reportedResults = []
-        memoryResults = []
-
-        for _ in range(times):
-            elapsed, reported, memory = runScript(dir + '/' + run['script']['file'], run['command']['command'])
-            print("{:.3f}".format(reported), end='\t', flush=True)
-
-            if (elapsed > 0):
-                timeResults.append(elapsed)
-                reportedResults.append(reported)
-                memoryResults.append(memory)
-
-        print()
-
-        if timeResults and memoryResults:
-            timeResults.sort()
-            timeMedian = statistics.median(timeResults)
-            timeStdev = 0
-            if len(timeResults) > 1:
-                timeStdev = statistics.stdev(timeResults)
-
-            reportedResults.sort()
-            reportedMedian = statistics.median(reportedResults)
-            reportedStdev = 0
-            if len(reportedResults) > 1:
-                reportedStdev = statistics.stdev(reportedResults)
-
-            memoryResults.sort()
-            memoryMedian = statistics.median(memoryResults)
-            memoryStdev = 0
-            if len(memoryResults) > 1:
-                memoryStdev = statistics.stdev(memoryResults)
-
-            result = {
-                'tags': run['tags'],
-                'total_time': {
-                    'results': timeResults,
-                    'median': timeMedian,
-                    'stdev': timeStdev,
-                },
-                'time': {
-                    'results': reportedResults,
-                    'median': reportedMedian,
-                    'stdev': reportedStdev,
-                },
-                'memory': {
-                    'results': memoryResults,
-                    'median': memoryMedian,
-                    'stdev': memoryStdev,
-                },
-            }
-
-            print('\tFinal: {:.3f} ± {:.3f}'.format(reportedMedian, reportedStdev), flush=True)
-
-            if (run['script']['title'] not in results):
-                results[run['script']['title']] = {}
-            if (conf['title'] not in results[run['script']['title']]):
-                results[run['script']['title']][conf['title']] = {}
-
-            results[run['script']['title']][conf['title']][run['command']['title']] = result
-
-        else:
-            print('\tSkipping...')
-
-with open('.results/results.json', 'w') as file:
-    json.dump(results, file, indent=2)
-
-with open('RESULTS.md', 'w') as file:
-    for (scriptName, languages) in results.items():
-        file.write('### %s\n\n' % (scriptName))
-
-        file.write('| Language | Time, s | Total time, s | Memory, MiB |\n')
-        file.write('| :------- | ------: | ------------: | ----------: |\n')
-
-        for (language, configurations) in languages.items():
-            for (configuration, elapsed) in configurations.items():
-                langugageTitle = ('%s' % (language)) if language == configuration else ('%s (%s)' % (language, configuration))
-
-                file.write('| %s | %s<sub>±%s</sub> | %s<sub>±%s</sub> | %s<sub>±%s</sub> |\n' % (
-                        langugageTitle,
-                        "{:6.3f}".format(elapsed['time']['median']),
-                        "{:.3f}".format(elapsed['time']['stdev']),
-                        "{:6.3f}".format(elapsed['total_time']['median']),
-                        "{:.3f}".format(elapsed['total_time']['stdev']),
-                        "{:10.2f}".format(elapsed['memory']['median'] / 1024 / 1024),
-                        "{:.2f}".format(elapsed['memory']['stdev'] / 1024 / 1024),
+                            "{:10.2f}".format(elapsed['memory']['median'] / 1024 / 1024),
+                            "{:.2f}".format(elapsed['memory']['stdev'] / 1024 / 1024),
+                        )
                     )
-                )
+
+            file.write('\n\n')
+
+        file.write('## Legend\n\n')
+
+        file.write('| Field        | Description |\n')
+        file.write('| :----------- | :---------- |\n')
+        file.write('| Time         | Time spent in the algorithm itself, reported by the program itself. |\n')
+        file.write('| Total time   | Total time spent from the start of the program to the end of the algorithm, measured by the benchmark. |\n')
+        file.write('| Startup time | Time spent from the start of the program to the start of the algorithm, measured by the benchmark (Total time - Time). |\n')
+        file.write('| Memory       | Peak memory usage during the algorithm, measured by the benchmark. |\n')
 
         file.write('\n\n')
+
+if args.action == 'run':
+    for configurationFilename in configurations:
+        dir = os.path.dirname(configurationFilename)
+
+        if (os.path.isfile(dir + '/Makefile')):
+            print('Making %s' % (dir))
+            made = subprocess.run(['make', 'all'], cwd=dir, shell=True, stdout=subprocess.DEVNULL)
+
+            if made.returncode != 0:
+                # throw error
+                print('Error in makefile for %s' % (dir))
+                exit(1)
+
+    for configurationFilename in configurations:
+        dir = os.path.dirname(configurationFilename)
+        conf = loadConfiguration(configurationFilename)
+
+        for run in conf['runs']:
+            if run['script']['title'] not in scripts and '*' not in scripts:
+                continue
+
+            split = run['command']['command'].split()
+            executable = split[0]
+
+            if not os.path.isfile(executable):
+                executable, err = subprocess.Popen(['which', executable], stdout=subprocess.PIPE).communicate()
+
+                if executable:
+                    split[0] = executable.decode("utf-8").replace('\n', '')
+                    run['command']['command'] = ' '.join(split)
+
+            print(
+                'Running: %s - %s - %s:' % (
+                    conf['title'],
+                    run['script']['title'],
+                    run['command']['title'],
+                ),
+                end='\n\t',
+                flush=True
+            )
+
+            timeResults = []
+            reportedResults = []
+            startupResults = []
+            memoryResults = []
+
+            for _ in range(times):
+                elapsed, reported, memory = runScript(dir + '/' + run['script']['file'], run['command']['command'])
+                print("{:.3f}".format(reported), end='\t', flush=True)
+
+                if (elapsed > 0):
+                    timeResults.append(elapsed)
+                    reportedResults.append(reported)
+                    memoryResults.append(memory)
+
+                    # substract reported time from total time for each entry to get startup time results
+                    for i in range(len(timeResults)):
+                        startupResults.append(timeResults[i] - reportedResults[i])
+
+            print()
+
+            if timeResults and memoryResults:
+                timeResults.sort()
+                timeMedian = statistics.median(timeResults)
+                timeStdev = 0
+                if len(timeResults) > 1:
+                    timeStdev = statistics.stdev(timeResults)
+
+                reportedResults.sort()
+                reportedMedian = statistics.median(reportedResults)
+                reportedStdev = 0
+                if len(reportedResults) > 1:
+                    reportedStdev = statistics.stdev(reportedResults)
+
+                memoryResults.sort()
+                memoryMedian = statistics.median(memoryResults)
+                memoryStdev = 0
+                if len(memoryResults) > 1:
+                    memoryStdev = statistics.stdev(memoryResults)
+
+                startupResults.sort()
+                startupMedian = statistics.median(startupResults)
+                startupStdev = 0
+                if len(startupResults) > 1:
+                    startupStdev = statistics.stdev(startupResults)
+
+                result = {
+                    'tags': run['tags'],
+                    'total_time': {
+                        'results': timeResults,
+                        'median': timeMedian,
+                        'stdev': timeStdev,
+                    },
+                    'time': {
+                        'results': reportedResults,
+                        'median': reportedMedian,
+                        'stdev': reportedStdev,
+                    },
+                    'startup_time': {
+                        'results': startupResults,
+                        'median': startupMedian,
+                        'stdev': startupStdev,
+                    },
+                    'memory': {
+                        'results': memoryResults,
+                        'median': memoryMedian,
+                        'stdev': memoryStdev,
+                    },
+                }
+
+                print('\tFinal: {:.3f} ± {:.3f}'.format(reportedMedian, reportedStdev), flush=True)
+
+                if (run['script']['title'] not in results):
+                    results[run['script']['title']] = {}
+                if (conf['title'] not in results[run['script']['title']]):
+                    results[run['script']['title']][conf['title']] = {}
+
+                results[run['script']['title']][conf['title']][run['command']['title']] = result
+
+            else:
+                print('\tSkipping...')
+
+    with open('.results/results.json', 'w') as file:
+        json.dump(results, file, indent=2)
+
+    writeResultsMarkdown(results)
+
+elif args.action == 'results':
+    with open('.results/results.json', 'r') as file:
+        results = json.load(file)
+
+    writeResultsMarkdown(results)

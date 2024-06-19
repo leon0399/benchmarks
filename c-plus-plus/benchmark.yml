@@ -15,16 +15,23 @@ strategy:
       #   command: 'graalvm.lli %s-graalvm'
 
     files:
-      - primes/Simple
-      - primes/Atkin
+      - title: 'primes/Simple'
+        file: 'src/primes/Simple'
 
-      - collatz/MaxSequence
+      - title: 'primes/Atkin'
+        file: 'src/primes/Atkin'
 
-      - mandelbrot/Simple
+      - title: 'collatz/MaxSequence'
+        file: 'src/collatz/MaxSequence'
 
-      - treap/Naive
+      - title: 'mandelbrot/Simple'
+        file: 'src/mandelbrot/Simple'
 
-      - recursion/Tak
+      - title: 'treap/Naive'
+        file: 'src/treap/Naive'
+
+      - title: 'recursion/Tak'
+        file: 'src/recursion/Tak'
 
     exclude:
       - command: 'gcc'

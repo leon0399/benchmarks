@@ -1,14 +1,11 @@
 CXXFLAGS = --std=c++17 -flto -s
 
-SCRIPTS = $(wildcard **/*.cpp)
+SCRIPTS = $(wildcard ./source/*/*.cpp)
 
 BINARIES =  $(SCRIPTS:%.cpp=%-clang) \
 			$(SCRIPTS:%.cpp=%-clang-static) \
 			$(SCRIPTS:%.cpp=%-gcc) \
 			$(SCRIPTS:%.cpp=%-gcc-static) \
-			# $(SCRIPTS:%.cpp=%-graalvm) \
-			# $(SCRIPTS:%.cpp=%-graalvm-static) \
-
 
 %-clang: %.cpp
 	clang++ -O3 $(CXXFLAGS) -o $@ $<
@@ -30,6 +27,10 @@ BINARIES =  $(SCRIPTS:%.cpp=%-clang) \
 
 all: $(BINARIES)
 
-.PHONY: clean
 clean:
 	rm -f $(BINARIES)
+
+list:
+	@echo $(BINARIES)
+
+.PHONY: clean list

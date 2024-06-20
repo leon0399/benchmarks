@@ -1,5 +1,5 @@
 CXXFLAGS += -Wall -fPIC -std=c++17 -O3
-INCLUDES += -Ilib/regex-boost/include
+INCLUDES += -Ilib/regex-boost/include -Ilib/regex-hyperscan/src -Ilib/regex-hyperscan/bin -Ilib/regex-hyperscan/bin/lib/libhs.a
 OBJECTS += 
 LDFLAGS += -lstdc++ -lpthread
 
@@ -26,10 +26,12 @@ all: libraries $(BINARIES)
 
 libraries:
 	cd ./lib/regex-boost && mkdir -p bin && cd bin && cmake -DCMAKE_POSITION_INDEPENDENT_CODE=ON .. && cmake --build .;
+	cd ./lib/regex-hyperscan && mkdir -p bin && cd bin && cmake -DCMAKE_POSITION_INDEPENDENT_CODE=ON .. && cmake --build .;
 
 clean:
 	rm -f $(BINARIES)
 	cd ./lib/regex-boost && rm -rf bin;
+	cd ./lib/regex-hyperscan && rm -rf bin;
 
 list:
 	@echo $(BINARIES)

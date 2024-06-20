@@ -11,6 +11,7 @@ RUN apt update \
         wget \
 	cmake \
         libc6 \
+        ragel \
         unzip \
         gnulib \
         gnupg2 \
@@ -25,6 +26,7 @@ RUN apt update \
         build-essential \
         ca-certificates \
         libreadline-dev \
+        libboost-all-dev \
         apt-transport-https \
         software-properties-common
 

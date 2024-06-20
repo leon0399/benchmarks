@@ -1,0 +1,6 @@
+[submodule "c-plus-plus/lib/regex-boost"]
+	path = c-plus-plus/lib/regex-boost
+	url = https://github.com/boostorg/regex.git
+[submodule "c-plus-plus/lib/regex-hyperscan"]
+	path = c-plus-plus/lib/regex-hyperscan
+	url = https://github.com/intel/hyperscan

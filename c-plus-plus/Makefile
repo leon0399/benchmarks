@@ -1,35 +1,39 @@
-CXXFLAGS = --std=c++17 -flto -s
+CXXFLAGS += -Wall -fPIC -std=c++17 -O3
+INCLUDES += -Ilib/regex-boost/include -Ilib/regex-hyperscan/src -Ilib/regex-hyperscan/bin -Ilib/regex-hyperscan/bin/lib/libhs.a
+OBJECTS += 
+LDFLAGS += -lstdc++ -lpthread
 
-SCRIPTS = $(wildcard **/*.cpp)
+SCRIPTS = $(wildcard ./src/*/*.cpp)
 
 BINARIES =  $(SCRIPTS:%.cpp=%-clang) \
 			$(SCRIPTS:%.cpp=%-clang-static) \
 			$(SCRIPTS:%.cpp=%-gcc) \
 			$(SCRIPTS:%.cpp=%-gcc-static) \
-			# $(SCRIPTS:%.cpp=%-graalvm) \
-			# $(SCRIPTS:%.cpp=%-graalvm-static) \
-
 
 %-clang: %.cpp
-	clang++ -O3 $(CXXFLAGS) -o $@ $<
+	clang++ $(CXXFLAGS) $(INCLUDES) -o $@ $< $(LDFLAGS)
 
 %-clang-static: %.cpp
-	clang++ -O3 $(CXXFLAGS) -static -o $@ $<
+	clang++ $(CXXFLAGS) $(INCLUDES) -static -o $@ $< $(LDFLAGS)
 
 %-gcc : %.cpp
-	g++ -O3 $(CXXFLAGS) -o $@ $<
+	g++ $(CXXFLAGS) $(INCLUDES) -o $@ $< $(LDFLAGS)
 
 %-gcc-static : %.cpp
-	g++ -O3 $(CXXFLAGS) -static -o $@ $<
+	g++ $(CXXFLAGS) $(INCLUDES) -static -o $@ $< $(LDFLAGS)
 
-%-graalvm : %.cpp
-	$${GRAALVM_LLVM_TOOLCHAIN}/clang++ -O3 $(CXXFLAGS) -o $@ $<
+all: libraries $(BINARIES)
 
-%-graalvm-static : %.cpp
-	$${GRAALVM_LLVM_TOOLCHAIN}/clang++ -O3 $(CXXFLAGS) -static -o $@ $<
+libraries:
+	cd ./lib/regex-boost && mkdir -p bin && cd bin && cmake -DCMAKE_POSITION_INDEPENDENT_CODE=ON .. && cmake --build .;
+	cd ./lib/regex-hyperscan && mkdir -p bin && cd bin && cmake -DCMAKE_POSITION_INDEPENDENT_CODE=ON .. && cmake --build .;
 
-all: $(BINARIES)
-
-.PHONY: clean
 clean:
 	rm -f $(BINARIES)
+	cd ./lib/regex-boost && rm -rf bin;
+	cd ./lib/regex-hyperscan && rm -rf bin;
+
+list:
+	@echo $(BINARIES)
+
+.PHONY: clean list all libraries

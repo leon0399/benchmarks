@@ -1,2 +1,8 @@
-*/*
-!**.cpp
+# Ignore everything in any subdirectory
+**/*
+
+# Un-ignore all directories
+!*/
+
+# Un-ignore .cpp files
+!**/*.cpp

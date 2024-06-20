@@ -1,7 +1,7 @@
-CXXFLAGS = -O3 --std=c++20 -flto -s
-INCLUDES = 
-OBJECTS = 
-LDFLAGS = 
+CXXFLAGS += -Wall -fPIC -std=c++17 -O3
+INCLUDES += -Ilib/regex-boost/include
+OBJECTS += 
+LDFLAGS += -lstdc++ -lpthread
 
 SCRIPTS = $(wildcard ./src/*/*.cpp)
 
@@ -11,29 +11,27 @@ BINARIES =  $(SCRIPTS:%.cpp=%-clang) \
 			$(SCRIPTS:%.cpp=%-gcc-static) \
 
 %-clang: %.cpp
-	clang++ $(CXXFLAGS) -o $@ $<
+	clang++ $(CXXFLAGS) $(INCLUDES) -o $@ $< $(LDFLAGS)
 
 %-clang-static: %.cpp
-	clang++ $(CXXFLAGS) -static -o $@ $<
+	clang++ $(CXXFLAGS) $(INCLUDES) -static -o $@ $< $(LDFLAGS)
 
 %-gcc : %.cpp
-	g++ $(CXXFLAGS) -o $@ $<
+	g++ $(CXXFLAGS) $(INCLUDES) -o $@ $< $(LDFLAGS)
 
 %-gcc-static : %.cpp
-	g++ $(CXXFLAGS) -static -o $@ $<
+	g++ $(CXXFLAGS) $(INCLUDES) -static -o $@ $< $(LDFLAGS)
 
-%-graalvm : %.cpp
-	$${GRAALVM_LLVM_TOOLCHAIN}/clang++ $(CXXFLAGS) -o $@ $<
+all: libraries $(BINARIES)
 
-%-graalvm-static : %.cpp
-	$${GRAALVM_LLVM_TOOLCHAIN}/clang++ $(CXXFLAGS) -static -o $@ $<
-
-all: $(BINARIES)
+libraries:
+	cd ./lib/regex-boost && mkdir -p bin && cd bin && cmake -DCMAKE_POSITION_INDEPENDENT_CODE=ON .. && cmake --build .;
 
 clean:
 	rm -f $(BINARIES)
+	cd ./lib/regex-boost && rm -rf bin;
 
 list:
 	@echo $(BINARIES)
 
-.PHONY: clean list
+.PHONY: clean list all libraries

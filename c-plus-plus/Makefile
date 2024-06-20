@@ -1,6 +1,9 @@
-CXXFLAGS = --std=c++17 -flto -s
+CXXFLAGS = -O3 --std=c++20 -flto -s
+INCLUDES = 
+OBJECTS = 
+LDFLAGS = 
 
-SCRIPTS = $(wildcard ./source/*/*.cpp)
+SCRIPTS = $(wildcard ./src/*/*.cpp)
 
 BINARIES =  $(SCRIPTS:%.cpp=%-clang) \
 			$(SCRIPTS:%.cpp=%-clang-static) \
@@ -8,22 +11,22 @@ BINARIES =  $(SCRIPTS:%.cpp=%-clang) \
 			$(SCRIPTS:%.cpp=%-gcc-static) \
 
 %-clang: %.cpp
-	clang++ -O3 $(CXXFLAGS) -o $@ $<
+	clang++ $(CXXFLAGS) -o $@ $<
 
 %-clang-static: %.cpp
-	clang++ -O3 $(CXXFLAGS) -static -o $@ $<
+	clang++ $(CXXFLAGS) -static -o $@ $<
 
 %-gcc : %.cpp
-	g++ -O3 $(CXXFLAGS) -o $@ $<
+	g++ $(CXXFLAGS) -o $@ $<
 
 %-gcc-static : %.cpp
-	g++ -O3 $(CXXFLAGS) -static -o $@ $<
+	g++ $(CXXFLAGS) -static -o $@ $<
 
 %-graalvm : %.cpp
-	$${GRAALVM_LLVM_TOOLCHAIN}/clang++ -O3 $(CXXFLAGS) -o $@ $<
+	$${GRAALVM_LLVM_TOOLCHAIN}/clang++ $(CXXFLAGS) -o $@ $<
 
 %-graalvm-static : %.cpp
-	$${GRAALVM_LLVM_TOOLCHAIN}/clang++ -O3 $(CXXFLAGS) -static -o $@ $<
+	$${GRAALVM_LLVM_TOOLCHAIN}/clang++ $(CXXFLAGS) -static -o $@ $<
 
 all: $(BINARIES)
 

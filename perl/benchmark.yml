@@ -1,0 +1,12 @@
+title: 'Perl'
+
+strategy:
+  matrix:
+    command:
+      - title: 'Perl'
+        command: 'perl ./%s'
+
+    files:
+      - primes/Simple.pl
+
+      - recursion/Tak.pl

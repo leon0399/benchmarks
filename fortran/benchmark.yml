@@ -1,0 +1,10 @@
+title: 'Fortran'
+
+strategy:
+  matrix:
+    command:
+      - title: 'gfortran'
+        command: './%s-gfortran'
+
+    files:
+      - primes/Simple

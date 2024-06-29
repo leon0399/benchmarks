@@ -145,4 +145,8 @@ RUN gu available \
     && ln -s /opt/graalvm-ce-java11-${GRAALVM}/bin/lli /usr/bin/graalvm.lli \
     && export GRAALVM_LLVM_TOOLCHAIN=$(graalvm.lli --print-toolchain-path)
 
+# Fortran
+RUN apt install -y \
+        gfortran
+
 WORKDIR /app

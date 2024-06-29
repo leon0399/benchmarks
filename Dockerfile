@@ -1,4 +1,4 @@
-ARG IMAGE=debian:11.9
+ARG IMAGE=debian:12.0-slim
 
 FROM ${IMAGE}
 
@@ -14,18 +14,29 @@ RUN apt update \
         unzip \
         gnulib \
         gnupg2 \
+        tzdata \
         libc-bin \
+        uuid-dev \
         libc6-dev \
+        pkg-config \
+        libicu-dev \
         libssl-dev \
+        libxml2-dev \
+        libedit-dev \
         libncurses5 \
         lsb-release \
         libyaml-dev \
+        binutils-gold \
         libc-devtools \
+        libncurses-dev \
+        libpython3-dev \
+        libsqlite3-dev \
         libc6-dev-i386 \
         build-essential \
         ca-certificates \
         libreadline-dev \
         apt-transport-https \
+        libcurl4-openssl-dev \
         software-properties-common
 
 WORKDIR /opt
@@ -44,9 +55,15 @@ RUN apt install -y \
 RUN apt install -y \
         python3 \
         python3-pip \
+        python3-full \
         python3-numpy \
-        python2 \
-    && pip install pyyaml docker psutil
+        python3-pandas \
+        python3-psutil \
+        python3-yaml \
+        python3-docker \
+        pipx \
+        python3-venv \
+        python3-ipython
 
 # PyPy
 ARG PYPY=v7.3.15
@@ -123,8 +140,8 @@ ENV PATH="/opt/ruby/bin:${PATH}"
 # Ruby (JRuby)
 ARG JRUBY=9.4.5.0
 RUN wget --progress=dot:giga -O - \
-        https://repo1.maven.org/maven2/org/jruby/jruby-dist/$JRUBY/jruby-dist-$JRUBY-bin.tar.gz | tar -xz \
-    && ln -s /opt/jruby-${JRUBY}/bin/jruby /usr/bin/jruby
+        https://repo1.maven.org/maven2/org/jruby/jruby-dist/$JRUBY/jruby-dist-$JRUBY-bin.tar.gz | tar -xz
+ENV PATH="/opt/jruby-${JRUBY}/bin:${PATH}"
 
 # GraalVM
 ARG GRAALVM=22.3.3
@@ -144,5 +161,15 @@ RUN gu available \
     && ln -s /opt/graalvm-ce-java11-${GRAALVM}/bin/node /usr/bin/graalvm.node \
     && ln -s /opt/graalvm-ce-java11-${GRAALVM}/bin/lli /usr/bin/graalvm.lli \
     && export GRAALVM_LLVM_TOOLCHAIN=$(graalvm.lli --print-toolchain-path)
+
+# Fortran
+RUN apt install -y \
+        gfortran
+
+# Swift
+ARG SWIFT=5.10.1
+RUN wget --progress=dot:giga -O - \
+        https://download.swift.org/swift-${SWIFT}-release/debian12/swift-${SWIFT}-RELEASE/swift-${SWIFT}-RELEASE-debian12.tar.gz | tar -xz
+ENV PATH="/opt/swift-${SWIFT}-RELEASE-debian12/usr/bin:${PATH}"
 
 WORKDIR /app

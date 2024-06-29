@@ -1,4 +1,4 @@
-CXXFLAGS = -std=c99 -flto -s -Wall -Wextra -Wpedantic
+CXXFLAGS = -std=c99 -s -Wall
 
 SCRIPTS = $(wildcard **/*.c)
 

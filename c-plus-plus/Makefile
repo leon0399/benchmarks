@@ -1,4 +1,4 @@
-CXXFLAGS = --std=c++17 -flto -s -Wall -Wextra -Wpedantic
+CXXFLAGS = --std=c++17 -s -Wall -Wextra -Wpedantic
 
 SCRIPTS = $(wildcard **/*.cpp)
 

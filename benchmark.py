@@ -191,6 +191,7 @@ if args.action == 'run':
 
         if (os.path.isfile(dir + '/Makefile')):
             print('Making %s' % (dir))
+            subprocess.run(['make', 'clean'], cwd=dir, shell=True, stdout=subprocess.DEVNULL)
             made = subprocess.run(['make', 'all'], cwd=dir, shell=True, stdout=subprocess.DEVNULL)
 
             if made.returncode != 0:

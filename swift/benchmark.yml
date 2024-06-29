@@ -6,10 +6,10 @@ strategy:
       - title: 'Swift'
         command: 'swift %s.swift'
 
-      - title: 'Swift (optimized)'
+      - title: 'Optimized'
         command: 'swift -O %s.swift'
 
-      - title: 'Swift (compiled)'
+      - title: 'Compiled'
         command: './%s'
 
     files:

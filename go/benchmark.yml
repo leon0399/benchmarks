@@ -7,6 +7,15 @@ strategy:
         command: './%s'
 
     files:
+      - primes/Simple
+      - primes/Atkin
+
+      - collatz/MaxSequence
+
+      - mandelbrot/Simple
+
+      - recursion/Tak
+
       - linpack/Linpack
 
       - treap/Naive

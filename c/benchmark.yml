@@ -1,0 +1,12 @@
+title: 'C'
+
+strategy:
+  matrix:
+    command:
+      - title: 'clang'
+        command: './%s-clang'
+      - title: 'gcc'
+        command: './%s-gcc'
+
+    files:
+      - primes/Simple

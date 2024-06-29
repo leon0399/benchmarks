@@ -18,4 +18,8 @@ strategy:
 
       - mandelbrot/Simple
 
+      - recursion/Tak
+
       - treap/Naive
+
+      - linpack/Linpack

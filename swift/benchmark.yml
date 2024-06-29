@@ -1,0 +1,16 @@
+title: 'Swift'
+
+strategy:
+  matrix:
+    command:
+      - title: 'Swift'
+        command: 'swift %s.swift'
+
+      - title: 'Optimized'
+        command: 'swift -O %s.swift'
+
+      - title: 'Compiled'
+        command: './%s'
+
+    files:
+      - primes/Simple

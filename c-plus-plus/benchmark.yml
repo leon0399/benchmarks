@@ -26,6 +26,8 @@ strategy:
 
       - recursion/Tak
 
+      - linpack/Linpack
+
     exclude:
       - command: 'gcc'
         file: collatz/MaxSequence

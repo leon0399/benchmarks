@@ -1,15 +1,17 @@
 import time
+from math import sqrt
 
-limit = 100000
+limit = 500000
 
-def get_last_prime(limit):
+def get_last_prime(count):
     last_prime = 2
 
     # Traverse each number from 1 to N with the help of for loop
-    for num in range(2, limit + 1):
+    for num in range(3, count, 2):
         is_prime = True
+        limit = int(sqrt(num))
 
-        for i in range(2, num // 2 + 1):
+        for i in range(3, limit, 2):
             if num % i == 0:
                 is_prime = False
                 break

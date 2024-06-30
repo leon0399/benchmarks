@@ -1,18 +1,17 @@
 #!/usr/bin/env php
-
 <?php
 
-const NUMBER = 100000;
+const NUMBER = 500000;
 
 function getLastPrime($count) {
     $lastPrime = 2;
 
-    // Traverse each number from 1 to N with the help of for loop
-    for ($i = 2; $i <= $count; $i++)
-    {
+    // Traverse each number from 3 to N, skipping even numbers
+    for ($i = 3; $i <= $count; $i += 2) {
         $isPrime = true;
+        $limit = floor(sqrt($i));
 
-        for ($j = 2; $j <= $i / 2; ++$j) {
+        for ($j = 3; $j <= $limit; $j += 2) {
             if ($i % $j == 0) {
                 $isPrime = false;
                 break;

@@ -2,15 +2,16 @@ import kotlin.io.*
 import kotlin.time.TimeSource
 import platform.posix.*
 
-private const val NUMBER = 100000
+private const val NUMBER = 500000
 
 fun printPrimes(count: Int): Int {
     var lastPrime = 2
 
-    for (i in 2..count) {
+    for (i in 3..count step 2) {
         var isPrime = true
+        var limit = sqrt(i.toDouble()).toInt()
 
-        for (j in 2..i / 2) {
+        for (j in 3..limit step 2) {
             if (i % j == 0) {
                 isPrime = false
                 break

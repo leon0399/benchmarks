@@ -1,16 +1,18 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <time.h>
+#include <math.h>
 
-#define NUMBER 100000
+#define NUMBER 500000
 
 int getLastPrime(int count) {
     int lastPrime = 0;
 
-    for (int i = 2; i <= count; i++) {
+    for (int i = 3; i <= count; i += 2) {
         bool isPrime = true;
+        int limit = sqrt(i);
 
-        for (int j = 2; j <= i / 2; ++j) {
+        for (int j = 3; j <= limit; j += 2) {
             if (i % j == 0) {
                 isPrime = false;
                 break;

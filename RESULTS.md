@@ -6,31 +6,31 @@
 
 | Language | Time, s | Startup time, s | Total time, s | Memory, MiB |
 | :------- | ------: | --------------: | ------------: | ----------: |
-| C++ (clang) |  0.350<sub>±0.003</sub> |  0.003<sub>±0.001</sub> |  0.352<sub>±0.003</sub> |       3.36<sub>±0.87</sub> |
-| C++ (gcc) |  0.361<sub>±0.012</sub> |  0.003<sub>±0.000</sub> |  0.363<sub>±0.012</sub> |       1.84<sub>±0.84</sub> |
-| C (clang) |  0.347<sub>±0.003</sub> |  0.001<sub>±0.000</sub> |  0.349<sub>±0.003</sub> |       1.50<sub>±0.35</sub> |
-| C (gcc) |  0.349<sub>±0.003</sub> |  0.001<sub>±0.000</sub> |  0.350<sub>±0.003</sub> |       0.89<sub>±0.27</sub> |
-| Fortran (gfortran) |  0.350<sub>±0.005</sub> |  0.002<sub>±0.001</sub> |  0.352<sub>±0.005</sub> |       1.30<sub>±0.03</sub> |
-| Go |  0.418<sub>±0.012</sub> |  0.002<sub>±0.000</sub> |  0.421<sub>±0.012</sub> |       2.93<sub>±0.00</sub> |
-| Java |  0.376<sub>±0.004</sub> |  0.043<sub>±0.001</sub> |  0.420<sub>±0.005</sub> |      40.23<sub>±0.39</sub> |
-| Java (GraalVM) |  0.370<sub>±0.003</sub> |  0.084<sub>±0.001</sub> |  0.456<sub>±0.003</sub> |      79.97<sub>±3.39</sub> |
-| JavaScript (Node) |  0.369<sub>±0.019</sub> |  0.029<sub>±0.002</sub> |  0.398<sub>±0.020</sub> |      45.82<sub>±1.72</sub> |
-| JavaScript (GraalVM) |  0.830<sub>±0.021</sub> |  0.392<sub>±0.029</sub> |  1.189<sub>±0.033</sub> |     349.41<sub>±4.05</sub> |
-| Kotlin (JVM) |  0.359<sub>±0.003</sub> |  0.051<sub>±0.006</sub> |  0.410<sub>±0.007</sub> |      41.79<sub>±0.57</sub> |
-| Kotlin (Native) |  0.357<sub>±0.071</sub> |  0.003<sub>±0.001</sub> |  0.360<sub>±0.072</sub> |       4.19<sub>±0.13</sub> |
-| Perl | 28.071<sub>±0.183</sub> |  0.015<sub>±0.006</sub> | 28.085<sub>±0.184</sub> |       7.37<sub>±0.05</sub> |
-| PHP |  3.483<sub>±0.040</sub> |  0.017<sub>±0.001</sub> |  3.500<sub>±0.039</sub> |      19.29<sub>±0.08</sub> |
-| PHP (JIT: tracing) |  1.288<sub>±0.021</sub> |  0.021<sub>±0.000</sub> |  1.308<sub>±0.021</sub> |      22.50<sub>±0.09</sub> |
-| PHP (JIT: function) |  1.469<sub>±0.027</sub> |  0.021<sub>±0.001</sub> |  1.490<sub>±0.027</sub> |      22.63<sub>±0.10</sub> |
-| Python (CPython) | 10.763<sub>±0.067</sub> |  0.018<sub>±0.001</sub> | 10.781<sub>±0.066</sub> |       8.89<sub>±0.05</sub> |
-| Python (PyPy) |  0.483<sub>±0.022</sub> |  0.037<sub>±0.003</sub> |  0.517<sub>±0.023</sub> |      53.11<sub>±0.22</sub> |
-| Ruby | 11.894<sub>±0.143</sub> |  0.062<sub>±0.031</sub> | 11.949<sub>±0.147</sub> |      15.69<sub>±0.01</sub> |
-| Ruby (JIT) | 10.733<sub>±0.036</sub> |  0.056<sub>±0.003</sub> | 10.790<sub>±0.038</sub> |      16.13<sub>±0.06</sub> |
-| Ruby (JRuby) | 13.283<sub>±0.923</sub> |  2.547<sub>±0.131</sub> | 15.754<sub>±0.906</sub> |     513.30<sub>±56.20</sub> |
-| Rust |  0.345<sub>±0.002</sub> |  0.002<sub>±0.001</sub> |  0.347<sub>±0.001</sub> |       1.85<sub>±0.06</sub> |
-| Swift |  0.627<sub>±0.037</sub> |  0.253<sub>±0.677</sub> |  0.862<sub>±0.641</sub> |     169.25<sub>±20.59</sub> |
-| Swift (Optimized) |  0.347<sub>±0.001</sub> |  0.343<sub>±0.312</sub> |  0.681<sub>±0.287</sub> |     175.77<sub>±20.52</sub> |
-| Swift (Compiled) |  0.348<sub>±0.001</sub> |  0.006<sub>±0.000</sub> |  0.353<sub>±0.001</sub> |      13.88<sub>±1.29</sub> |
+| C++ (clang) |  0.020<sub>±0.001</sub> |  0.003<sub>±0.000</sub> |  0.023<sub>±0.000</sub> |       3.23<sub>±0.79</sub> |
+| C++ (gcc) |  0.020<sub>±0.000</sub> |  0.002<sub>±0.000</sub> |  0.022<sub>±0.000</sub> |       3.30<sub>±0.65</sub> |
+| C (clang) |  0.021<sub>±0.000</sub> |  0.001<sub>±0.000</sub> |  0.022<sub>±0.000</sub> |       1.20<sub>±0.39</sub> |
+| C (gcc) |  0.021<sub>±0.000</sub> |  0.001<sub>±0.000</sub> |  0.022<sub>±0.000</sub> |       1.85<sub>±0.43</sub> |
+| Fortran (gfortran) |  0.021<sub>±0.000</sub> |  0.002<sub>±0.000</sub> |  0.023<sub>±0.001</sub> |       2.70<sub>±0.81</sub> |
+| Go |  0.025<sub>±0.001</sub> |  0.003<sub>±0.000</sub> |  0.028<sub>±0.001</sub> |       2.92<sub>±0.00</sub> |
+| Java |  0.045<sub>±0.005</sub> |  0.063<sub>±0.005</sub> |  0.108<sub>±0.013</sub> |      40.47<sub>±0.86</sub> |
+| Java (GraalVM) |  0.047<sub>±0.005</sub> |  0.098<sub>±0.004</sub> |  0.144<sub>±0.007</sub> |      79.41<sub>±4.43</sub> |
+| JavaScript (Node) |  0.029<sub>±0.003</sub> |  0.035<sub>±0.002</sub> |  0.064<sub>±0.005</sub> |      44.90<sub>±0.04</sub> |
+| JavaScript (GraalVM) |  0.447<sub>±0.030</sub> |  0.410<sub>±0.030</sub> |  0.849<sub>±0.054</sub> |     335.71<sub>±3.50</sub> |
+| Kotlin (JVM) |  0.027<sub>±0.002</sub> |  0.051<sub>±0.002</sub> |  0.078<sub>±0.004</sub> |      41.79<sub>±1.27</sub> |
+| Kotlin (Native) |  0.024<sub>±0.003</sub> |  0.005<sub>±0.001</sub> |  0.029<sub>±0.003</sub> |       4.54<sub>±0.13</sub> |
+| Perl |  1.260<sub>±0.011</sub> |  0.023<sub>±0.004</sub> |  1.280<sub>±0.009</sub> |       7.39<sub>±0.03</sub> |
+| PHP |  0.179<sub>±0.012</sub> |  0.019<sub>±0.008</sub> |  0.197<sub>±0.019</sub> |      19.39<sub>±0.06</sub> |
+| PHP (JIT: tracing) |  0.028<sub>±0.001</sub> |  0.021<sub>±0.001</sub> |  0.049<sub>±0.001</sub> |      22.75<sub>±0.14</sub> |
+| PHP (JIT: function) |  0.038<sub>±0.008</sub> |  0.021<sub>±0.002</sub> |  0.058<sub>±0.008</sub> |      22.53<sub>±0.10</sub> |
+| Python (CPython) |  0.663<sub>±0.010</sub> |  0.017<sub>±0.001</sub> |  0.683<sub>±0.010</sub> |       9.03<sub>±0.06</sub> |
+| Python (PyPy) |  0.039<sub>±0.004</sub> |  0.035<sub>±0.028</sub> |  0.073<sub>±0.025</sub> |      53.60<sub>±3.88</sub> |
+| Ruby |  2.089<sub>±0.036</sub> |  0.057<sub>±0.002</sub> |  2.144<sub>±0.037</sub> |      15.83<sub>±0.02</sub> |
+| Ruby (JIT) |  2.074<sub>±0.068</sub> |  0.064<sub>±0.008</sub> |  2.128<sub>±0.067</sub> |      16.23<sub>±0.83</sub> |
+| Ruby (JRuby) |  2.034<sub>±0.096</sub> |  2.549<sub>±0.078</sub> |  4.695<sub>±0.085</sub> |     308.90<sub>±50.45</sub> |
+| Rust |  0.019<sub>±0.001</sub> |  0.001<sub>±0.001</sub> |  0.021<sub>±0.000</sub> |       1.76<sub>±0.07</sub> |
+| Swift |  1.121<sub>±0.015</sub> |  0.458<sub>±0.257</sub> |  1.404<sub>±0.236</sub> |     169.80<sub>±21.21</sub> |
+| Swift (Optimized) |  0.021<sub>±0.002</sub> |  0.379<sub>±0.434</sub> |  0.379<sub>±0.400</sub> |     175.93<sub>±20.97</sub> |
+| Swift (Compiled) |  0.021<sub>±0.003</sub> |  0.006<sub>±0.000</sub> |  0.028<sub>±0.002</sub> |      14.00<sub>±1.59</sub> |
 
 
 ### primes/Atkin

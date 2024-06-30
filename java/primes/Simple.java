@@ -1,15 +1,16 @@
 package primes;
 
 public final class Simple {
-    private static final int NUMBER = 100000;
+    private static final int NUMBER = 500000;
 
     public static int printPrimes(final int count) {
         int lastPrime = 2;
 
-        for (var i = 2; i <= count; i++) {
+        for (var i = 3; i <= count; i += 2) {
             boolean isPrime = true;
+            int limit = (int) Math.sqrt(i);
 
-            for (var j = 2; j <= i / 2; ++j) {
+            for (var j = 3; j <= limit; j += 2) {
                 if (i % j == 0) {
                     isPrime = false;
                     break;

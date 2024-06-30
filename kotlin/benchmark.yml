@@ -9,4 +9,6 @@ strategy:
         command: './%s.kexe'
 
     files:
+      - primes/Simple
+
       - treap/Naive

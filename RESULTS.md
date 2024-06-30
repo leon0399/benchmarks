@@ -16,6 +16,8 @@
 | Java (GraalVM) |  0.370<sub>±0.003</sub> |  0.084<sub>±0.001</sub> |  0.456<sub>±0.003</sub> |      79.97<sub>±3.39</sub> |
 | JavaScript (Node) |  0.369<sub>±0.019</sub> |  0.029<sub>±0.002</sub> |  0.398<sub>±0.020</sub> |      45.82<sub>±1.72</sub> |
 | JavaScript (GraalVM) |  0.830<sub>±0.021</sub> |  0.392<sub>±0.029</sub> |  1.189<sub>±0.033</sub> |     349.41<sub>±4.05</sub> |
+| Kotlin (JVM) |  0.359<sub>±0.003</sub> |  0.051<sub>±0.006</sub> |  0.410<sub>±0.007</sub> |      41.79<sub>±0.57</sub> |
+| Kotlin (Native) |  0.357<sub>±0.071</sub> |  0.003<sub>±0.001</sub> |  0.360<sub>±0.072</sub> |       4.19<sub>±0.13</sub> |
 | Perl | 28.071<sub>±0.183</sub> |  0.015<sub>±0.006</sub> | 28.085<sub>±0.184</sub> |       7.37<sub>±0.05</sub> |
 | PHP |  3.483<sub>±0.040</sub> |  0.017<sub>±0.001</sub> |  3.500<sub>±0.039</sub> |      19.29<sub>±0.08</sub> |
 | PHP (JIT: tracing) |  1.288<sub>±0.021</sub> |  0.021<sub>±0.000</sub> |  1.308<sub>±0.021</sub> |      22.50<sub>±0.09</sub> |

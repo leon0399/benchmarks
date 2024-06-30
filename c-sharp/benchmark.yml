@@ -1,0 +1,13 @@
+title: 'C#'
+
+strategy:
+  matrix:
+    command:
+      - title: 'csc'
+        command: 'mono %s-csc.exe'
+
+      - title: 'mcs'
+        command: 'mono %s-mcs.exe'
+
+    files:
+      - mandelbrot/Simple

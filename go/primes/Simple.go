@@ -6,7 +6,7 @@ import (
 	"math"
 )
 
-const NUMBER = 500000
+const NUMBER = 1000000
 
 func getLastPrime(count int) int {
 	lastPrime := 2

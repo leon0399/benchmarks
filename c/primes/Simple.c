@@ -3,7 +3,7 @@
 #include <time.h>
 #include <math.h>
 
-#define NUMBER 500000
+#define NUMBER 1000000
 
 int getLastPrime(int count) {
     int lastPrime = 0;

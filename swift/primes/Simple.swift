@@ -2,7 +2,7 @@
 
 import Foundation
 
-let NUMBER = 500000
+let NUMBER = 1000000
 
 func getLastPrime(_ count: Int) -> Int {
     var lastPrime = 2

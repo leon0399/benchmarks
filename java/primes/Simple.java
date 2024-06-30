@@ -1,7 +1,7 @@
 package primes;
 
 public final class Simple {
-    private static final int NUMBER = 500000;
+    private static final int NUMBER = 1000000;
 
     public static int printPrimes(final int count) {
         int lastPrime = 2;

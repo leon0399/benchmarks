@@ -1,5 +1,5 @@
 object Simple {
-    private const val NUMBER = 500000
+    private const val NUMBER = 1000000
 
     @JvmStatic
     fun printPrimes(count: Int): Int {

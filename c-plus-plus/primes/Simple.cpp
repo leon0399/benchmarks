@@ -2,7 +2,7 @@
 #include <chrono>
 #include <cmath>
 
-static const auto NUMBER = 500000;
+static const auto NUMBER = 1000000;
 
 auto getLastPrime(int count) -> int
 {

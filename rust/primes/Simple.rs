@@ -1,4 +1,4 @@
-const NUMBER: i32 = 500000;
+const NUMBER: i32 = 1000000;
 
 fn get_last_prime(count: i32) -> i32
 {

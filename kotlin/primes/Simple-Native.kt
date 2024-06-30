@@ -2,7 +2,7 @@ import kotlin.io.*
 import kotlin.time.TimeSource
 import platform.posix.*
 
-private const val NUMBER = 500000
+private const val NUMBER = 1000000
 
 fun printPrimes(count: Int): Int {
     var lastPrime = 2

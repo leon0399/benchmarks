@@ -1,7 +1,7 @@
 #!/usr/bin/env php
 <?php
 
-const NUMBER = 500000;
+const NUMBER = 1000000;
 
 function getLastPrime($count) {
     $lastPrime = 2;

@@ -1,6 +1,6 @@
 program benchmark_primes
     implicit none
-    integer, parameter :: NUMBER = 500000
+    integer, parameter :: NUMBER = 1000000
     integer :: lastPrime
     real :: start_time, end_time, duration
 

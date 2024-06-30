@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-NUMBER = 500_000
+NUMBER = 1000000
 
 def getLastPrime(count)
   lastPrime = 2

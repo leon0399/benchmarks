@@ -2,7 +2,7 @@ import time
 from math import sqrt
 import numba
 
-limit = 500000
+limit = 1000000
 
 @numba.jit(nopython=True)
 def get_last_prime(count):

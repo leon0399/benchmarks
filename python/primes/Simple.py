@@ -1,7 +1,7 @@
 import time
 from math import sqrt
 
-limit = 500000
+limit = 1000000
 
 def get_last_prime(count):
     last_prime = 2

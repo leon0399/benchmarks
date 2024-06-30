@@ -2,7 +2,7 @@
 
 'use strict';
 
-const NUMBER = 500000;
+const NUMBER = 1000000;
 
 function getLastPrime(number)
 {

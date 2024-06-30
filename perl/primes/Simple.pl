@@ -5,7 +5,7 @@ use warnings;
 use Time::HiRes qw(time);
 use POSIX qw(floor);
 
-use constant NUMBER => 500000;
+use constant NUMBER => 1000000;
 
 sub get_last_prime {
     my ($count) = @_;

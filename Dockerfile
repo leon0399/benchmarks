@@ -64,6 +64,8 @@ RUN apt install -y \
         pipx \
         python3-venv \
         python3-ipython
+RUN pipx install numba && pipx install cython
+ENV PATH="/root/.local/bin:${PATH}"
 
 # PyPy
 ARG PYPY=v7.3.15

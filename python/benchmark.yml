@@ -9,15 +9,30 @@ strategy:
         command: 'pypy3 %s.py'
         tags:
           - Alternative
+      - title: 'Numba'
+        command: 'numba %s-Numba.py'
+        tags:
+          - Alternative
+          - JIT
+
+    exclude:
+      - command: 'Numba'
+        file: linpack/Linpack
+
+      - command: 'Numba'
+        file: primes/Atkin
+
+      - command: 'Numba'
+        file: treap/Naive
 
     files:
       - linpack/Linpack
 
+      - primes/Simple
       - primes/Atkin
 
       - treap/Naive
 
       - recursion/Tak
-      - primes/Simple
       - collatz/MaxSequence
       - mandelbrot/Simple

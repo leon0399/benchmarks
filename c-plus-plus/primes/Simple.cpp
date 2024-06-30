@@ -1,16 +1,18 @@
 #include <iostream>
 #include <chrono>
+#include <cmath>
 
-static const auto NUMBER = 100000;
+static const auto NUMBER = 500000;
 
 auto getLastPrime(int count) -> int
 {
     auto lastPrime = 0;
 
-    for (auto i = 2; i <= count; i++) {
+    for (auto i = 3; i <= count; i += 2) {
         bool isPrime = true;
+        int limit = static_cast<int>(std::sqrt(i));
 
-        for (auto j = 2; j <= i / 2; ++j) {
+        for (auto j = 3; j <= limit; j += 2) {
             if (i % j == 0) {
                 isPrime = false;
                 break;

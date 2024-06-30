@@ -4,20 +4,20 @@ strategy:
   matrix:
     command:
       - title: 'CPython'
-        command: 'python3 %s'
+        command: 'python3 %s.py'
       - title: 'PyPy'
-        command: 'pypy3 %s'
+        command: 'pypy3 %s.py'
         tags:
           - Alternative
 
     files:
-      - linpack/Linpack.py
+      - linpack/Linpack
 
-      - primes/Atkin.py
+      - primes/Atkin
 
-      - treap/Naive.py
+      - treap/Naive
 
-      - recursion/Tak.py
-      - primes/Simple.py
-      - collatz/MaxSequence.py
-      - mandelbrot/Simple.py
+      - recursion/Tak
+      - primes/Simple
+      - collatz/MaxSequence
+      - mandelbrot/Simple

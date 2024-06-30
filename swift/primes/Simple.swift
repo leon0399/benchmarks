@@ -2,15 +2,16 @@
 
 import Foundation
 
-let NUMBER = 100000
+let NUMBER = 500000
 
 func getLastPrime(_ count: Int) -> Int {
     var lastPrime = 2
 
-    for i in 2...count {
+    for i in stride(from: 3, to: count, by: 2) {
         var isPrime = true
+        var limit = Int(sqrt(Double(i)))
 
-        for j in 2...(i / 2 + 1) {
+        for j in stride(from: 3, to: limit, by: 2) {
             if i % j == 0 {
                 isPrime = false
                 break

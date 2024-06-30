@@ -3,18 +3,20 @@ package main
 import (
 	"fmt"
 	"time"
+	"math"
 )
 
-const NUMBER = 100000
+const NUMBER = 500000
 
 func getLastPrime(count int) int {
 	lastPrime := 2
 
-	for i := 2; i <= count; i++ {
+	for i := 3; i <= count; i += 2 {
 		isPrime := true
+		limit := int(math.Sqrt(float64(i)))
 
-		for j := 2; j <= i/2; j++ {
-			if i%j == 0 {
+		for j := 3; j <= limit; j += 2 {
+			if i % j == 0 {
 				isPrime = false
 				break
 			}

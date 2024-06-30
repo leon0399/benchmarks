@@ -1,14 +1,15 @@
 # frozen_string_literal: true
 
-NUMBER = 100_000
+NUMBER = 500_000
 
 def getLastPrime(count)
   lastPrime = 2
 
-  for i in 2..count
+  for i in (3..count).step(2) 
     isPrime = true
+    limit = Math.sqrt(i).to_i
 
-    for j in 2..i/2
+    for j in (3..limit).step(2)
       if i % j == 0
         isPrime = false
         break

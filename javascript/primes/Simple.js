@@ -2,18 +2,19 @@
 
 'use strict';
 
-const NUMBER = 100000;
+const NUMBER = 500000;
 
 function getLastPrime(number)
 {
     var lastPrime = 2;
 
     // Traverse each number from 1 to N with the help of for loop
-    for (var i = 2; i <= number; i++)
+    for (var i = 3; i <= number; i += 2)
     {
         var isPrime = true;
+        var limit = Math.sqrt(i);
 
-        for (var j = 2; j <= i / 2; ++j) {
+        for (var j = 3; j <= limit; j += 2) {
             if (i % j == 0) {
                 isPrime = false;
                 break;

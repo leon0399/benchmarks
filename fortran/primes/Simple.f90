@@ -1,6 +1,6 @@
 program benchmark_primes
     implicit none
-    integer, parameter :: NUMBER = 100000
+    integer, parameter :: NUMBER = 500000
     integer :: lastPrime
     real :: start_time, end_time, duration
 
@@ -24,14 +24,16 @@ contains
         integer, intent(in) :: count
         integer :: lastPrime
         integer :: i, j
+        integer :: limit
         logical :: isPrime
 
         lastPrime = 0
 
-        do i = 2, count
+        do i = 3, count, 2
             isPrime = .true.
+            limit = int(sqrt(real(i))) ! Check up to the square root of i
 
-            do j = 2, i / 2
+            do j = 3, limit, 2
                 if (mod(i, j) == 0) then
                     isPrime = .false.
                     exit

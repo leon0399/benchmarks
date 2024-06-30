@@ -1,0 +1,17 @@
+title: 'Lua'
+
+strategy:
+  matrix:
+    command:
+      - title: 'Lua'
+        command: 'lua %s'
+      - title: 'LuaJIT'
+        command: 'luajit %s'
+        tags:
+          - JIT
+
+    files:
+      - primes/Simple.lua
+      - treap/Naive.lua
+      - recursion/Tak.lua
+      - mandelbrot/Simple.lua

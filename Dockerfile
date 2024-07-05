@@ -186,5 +186,11 @@ RUN wget https://packages.microsoft.com/config/debian/12/packages-microsoft-prod
     && apt update \
     && apt install -y \
         dotnet-sdk-8.0 aspnetcore-runtime-8.0 dotnet-runtime-8.0 mono-complete
+        
+# Zig
+ARG ZIG=0.12.0
+RUN wget --progress=dot:giga -O - \
+        https://ziglang.org/download/$ZIG/zig-linux-x86_64-$ZIG.tar.xz | tar -xJ
+ENV PATH="/opt/zig-linux-x86_64-$ZIG:${PATH}"
 
 WORKDIR /app

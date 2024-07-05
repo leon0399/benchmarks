@@ -1,9 +1,14 @@
 LANGS = \
+    c \
 	c-plus-plus \
+	c-sharp \
+	fortran \
 	go \
 	java \
 	kotlin \
 	rust \
+	swift \
+	zig \
 
 .PHONY: all $(LANGS) clean
 

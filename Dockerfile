@@ -4,8 +4,8 @@ FROM ${IMAGE}
 
 ARG DEBIAN_FRONTEND=noninteractive
 
-RUN apt update \
-    && apt install -y \
+RUN apt-get update \
+    && apt-get install -y \
         git \
         curl \
         wget \
@@ -42,7 +42,7 @@ RUN apt update \
 WORKDIR /opt
 
 # C++
-RUN apt install -y \
+RUN apt-get install -y \
         gcc \
         clang
 
@@ -52,7 +52,7 @@ RUN apt install -y \
 #     # && cgmemtime --setup -g $(getent group $(id -g) | cut -d: -f1) --perm 775
 
 # Python
-RUN apt install -y \
+RUN apt-get install -y \
         python3 \
         python3-pip \
         python3-full \
@@ -80,9 +80,11 @@ RUN wget --progress=dot:giga -O - \
 ARG PHP=8.3
 RUN echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | tee /etc/apt/sources.list.d/sury-php.list \
     && wget -qO - https://packages.sury.org/php/apt.gpg | apt-key add - \
-    && apt update \
-    && apt install -y \
-        php${PHP}
+    && apt-get update \
+    && apt-get install -y \
+        php${PHP} \
+        php${PHP}-dev \
+    && pecl install openswoole
 
 # JavaScript
 ARG NODE=20.11.0
@@ -108,7 +110,7 @@ RUN wget -O - https://sh.rustup.rs | sh -s -- -y
 ENV PATH="/opt/.cargo/bin:${PATH}"
 
 # Groovy
-RUN apt install -y \
+RUN apt-get install -y \
         groovy
 
 # Kotlin
@@ -165,7 +167,7 @@ RUN gu available \
     && export GRAALVM_LLVM_TOOLCHAIN=$(graalvm.lli --print-toolchain-path)
 
 # Fortran
-RUN apt install -y \
+RUN apt-get install -y \
         gfortran
 
 # Swift
@@ -175,7 +177,7 @@ RUN wget --progress=dot:giga -O - \
 ENV PATH="/opt/swift-${SWIFT}-RELEASE-debian12/usr/bin:${PATH}"
 
 # Lua
-RUN apt install -y \
+RUN apt-get install -y \
         lua5.4 \
         luajit
 

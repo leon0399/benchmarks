@@ -13,6 +13,7 @@ import json
 import time
 import statistics
 import argparse
+import numpy
 
 parser = argparse.ArgumentParser(description='Run benchmarks')
 parser.add_argument('action', type=str, help='Action to perform', choices=['run', 'results'])
@@ -27,7 +28,7 @@ times = args.times
 configurations = []
 if args.languages:
     for language in args.languages:
-        configurations += glob.glob('langs' + language + '/benchmark.yml') + glob.glob('langs' + language + '/benchmark.yaml')
+        configurations += glob.glob('langs/' + language + '/benchmark.yml') + glob.glob('langs/' + language + '/benchmark.yaml')
 else:
     configurations = glob.glob('langs/*/benchmark.yml') + glob.glob('langs/*/benchmark.yaml')
 configurations.sort()
@@ -149,17 +150,22 @@ def writeResultsMarkdown(results):
         for (scriptName, languages) in results.items():
             file.write('### %s\n\n' % (scriptName))
 
-            file.write('| Language | Time, s | Startup time, s | Total time, s | Memory, MiB |\n')
-            file.write('| :------- | ------: | --------------: | ------------: | ----------: |\n')
+            file.write('| Language | Time, s | %99 Time, s | %95 Time, s | %50 Time, s | %5 Time, s | Startup time, s | Total time, s | Memory, MiB |\n')
+            file.write('| :------- | ------: | ----------: |  ---------: |  ---------: |  --------: | --------------: | ------------: | ----------: |\n')
 
             for (language, configurations) in languages.items():
                 for (configuration, elapsed) in configurations.items():
                     langugageTitle = ('%s' % (language)) if language == configuration else ('%s (%s)' % (language, configuration))
 
-                    file.write('| %s | %s<sub>±%s</sub> | %s<sub>±%s</sub> | %s<sub>±%s</sub> | %s<sub>±%s</sub> |\n' % (
+                    file.write('| %s | %s<sub>±%s</sub> | %s | %s | %s | %s | %s<sub>±%s</sub> | %s<sub>±%s</sub> | %s<sub>±%s</sub> |\n' % (
                             langugageTitle,
                             "{:6.3f}".format(elapsed['time']['median']),
                             "{:.3f}".format(elapsed['time']['stdev']),
+
+                            "{:6.3f}".format(elapsed['time']['n99']),
+                            "{:6.3f}".format(elapsed['time']['n95']),
+                            "{:6.3f}".format(elapsed['time']['n50']),
+                            "{:6.3f}".format(elapsed['time']['n05']),
 
                             "{:6.3f}".format(elapsed['startup_time']['median']),
                             "{:.3f}".format(elapsed['startup_time']['stdev']),
@@ -260,6 +266,11 @@ if args.action == 'run':
                 if len(reportedResults) > 1:
                     reportedStdev = statistics.stdev(reportedResults)
 
+                reportedN99 = numpy.percentile(reportedResults, 99)
+                reportedN95 = numpy.percentile(reportedResults, 95)
+                reportedN50 = numpy.percentile(reportedResults, 50)
+                reportedN05 = numpy.percentile(reportedResults, 5)
+
                 memoryResults.sort()
                 memoryMedian = statistics.median(memoryResults)
                 memoryStdev = 0
@@ -272,6 +283,7 @@ if args.action == 'run':
                 if len(startupResults) > 1:
                     startupStdev = statistics.stdev(startupResults)
 
+
                 result = {
                     'tags': run['tags'],
                     'total_time': {
@@ -283,6 +295,10 @@ if args.action == 'run':
                         'results': reportedResults,
                         'median': reportedMedian,
                         'stdev': reportedStdev,
+                        'n99': reportedN99,
+                        'n95': reportedN95,
+                        'n50': reportedN50,
+                        'n05': reportedN05,
                     },
                     'startup_time': {
                         'results': startupResults,

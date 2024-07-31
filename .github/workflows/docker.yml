@@ -11,6 +11,9 @@ on:
     paths:
       - Dockerfile
 
+concurrency: 
+  group: ${{ github.workflow }}-${{ github.ref }}
+
 jobs:
   docker:
     runs-on: ubuntu-latest
@@ -50,7 +53,13 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
+          pull: true
           context: .
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          cache-from: |
+            ${{ steps.meta.outputs.tags }}
+            ghcr.io/${{ github.repository }}:latest
+            type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache

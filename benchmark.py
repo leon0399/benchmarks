@@ -27,9 +27,9 @@ times = args.times
 configurations = []
 if args.languages:
     for language in args.languages:
-        configurations += glob.glob(language + '/benchmark.yml') + glob.glob(language + '/benchmark.yaml')
+        configurations += glob.glob('langs' + language + '/benchmark.yml') + glob.glob('langs' + language + '/benchmark.yaml')
 else:
-    configurations = glob.glob('*/benchmark.yml') + glob.glob('*/benchmark.yaml')
+    configurations = glob.glob('langs/*/benchmark.yml') + glob.glob('langs/*/benchmark.yaml')
 configurations.sort()
 
 scripts = ['*']

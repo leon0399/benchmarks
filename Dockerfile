@@ -84,7 +84,9 @@ RUN echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | tee /etc
     && apt-get install -y \
         php${PHP} \
         php${PHP}-dev \
-    && pecl install openswoole
+    && pecl install openswoole \
+    &&  bash -c "echo 'extension=openswoole' >> $(php -i | grep /.+/php.ini -oE)" \
+    && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 # JavaScript
 ARG NODE=20.11.0

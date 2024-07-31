@@ -1,0 +1,2 @@
+all:
+	composer install

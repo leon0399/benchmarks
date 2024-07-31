@@ -2,13 +2,19 @@ name: Run Benchmark on Change
 
 on:
   pull_request:
-    branches:
-      - master
+    paths: 
+      - 'langs/**/*'
+      - '.github/workflows/benchmark_on_change.yml'
+      - 'benchmark.py'
+      - 'run_on_changes.py'
 
+concurrency: 
+  group: ${{ github.workflow }}-${{ github.ref }}
 
 jobs:
   benchmark:
     runs-on: ubuntu-latest
+    timeout-minutes: 60
     
     permissions:
       pull-requests: read
@@ -33,7 +39,5 @@ jobs:
 
       - name: Run benchmarks for changed files
         if: steps.changed-files.outputs.any_changed == 'true'
-        env:
-          ALL_CHANGED_FILES: ${{ steps.changed-files.outputs.all_changed_files }}
         run: |
-          docker-compose run benchmark python3 ./run_on_changes.py $ALL_CHANGED_FILES
+          docker-compose run benchmark python3 ./run_on_changes.py ${{ steps.changed-files.outputs.all_changed_files }}

@@ -4,20 +4,10 @@ strategy:
   matrix:
     command:
       - title: 'clang'
-        command: './{file}-clang-{version}'
-        versions:
-          - 16
-          - 17
-          - 18
+        command: './{file}-clang'
 
       - title: 'gcc'
         command: './{file}-gcc'
-        versions:
-          - 11
-          - 12
-          - 13
-          - 14.1
-          - 14.2
 
     files:
       - primes/Simple
@@ -33,8 +23,6 @@ strategy:
 
       - linpack/Linpack
 
-      - regex/
-
     exclude:
       - command: 'gcc'
-        file: collatz/MaxSequence
+        file: 'collatz/MaxSequence'

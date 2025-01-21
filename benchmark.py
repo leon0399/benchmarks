@@ -100,6 +100,7 @@ def load_configuration(filename, config_directory):
 
     commands = matrix.get('command', [])
     files = matrix.get('files', [])
+    global_exclude = matrix.get('exclude', [])  # List of exclude rules
 
     runs = []
 
@@ -150,7 +151,44 @@ def load_configuration(filename, config_directory):
 
                 runs.append(run_def)
 
+    if global_exclude:
+        runs = [r for r in runs if not is_excluded(r, global_exclude)]
+
     return runs
+
+def is_excluded(run_def, exclude_list):
+    """
+    Returns True if run_def matches ANY rule in exclude_list.
+    """
+    for rule in exclude_list:
+        if rule_matches(run_def, rule):
+            return True
+    return False
+
+
+def rule_matches(run_def, rule):
+    """
+    Check if all specified keys in 'rule' match the corresponding fields in 'run_def'.
+    Example rule: { command: 'gcc', file: 'collatz/MaxSequence' }
+    We compare run_def['command_title'] and run_def['script_file'] accordingly.
+    """
+    # Must match *all* fields in the rule to be considered a match.
+    for key, value in rule.items():
+        if key == 'file':
+            if run_def.get('script_file') != value:
+                return False
+        elif key == 'command':
+            if run_def.get('command_title') != value:
+                return False
+        elif key == 'version':
+            # If your rule might say version: 16, compare strings or convert both
+            if str(run_def.get('version', '')) != str(value):
+                return False
+        else:
+            # If you add more fields, handle them here
+            return False
+        
+    return True
 
 def normalize_command_info(cmd_info):
     if isinstance(cmd_info, str):

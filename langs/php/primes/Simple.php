@@ -26,14 +26,12 @@ function getLastPrime($count) {
     return $lastPrime;
 }
 
-(function () {
-    $startTimeMs = floor(microtime(true) * 1000);
+$startTimeMs = floor(microtime(true) * 1000);
 
-    $lastPrime = getLastPrime(NUMBER);
-    echo "Last prime: " . $lastPrime . "\n";
+$lastPrime = getLastPrime(NUMBER);
+echo "Last prime: " . $lastPrime . "\n";
 
-    $endTimeMs = floor(microtime(true) * 1000);
-    $durationMs = $endTimeMs - $startTimeMs;
-  
-    echo "Execution time: " . $durationMs . "ms\n";
-})();
+$endTimeMs = floor(microtime(true) * 1000);
+$durationMs = $endTimeMs - $startTimeMs;
+
+echo "Execution time: " . $durationMs . "ms\n";

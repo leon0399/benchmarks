@@ -433,13 +433,11 @@ function second() {
   return microtime(true);
 }
 
-(function () {
-  $startTimeMs = floor(microtime(true) * 1000);
+$startTimeMs = floor(microtime(true) * 1000);
 
-  linpack(ARRAY_SIZE);
+linpack(ARRAY_SIZE);
 
-  $endTimeMs = floor(microtime(true) * 1000);
-  $durationMs = $endTimeMs - $startTimeMs;
+$endTimeMs = floor(microtime(true) * 1000);
+$durationMs = $endTimeMs - $startTimeMs;
 
-  echo "Execution time: " . $durationMs . "ms\n";
-})();
+echo "Execution time: " . $durationMs . "ms\n";

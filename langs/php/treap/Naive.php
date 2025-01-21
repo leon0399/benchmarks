@@ -70,10 +70,9 @@ class SplitResult {
     }
 }
 
-
-function split($orig, $value) {
-    [$lower, $equalGreater] = splitBinary($orig, $value);
-    [$equal, $greater] = splitBinary($equalGreater, $value + 1);
+function splitTreapNode($orig, $value) {
+    list($lower, $equalGreater) = splitBinary($orig, $value);
+    list($equal, $greater) = splitBinary($equalGreater, $value + 1);
 
     return new SplitResult($lower, $equal, $greater);
 }
@@ -87,7 +86,7 @@ class Tree {
     }
 
     public function hasValue($x) {
-        $splited = split($this->root, $x);
+        $splited = splitTreapNode($this->root, $x);
         $res = $splited->equal !== null;
         $this->root = merge3($splited->lower, $splited->equal, $splited->greater);
 
@@ -95,7 +94,7 @@ class Tree {
     }
 
     public function insert($x) {
-        $splited = split($this->root, $x);
+        $splited = splitTreapNode($this->root, $x);
 
         if ($splited->equal === null) {;
             $splited->equal = new Node($x);
@@ -105,7 +104,7 @@ class Tree {
     }
 
     public function erase($x) {
-        $splited = split($this->root, $x);
+        $splited = splitTreapNode($this->root, $x);
         $this->root = merge($splited->lower, $splited->greater);
     }
 }
@@ -130,13 +129,11 @@ function main() {
     echo $res;
 }
 
-(function () {
-    $startTimeMs = floor(microtime(true) * 1000);
+$startTimeMs = floor(microtime(true) * 1000);
 
-    main();
+main();
 
-    $endTimeMs = floor(microtime(true) * 1000);
-    $durationMs = $endTimeMs - $startTimeMs;
-  
-    echo "Execution time: " . $durationMs . "ms\n";
-})();
+$endTimeMs = floor(microtime(true) * 1000);
+$durationMs = $endTimeMs - $startTimeMs;
+
+echo "Execution time: " . $durationMs . "ms\n";

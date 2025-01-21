@@ -4,13 +4,13 @@ strategy:
   matrix:
     command:
       - title: 'Ruby'
-        command: 'ruby %s'
+        command: 'ruby {file}'
       - title: 'JIT'
-        command: 'ruby --jit %s'
+        command: 'ruby --jit {file}'
         tags:
           - JIT
       - title: 'JRuby'
-        command: 'jruby %s'
+        command: 'jruby {file}'
         tags:
           - Alternative
 

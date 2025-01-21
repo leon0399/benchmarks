@@ -4,7 +4,7 @@ strategy:
   matrix:
     command:
       - title: 'gfortran'
-        command: './%s-gfortran'
+        command: './{file}-gfortran'
 
     files:
       - primes/Simple

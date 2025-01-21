@@ -4,15 +4,20 @@ strategy:
   matrix:
     command:
       - title: 'clang'
-        command: './%s-clang'
-      # - title: 'clang & static'
-      #   command: './%s-clang-static'
+        command: './{file}-clang-{version}'
+        versions:
+          - 16
+          - 17
+          - 18
+
       - title: 'gcc'
-        command: './%s-gcc'
-      # - title: 'gcc & static'
-      #   command: './%s-gcc-static'
-      # - title: 'GraalVM'
-      #   command: 'graalvm.lli %s-graalvm'
+        command: './{file}-gcc'
+        versions:
+          - 11
+          - 12
+          - 13
+          - 14.1
+          - 14.2
 
     files:
       - primes/Simple
@@ -27,6 +32,8 @@ strategy:
       - recursion/Tak
 
       - linpack/Linpack
+
+      - regex/
 
     exclude:
       - command: 'gcc'

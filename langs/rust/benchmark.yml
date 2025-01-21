@@ -4,7 +4,7 @@ strategy:
   matrix:
     command:
       - title: 'Rust'
-        command: './%s'
+        command: './{file}'
 
     files:
       - primes/Simple

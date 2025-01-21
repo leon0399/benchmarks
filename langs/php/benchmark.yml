@@ -4,13 +4,15 @@ strategy:
   matrix:
     command:
       - title: 'PHP'
-        command: 'php -dxdebug.mode=off -dopcache.enable_cli=0 --file %s'
+        command: 'php -dxdebug.mode=off -dopcache.enable_cli=0 --file {file}'
+
       - title: 'JIT: tracing'
-        command: 'php -dxdebug.mode=off -dopcache.enable_cli=1 -dopcache.jit_buffer_size=100M -dopcache.jit=tracing --file %s'
+        command: 'php -dxdebug.mode=off -dopcache.enable_cli=1 -dopcache.jit_buffer_size=100M -dopcache.jit=tracing --file {file}'
         tags:
           - JIT
+
       - title: 'JIT: function'
-        command: 'php -dxdebug.mode=off -dopcache.enable_cli=1 -dopcache.jit_buffer_size=100M -dopcache.jit=function --file %s'
+        command: 'php -dxdebug.mode=off -dopcache.enable_cli=1 -dopcache.jit_buffer_size=100M -dopcache.jit=function --file {file}'
         tags:
           - JIT
 

@@ -34,13 +34,11 @@ function findMaxCollatz($to) {
     return $result;
 }
 
-(function () {
-    $startTimeMs = floor(microtime(true) * 1000);
+$startTimeMs = floor(microtime(true) * 1000);
 
-    print_r(findMaxCollatz(NUMBER));
+print_r(findMaxCollatz(NUMBER));
 
-    $endTimeMs = floor(microtime(true) * 1000);
-    $durationMs = $endTimeMs - $startTimeMs;
+$endTimeMs = floor(microtime(true) * 1000);
+$durationMs = $endTimeMs - $startTimeMs;
 
-    echo "Execution time: " . $durationMs . "ms\n";
-})();
+echo "Execution time: " . $durationMs . "ms\n";

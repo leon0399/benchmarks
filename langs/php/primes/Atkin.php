@@ -171,7 +171,7 @@ function find($upperBound, $prefix)
 
     while (count($queue) > 0)
     {
-        [$top, $prefix] = array_pop($queue);
+        list($top, $prefix) = array_pop($queue);
 
         if ($top->terminal)
         {
@@ -187,13 +187,11 @@ function find($upperBound, $prefix)
     return $result;
 }
 
-(function () {
-    $startTimeMs = floor(microtime(true) * 1000);
+$startTimeMs = floor(microtime(true) * 1000);
 
-    print_r(find(UPPER_BOUND, PREFIX));
+print_r(find(UPPER_BOUND, PREFIX));
 
-    $endTimeMs = floor(microtime(true) * 1000);
-    $durationMs = $endTimeMs - $startTimeMs;
-  
-    echo "Execution time: " . $durationMs . "ms\n";
-})();
+$endTimeMs = floor(microtime(true) * 1000);
+$durationMs = $endTimeMs - $startTimeMs;
+
+echo "Execution time: " . $durationMs . "ms\n";

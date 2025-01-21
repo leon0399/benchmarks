@@ -53,13 +53,11 @@ function mandelbrot($x, $y)
     }
 }
 
-(function () {
-    $startTimeMs = floor(microtime(true) * 1000);
+$startTimeMs = floor(microtime(true) * 1000);
 
-    index();
+index();
 
-    $endTimeMs = floor(microtime(true) * 1000);
-    $durationMs = $endTimeMs - $startTimeMs;
-  
-    echo "Execution time: " . $durationMs . "ms\n";
-})();
+$endTimeMs = floor(microtime(true) * 1000);
+$durationMs = $endTimeMs - $startTimeMs;
+
+echo "Execution time: " . $durationMs . "ms\n";

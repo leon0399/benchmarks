@@ -10,4 +10,15 @@ strategy:
         command: 'mono %s-mcs.exe'
 
     files:
+      - primes/Simple
+      - primes/Atkin
+
+      - collatz/MaxSequence
+
+      - treap/Naive
+
+      - recursion/Tak
+
       - mandelbrot/Simple
+
+      - linpack/Linpack

@@ -63,9 +63,25 @@ RUN apt-get install -y \
         python3-docker \
         pipx \
         python3-venv \
-        python3-ipython
-RUN pipx install numba && pipx install cython
+        python3-ipython \
+    && pipx install numba \
+    && pipx install cython
 ENV PATH="/root/.local/bin:${PATH}"
+
+ENV PATH="/root/.pyenv/bin:${PATH}"
+RUN curl -fsSL https://pyenv.run | bash \
+    && echo 'eval "$(pyenv init --path)"' >> ~/.bashrc \
+    && echo 'eval "$(pyenv virtualenv-init -)"' >> ~/.bashrc \
+    && pyenv install \ 
+        3.6 \
+        3.7 \
+        3.8 \
+        3.9 \
+        3.10 \
+        3.11 \
+        3.12 \
+        3.13 \
+    && env PYENV_VERSION=3.13 pyenv exec python --version
 
 # PyPy
 ARG PYPY=v7.3.15

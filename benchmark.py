@@ -282,7 +282,7 @@ def collect_statistics(values):
     if not values:
         return {
             'results': [],
-            'median': 0,
+            'mean': 0,
             'stdev': 0,
             'p99': 0,
             'p95': 0,
@@ -290,8 +290,9 @@ def collect_statistics(values):
             'p5': 0,
         }
 
-    med = statistics.median(values)
-    stdev_ = statistics.stdev(values) if len(values) > 1 else 0.0
+    mean = numpy.mean(values)
+    pop_std = numpy.std(values) if len(values) > 1 else 0.0
+    sample_std = numpy.std(values, ddof=1) if len(values) > 1 else 0.0
     p99_ = numpy.percentile(values, 99)
     p95_ = numpy.percentile(values, 95)
     p50_ = numpy.percentile(values, 50)
@@ -299,8 +300,9 @@ def collect_statistics(values):
 
     return {
         'results': values,
-        'median': med,
-        'stdev': stdev_,
+        'mean': mean,
+        'std_pop': pop_std,
+        'std_sample': sample_std,
         'p99': p99_,
         'p95': p95_,
         'p50': p50_,
@@ -319,7 +321,7 @@ def write_results_markdown(flat_results):
     Produces RESULTS.md grouped by script.
     Each script gets its own heading, followed by a table that includes
     columns for 'Language' (a.k.a. 'config'), 'Command', 'Version', 
-    and the usual median, stdev, p95, memory, etc.
+    and the usual mean, stdev, p95, memory, etc.
     """
     # Group results by 'script'
     grouped_by_script = defaultdict(list)
@@ -335,16 +337,10 @@ def write_results_markdown(flat_results):
 
             # Table header
             file.write(
-                '| Language | Command | Version | Time (median ± stdev), s | '
-                'p99, s | p95, s | p50, s | p5, s | '
-                'Startup (median ± stdev), s | Total (median ± stdev), s | '
-                'Memory (median ± stdev), MiB |\n'
+                '| Language | Command | Version | Time (mean ± σ), s | Range (min ... max), s | p99, s | p95, s | p50, s | p5, s | Startup (mean ± σ), s | Total (mean ± σ), s | Memory (mean ± σ), MiB |\n'
             )
             file.write(
-                '| :------- | :------ | :------ | ------------------------: | '
-                '-------: | ------: | ------: | ------: | '
-                '--------------------------: | --------------------------: | '
-                '--------------------------: |\n'
+                '| :------- | :------ | :------ | -----------------: | ---------------------: | -----: | -----: | -----: | ----: | --------------------: | ------------------: | ---------------------: |\n'
             )
 
             # Print one row per result in this script
@@ -358,30 +354,30 @@ def write_results_markdown(flat_results):
                 mem_stats = entry['memory']
 
                 file.write(
-                    '| {lang} | {cmd} | {ver} | {time_med:.3f}±{time_std:.3f} | '
+                    '| {lang} | {cmd} | {ver} | {time_mean:.3f}±{time_std_sample:.3f} | '
                     '{time_p99:.3f} | {time_p95:.3f} | {time_p50:.3f} | {time_p5:.3f} | '
-                    '{startup_med:.3f}±{startup_std:.3f} | '
-                    '{total_med:.3f}±{total_std:.3f} | '
-                    '{mem_med:.2f}±{mem_std:.2f} |\n'.format(
+                    '{startup_mean:.3f}±{startup_std_sample:.3f} | '
+                    '{total_mean:.3f}±{total_std_sample:.3f} | '
+                    '{mem_mean:.2f}±{mem_std_sample:.2f} |\n'.format(
                         lang=language,
                         cmd=command,
                         ver=version,
 
-                        time_med=time_stats['median'],
-                        time_std=time_stats['stdev'],
+                        time_mean=time_stats['mean'],
+                        time_std_sample=time_stats['std_sample'],
                         time_p99=time_stats['p99'],
                         time_p95=time_stats['p95'],
                         time_p50=time_stats['p50'],
                         time_p5=time_stats['p5'],
 
-                        startup_med=startup_stats['median'],
-                        startup_std=startup_stats['stdev'],
+                        startup_mean=startup_stats['mean'],
+                        startup_std_sample=startup_stats['std_sample'],
 
-                        total_med=total_stats['median'],
-                        total_std=total_stats['stdev'],
+                        total_mean=total_stats['mean'],
+                        total_std_sample=total_stats['std_sample'],
 
-                        mem_med=(mem_stats['median'] / 1024 / 1024),
-                        mem_std=(mem_stats['stdev'] / 1024 / 1024),
+                        mem_mean=(mem_stats['mean'] / 1024 / 1024),
+                        mem_std_sample=(mem_stats['std_sample'] / 1024 / 1024),
                     )
                 )
 
@@ -482,16 +478,26 @@ def run_action(args):
                 }
 
                 print(
-                    TerminalColors.OKGREEN +
-                    '\tFinal: {:.3f} ± {:.3f}; p95% = {:.3f}; p50% = {:.3f}; p5% = {:.3f}'
-                    .format(
-                        aggregated['time']['median'],
-                        aggregated['time']['stdev'],
-                        aggregated['time']['p95'],
-                        aggregated['time']['p50'],
-                        aggregated['time']['p5']
-                    ) +
-                    TerminalColors.ENDC,
+                    f"  Time ({TerminalColors.OKGREEN}mean{TerminalColors.ENDC} ± {TerminalColors.OKGREEN}σ{TerminalColors.ENDC}):\t"
+                    f"{TerminalColors.OKGREEN}{aggregated['time']['mean']:.3f} s{TerminalColors.ENDC} "
+                    f"± {TerminalColors.OKGREEN}{aggregated['time']['std_sample']:.3f} s{TerminalColors.ENDC}; "
+                    f"p95% = {TerminalColors.OKGREEN}{aggregated['time']['p95']:.3f} s{TerminalColors.ENDC}; "
+                    f"p50% = {TerminalColors.OKGREEN}{aggregated['time']['p50']:.3f} s{TerminalColors.ENDC}; "
+                    f"p5% = {TerminalColors.OKGREEN}{aggregated['time']['p5']:.3f} s{TerminalColors.ENDC}",
+                    flush=True
+                )
+
+                print(
+                    f"  Range ({TerminalColors.OKCYAN}min{TerminalColors.ENDC} … {TerminalColors.HEADER}max{TerminalColors.ENDC}):\t"
+                    f"{TerminalColors.OKCYAN}{min(reported_results):.3f} s{TerminalColors.ENDC} … "
+                    f"{TerminalColors.HEADER}{max(reported_results):.3f} s{TerminalColors.ENDC}",
+                    flush=True
+                )
+
+                print(
+                    f"  Memory ({TerminalColors.OKGREEN}mean{TerminalColors.ENDC} ± {TerminalColors.OKGREEN}σ{TerminalColors.ENDC}):\t"
+                    f"{TerminalColors.OKGREEN}{(aggregated['memory']['mean'] / 1024 / 1024):.2f} MiB{TerminalColors.ENDC} "
+                    f"± {TerminalColors.OKGREEN}{(aggregated['memory']['std_sample'] / 1024 / 1024):.2f} MiB{TerminalColors.ENDC}",
                     flush=True
                 )
 

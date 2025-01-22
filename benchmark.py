@@ -496,10 +496,10 @@ def run_action(args):
                     TerminalColors.ENDC
                 )
 
-    with open(jsonl_path, 'r') as jf:
-        final_results = [json.loads(line) for line in jf]
+            with open(jsonl_path, 'r') as jf:
+                final_results = [json.loads(line) for line in jf]
 
-    write_results_markdown(final_results)
+            write_results_markdown(final_results)
 
 
 def results_action(args):

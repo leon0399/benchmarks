@@ -11,7 +11,6 @@ import time
 import statistics
 import argparse
 import numpy
-
 from collections import defaultdict
 
 
@@ -105,47 +104,37 @@ def load_configuration(filename, config_directory):
     runs = []
 
     for script in files:
-        # We'll assume it's just a string like "primes/Simple.php"
-        # so we can build the script_title easily
         script_title = os.path.splitext(script)[0]
-
-        # Build the full path to the file, so {file} can be replaced
-        # if your code expects an absolute path, do os.path.abspath here
         full_script_path = os.path.join(config_directory, script)
 
         for cmd_info in commands:
-            # Each cmd_info might have its own versions or rely on global_versions
             command_versions = cmd_info.get('versions', global_versions)
-            
-            # If no versions, we can treat as [None] to create one run
             if not command_versions:
                 command_versions = [None]
             
             command_str_template = cmd_info['command']
             command_title = cmd_info['title']
 
-            # For each version in either the command's own or the global list
             for version in command_versions:
                 final_command = command_str_template
 
-                # If version is set and the template has {version}, replace it
+                # Replace {version} if present
                 if version and '{version}' in final_command:
                     final_command = final_command.replace('{version}', str(version))
 
-                # If {file} is present, replace it with the actual file path
+                # Replace {file} if present
                 if '{file}' in final_command:
                     final_command = final_command.replace('{file}', full_script_path)
 
                 run_def = {
                     'config_title': config_title,
-                    'script_file': script,  # or full_script_path if you prefer
-                    'script_title': script_title, 
+                    'script_file': script,
+                    'script_title': script_title,
                     'command_title': command_title,
                     'command_str': final_command,
                     'version': str(version) if version else None
                 }
 
-                # If there are tags in the command, you might store them here
                 if 'tags' in cmd_info:
                     run_def['tags'] = cmd_info['tags']
 
@@ -155,6 +144,7 @@ def load_configuration(filename, config_directory):
         runs = [r for r in runs if not is_excluded(r, global_exclude)]
 
     return runs
+
 
 def is_excluded(run_def, exclude_list):
     """
@@ -172,7 +162,6 @@ def rule_matches(run_def, rule):
     Example rule: { command: 'gcc', file: 'collatz/MaxSequence' }
     We compare run_def['command_title'] and run_def['script_file'] accordingly.
     """
-    # Must match *all* fields in the rule to be considered a match.
     for key, value in rule.items():
         if key == 'file':
             if run_def.get('script_file') != value:
@@ -181,14 +170,12 @@ def rule_matches(run_def, rule):
             if run_def.get('command_title') != value:
                 return False
         elif key == 'version':
-            # If your rule might say version: 16, compare strings or convert both
             if str(run_def.get('version', '')) != str(value):
                 return False
         else:
-            # If you add more fields, handle them here
-            return False
-        
+            return False  # unknown key
     return True
+
 
 def normalize_command_info(cmd_info):
     if isinstance(cmd_info, str):
@@ -290,7 +277,7 @@ def collect_statistics(values):
             'p5': 0,
         }
 
-    mean = numpy.mean(values)
+    mean_ = numpy.mean(values)
     pop_std = numpy.std(values) if len(values) > 1 else 0.0
     sample_std = numpy.std(values, ddof=1) if len(values) > 1 else 0.0
     p99_ = numpy.percentile(values, 99)
@@ -300,7 +287,7 @@ def collect_statistics(values):
 
     return {
         'results': values,
-        'mean': mean,
+        'mean': mean_,
         'std_pop': pop_std,
         'std_sample': sample_std,
         'p99': p99_,
@@ -316,6 +303,7 @@ def write_results_json(flat_results):
     with open('.results/results.json', 'w') as file:
         json.dump(flat_results, file, indent=2)
 
+
 def write_results_markdown(flat_results):
     """
     Produces RESULTS.md grouped by script.
@@ -323,7 +311,6 @@ def write_results_markdown(flat_results):
     columns for 'Language' (a.k.a. 'config'), 'Command', 'Version', 
     and the usual mean, stdev, p95, memory, etc.
     """
-    # Group results by 'script'
     grouped_by_script = defaultdict(list)
     for entry in flat_results:
         grouped_by_script[entry['script']].append(entry)
@@ -331,23 +318,24 @@ def write_results_markdown(flat_results):
     with open('RESULTS.md', 'w') as file:
         file.write('# Results\n\n')
 
-        # For each script, produce a separate section
         for script_name in sorted(grouped_by_script.keys()):
             file.write(f'## {script_name}\n\n')
 
-            # Table header
             file.write(
-                '| Language | Command | Version | Time (mean ± σ), s | Range (min ... max), s | p99, s | p95, s | p50, s | p5, s | Startup (mean ± σ), s | Total (mean ± σ), s | Memory (mean ± σ), MiB |\n'
+                '| Language | Command | Version | Time (mean ± σ), s | Range (min ... max), s | '
+                'p99, s | p95, s | p50, s | p5, s | Startup (mean ± σ), s | Total (mean ± σ), s | '
+                'Memory (mean ± σ), MiB |\n'
             )
             file.write(
-                '| :------- | :------ | :------ | -----------------: | ---------------------: | -----: | -----: | -----: | ----: | --------------------: | ------------------: | ---------------------: |\n'
+                '| :------- | :------ | :------ | -----------------: | ---------------------: | '
+                '-----: | -----: | -----: | ----: | --------------------: | ------------------: | '
+                '---------------------: |\n'
             )
 
-            # Print one row per result in this script
             for entry in grouped_by_script[script_name]:
-                language = entry.get('config', '')    # or 'config_title'
+                language = entry.get('config', '')
                 command = entry.get('command', '')
-                version = entry.get('version', '')    # might be empty string
+                version = entry.get('version', '')
                 time_stats = entry['time']
                 startup_stats = entry['startup_time']
                 total_stats = entry['total_time']
@@ -355,16 +343,19 @@ def write_results_markdown(flat_results):
 
                 file.write(
                     '| {lang} | {cmd} | {ver} | {time_mean:.3f}±{time_std_sample:.3f} | '
-                    '{time_p99:.3f} | {time_p95:.3f} | {time_p50:.3f} | {time_p5:.3f} | '
-                    '{startup_mean:.3f}±{startup_std_sample:.3f} | '
-                    '{total_mean:.3f}±{total_std_sample:.3f} | '
-                    '{mem_mean:.2f}±{mem_std_sample:.2f} |\n'.format(
+                    '{time_min:.3f} … {time_max:.3f} | {time_p99:.3f} | {time_p95:.3f} | '
+                    '{time_p50:.3f} | {time_p5:.3f} | {startup_mean:.3f}±{startup_std_sample:.3f} | '
+                    '{total_mean:.3f}±{total_std_sample:.3f} | {mem_mean:.2f}±{mem_std_sample:.2f} |\n'.format(
                         lang=language,
                         cmd=command,
                         ver=version,
 
                         time_mean=time_stats['mean'],
                         time_std_sample=time_stats['std_sample'],
+
+                        time_min=min(time_stats['results']) if time_stats['results'] else 0,
+                        time_max=max(time_stats['results']) if time_stats['results'] else 0,
+
                         time_p99=time_stats['p99'],
                         time_p95=time_stats['p95'],
                         time_p50=time_stats['p50'],
@@ -383,7 +374,6 @@ def write_results_markdown(flat_results):
 
             file.write('\n\n')
 
-        # Legend
         file.write('## Legend\n\n')
         file.write('| Field         | Description |\n')
         file.write('| :------------ | :---------- |\n')
@@ -400,7 +390,11 @@ def run_action(args):
     times = args.times
     scripts_filter = args.scripts if args.scripts else ['*']
 
-    final_results = []
+    # Create/clear the JSON Lines file once at the start:
+    os.makedirs('.results', exist_ok=True)
+    jsonl_path = '.results/results.jsonl'
+    with open(jsonl_path, 'w') as jf:
+        pass  # just to clear the file
 
     for cfg_file in configuration_files:
         directory = os.path.dirname(cfg_file)
@@ -414,15 +408,11 @@ def run_action(args):
             command_str = run_def['command_str']
             version = run_def['version']
 
-            # Skip if user specifically said skip:script_name
             if f"skip:{script_title}" in scripts_filter:
                 continue
-
-            # If user specified scripts, skip if not in them
             if (script_title not in scripts_filter) and ('*' not in scripts_filter):
                 continue
 
-            # Possibly fix the command if first token is not a file but found via 'which'
             split_cmd = command_str.split()
             executable = split_cmd[0]
             if not os.path.isfile(executable):
@@ -433,7 +423,7 @@ def run_action(args):
 
             if version:
                 print(
-                    f"Running {config_title} - {script_title} - {command_title} (v{version or ''}):",
+                    f"Running {config_title} - {script_title} - {command_title} (v{version}):",
                     end='\n\t', flush=True
                 )
             else:
@@ -446,13 +436,7 @@ def run_action(args):
             reported_results = []
             memory_results = []
 
-            # If {file} is supposed to be replaced, do it here if needed
-            # (Though in your example, we used {version} in the command, not {file}.)
-            # If your commands rely on {file}, you'd do final_command_str = command_str.format(file=script_file)
-            # We'll assume you handle that in the YAML or your code.
-
             for _ in range(times):
-                # Verbose so we see the final command
                 elapsed, reported, mem = run_benchmark(command_str, verbose=args.verbose)
                 print(f"{reported:.3f}", end='\t', flush=True)
 
@@ -501,7 +485,10 @@ def run_action(args):
                     flush=True
                 )
 
-                final_results.append(aggregated)
+                # 2) Write this run's data as a single JSON line
+                with open(jsonl_path, 'a') as jf:
+                    jf.write(json.dumps(aggregated) + '\n')
+
             else:
                 print(
                     TerminalColors.WARNING +
@@ -509,14 +496,16 @@ def run_action(args):
                     TerminalColors.ENDC
                 )
 
-    write_results_json(final_results)
+    with open(jsonl_path, 'r') as jf:
+        final_results = [json.loads(line) for line in jf]
+
     write_results_markdown(final_results)
 
 
 def results_action(args):
-    with open('.results/results.json', 'r') as file:
-        flat_results = json.load(file)
-    write_results_markdown(flat_results)
+    with open('.results/results.jsonl', 'r') as jf:
+        final_results = [json.loads(line) for line in jf]
+    write_results_markdown(final_results)
 
 
 def main():

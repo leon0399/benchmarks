@@ -1,20 +1,149 @@
 version: "3.8"
 
 services:
-  benchmark:
-    image: ghcr.io/leon0399/benchmarks:latest
+  base: &base
+    image: ghcr.io/leon0399/benchmarks-base:latest
     build:
-      context: .
-      dockerfile: Dockerfile
+      context: ./docker/_base
     command: ./docker-entrypoint.sh
     tty: true
     stdin_open: true
-    # cap_add:
-    #  - SYS_ADMIN
-    # security_opt:
-    #  - apparmor:unconfermed
     working_dir: /app
     volumes:
       - ./:/app
     tmpfs:
       - /sys/fs/cgroup
+
+  benchmark:
+    <<: *base
+    image: ghcr.io/leon0399/benchmarks:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - base
+
+  c-plus-plus:
+    <<: *base
+    image: ghcr.io/leon0399/benchmarks-c-plus-plus:latest
+    build:
+      context: .
+      dockerfile: ./docker/c-plus-plus/Dockerfile
+    depends_on:
+      - base
+
+  c-sharp:
+    <<: *base
+    image: ghcr.io/leon0399/benchmarks-c-sharp:latest
+    build:
+      context: .
+      dockerfile: ./docker/c-sharp/Dockerfile
+    depends_on:
+      - base
+
+  fortran:
+    <<: *base
+    image: ghcr.io/leon0399/benchmarks-fortran:latest
+    build:
+      context: .
+      dockerfile: ./docker/fortran/Dockerfile
+    depends_on:
+      - base
+
+  go:
+    <<: *base
+    image: ghcr.io/leon0399/benchmarks-go:latest
+    build:
+      context: .
+      dockerfile: ./docker/go/Dockerfile
+    depends_on:
+      - base
+
+  java:
+    <<: *base
+    image: ghcr.io/leon0399/benchmarks-java:latest
+    build:
+      context: .
+      dockerfile: ./docker/java/Dockerfile
+    depends_on:
+      - base
+
+  kotlin:
+    <<: *base
+    image: ghcr.io/leon0399/benchmarks-kotlin:latest
+    build:
+      context: ./docker/kotlin
+    depends_on:
+      - java
+
+  lua:
+    <<: *base
+    image: ghcr.io/leon0399/benchmarks-lua:latest
+    build:
+      context: .
+      dockerfile: ./docker/lua/Dockerfile
+    depends_on:
+      - base
+
+  node:
+    <<: *base
+    image: ghcr.io/leon0399/benchmarks-node:latest
+    build:
+      context: .
+      dockerfile: ./docker/node/Dockerfile
+    depends_on:
+      - base
+
+  php: 
+    <<: *base
+    image: ghcr.io/leon0399/benchmarks-php:latest
+    build:
+      context: .
+      dockerfile: ./docker/php/Dockerfile
+    depends_on:
+      - base
+
+  perl:
+    <<: *base
+    image: ghcr.io/leon0399/benchmarks-perl:latest
+    build:
+      context: .
+      dockerfile: ./docker/perl/Dockerfile
+    depends_on:
+      - base
+
+  python:
+    <<: *base
+    image: ghcr.io/leon0399/benchmarks-python:latest
+    build:
+      context: .
+      dockerfile: ./docker/python/Dockerfile
+    depends_on:
+      - base
+
+  ruby:
+    <<: *base
+    image: ghcr.io/leon0399/benchmarks-ruby:latest
+    build:
+      context: .
+      dockerfile: ./docker/ruby/Dockerfile
+    depends_on:
+      - base
+
+  rust:
+    <<: *base
+    image: ghcr.io/leon0399/benchmarks-rust:latest
+    build:
+      context: .
+      dockerfile: ./docker/rust/Dockerfile
+    depends_on:
+      - base
+
+  swift:
+    <<: *base
+    image: ghcr.io/leon0399/benchmarks-swift:latest
+    build:
+      context: .
+      dockerfile: ./docker/swift/Dockerfile
+    depends_on:
+      - base

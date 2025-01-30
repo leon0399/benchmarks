@@ -1,43 +1,8 @@
-ARG IMAGE=debian:12.0-slim
+ARG BASE_IMAGE=ghcr.io/leon0399/benchmarks-base:latest
+FROM $BASE_IMAGE
 
-FROM ${IMAGE}
-
-ARG DEBIAN_FRONTEND=noninteractive
-
-RUN apt-get update \
-    && apt-get install -y \
-        git \
-        curl \
-        wget \
-	cmake \
-        libc6 \
-        unzip \
-        gnulib \
-        gnupg2 \
-        tzdata \
-        libc-bin \
-        uuid-dev \
-        libc6-dev \
-        pkg-config \
-        libicu-dev \
-        libssl-dev \
-        libxml2-dev \
-        libedit-dev \
-        libncurses5 \
-        lsb-release \
-        libyaml-dev \
-        binutils-gold \
-        libc-devtools \
-        libncurses-dev \
-        libpython3-dev \
-        libsqlite3-dev \
-        libc6-dev-i386 \
-        build-essential \
-        ca-certificates \
-        libreadline-dev \
-        apt-transport-https \
-        libcurl4-openssl-dev \
-        software-properties-common
+LABEL org.opencontainers.image.source=https://github.com/leon0399/benchmarks
+LABEL org.opencontainers.image.description="A Docker image for running benchmarks, containing latest versions of all required compilers and interpreters."
 
 WORKDIR /opt
 
@@ -45,11 +10,6 @@ WORKDIR /opt
 RUN apt-get install -y \
         gcc \
         clang
-
-# RUN git clone https://github.com/gsauthof/cgmemtime.git \
-#     && make --dir cgmemtime \
-#     && ln -s /opt/cgmemtime/cgmemtime /usr/bin/cgmemtime
-#     # && cgmemtime --setup -g $(getent group $(id -g) | cut -d: -f1) --perm 775
 
 # Python
 RUN apt-get install -y \
@@ -68,40 +28,32 @@ RUN pipx install numba && pipx install cython
 ENV PATH="/root/.local/bin:${PATH}"
 
 # PyPy
-ARG PYPY=v7.3.15
+ARG PYPY=3.10-v7.3.17
 RUN wget --progress=dot:giga -O - \
-        https://downloads.python.org/pypy/pypy3.10-$PYPY-linux64.tar.bz2 | tar -xj \
-    && ln -s /opt/pypy3.10-$PYPY-linux64/bin/pypy3 /usr/bin/pypy3
-RUN wget --progress=dot:giga -O - \
-        https://downloads.python.org/pypy/pypy2.7-$PYPY-linux64.tar.bz2 | tar -xj \
-    && ln -s /opt/pypy2.7-$PYPY-linux64/bin/pypy /usr/bin/pypy2
+        https://downloads.python.org/pypy/pypy$PYPY-linux64.tar.bz2 | tar -xj \
+    && ln -s /opt/pypy$PYPY-linux64/bin/pypy3 /usr/bin/pypy3
 
 # PHP
-ARG PHP=8.3
+ARG PHP=8.4
 RUN echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | tee /etc/apt/sources.list.d/sury-php.list \
     && wget -qO - https://packages.sury.org/php/apt.gpg | apt-key add - \
     && apt-get update \
-    && apt-get install -y \
-        php${PHP} \
-        php${PHP}-dev \
-    && pecl install openswoole \
-    &&  bash -c "echo 'extension=openswoole' >> $(php -i | grep /.+/php.ini -oE)" \
-    && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+    && apt-get install -y php${PHP}
 
-# JavaScript
+# JavaScript (Node.js)
 ARG NODE=20.11.0
 RUN wget --progress=dot:giga -O - \
         https://nodejs.org/dist/v$NODE/node-v$NODE-linux-x64.tar.xz | tar -xJ
 ENV PATH="/opt/node-v$NODE-linux-x64/bin/:${PATH}"
 
 # Java
-ARG JDK=21.0.2
-RUN wget --progress=dot:giga -O - \
-        https://download.java.net/java/GA/jdk21.0.2/f2283984656d49d69e91c558476027ac/13/GPL/openjdk-21.0.2_linux-x64_bin.tar.gz | tar -xz
+ARG JDK=23
+RUN mkdir jdk-${JDK} \
+ && wget --progress=dot:giga -O - https://download.oracle.com/java/${JDK}/latest/jdk-${JDK}_linux-x64_bin.tar.gz | tar -xz --directory jdk-${JDK} --strip-components 1
 ENV PATH="/opt/jdk-${JDK}/bin:${PATH}"
 
 # Go
-ARG GO=1.22.0
+ARG GO=1.23.5
 RUN wget --progress=dot:giga -O - \
         https://golang.org/dl/go${GO}.linux-amd64.tar.gz | tar -xz
 ENV PATH="/opt/go/bin/:${PATH}"

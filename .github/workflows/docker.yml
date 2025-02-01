@@ -13,13 +13,170 @@ on:
 
 concurrency: 
   group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
-  docker:
+  build-base:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Docker Metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/${{ github.repository }}-base
+          tags: |
+            # set latest tag for master branch
+            type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', 'master') }}
+            type=ref,event=branch
+            type=ref,event=pr
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Cache Docker layers
+        uses: actions/cache@v4
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-base-buildx-${{ hashFiles('docker/_base/Dockerfile') }}
+          restore-keys: |
+            ${{ runner.os }}-base-buildx-
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          pull: true
+          context: ./docker/_base
+          provenance: mode=max
+          sbom: true
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: |
+            ${{ steps.meta.outputs.tags }}
+            ghcr.io/${{ github.repository }}-base:latest
+            type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache
+
+  build-langs:
+    runs-on: ubuntu-latest
+    needs: build-base
+
+    strategy:
+      fail-fast: false
+      matrix:
+        lang: 
+          - c-plus-plus
+          - c-sharp
+          - fortran
+          - go
+          - java
+          - kotlin
+          - lua
+          - node
+          - perl
+          - php
+          - python
+          - ruby
+          - rust
+          - swift
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Docker Metadata for Base image
+        id: meta-base
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/${{ github.repository }}-base
+          tags: |
+            # set latest tag for master branch
+            type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', 'master') }}
+            type=ref,event=branch
+            type=ref,event=pr
+
+      - name: Pull Base image
+        run: |
+          docker pull ghcr.io/${{ github.repository }}-base:${{ github.ref == format('refs/heads/{0}', 'master') && 'latest' || format('pr-{0}', github.event.number) }} || true
+
+      - name: Docker Metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/${{ github.repository }}-${{ matrix.lang }}
+          tags: |
+            # set latest tag for master branch
+            type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', 'master') }}
+            type=ref,event=branch
+            type=ref,event=pr
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Cache Docker layers
+        uses: actions/cache@v4
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-${{ matrix.lang }}-buildx-${{ hashFiles(format('docker/{0}/Dockerfile', matrix.lang)) }}
+          restore-keys: |
+            ${{ runner.os }}-${{ matrix.lang }}-buildx-
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          pull: true
+          context: ./docker/${{ matrix.lang }}
+          provenance: mode=max
+          sbom: true
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: |
+            ${{ steps.meta.outputs.tags }}
+            ghcr.io/${{ github.repository }}-${{ matrix.lang }}:latest
+            type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache
+          build-args: |
+            BASE_IMAGE=ghcr.io/${{ github.repository }}-base:${{ github.ref == format('refs/heads/{0}', 'master') && 'latest' || format('pr-{0}', github.event.number) }}
+
+  build-all-in-one:
+    runs-on: ubuntu-latest
+    needs: build-base
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Docker Metadata for Base image
+        id: meta-base
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/${{ github.repository }}-base
+          tags: |
+            # set latest tag for master branch
+            type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', 'master') }}
+            type=ref,event=branch
+            type=ref,event=pr
+
+      - name: Pull Base image
+        run: |
+          docker pull ghcr.io/${{ github.repository }}-base:${{ github.ref == format('refs/heads/{0}', 'master') && 'latest' || format('pr-{0}', github.event.number) }} || true
 
       - name: Docker Metadata
         id: meta
@@ -55,6 +212,8 @@ jobs:
         with:
           pull: true
           context: .
+          provenance: mode=max
+          sbom: true
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
@@ -63,3 +222,5 @@ jobs:
             ghcr.io/${{ github.repository }}:latest
             type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
+          build-args: |
+            BASE_IMAGE=ghcr.io/${{ github.repository }}-base:${{ github.ref == format('refs/heads/{0}', 'master') && 'latest' || format('pr-{0}', github.event.number) }}

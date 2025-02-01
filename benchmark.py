@@ -15,29 +15,71 @@ import statistics
 import argparse
 import numpy
 
-parser = argparse.ArgumentParser(description='Run benchmarks')
-parser.add_argument('action', type=str, help='Action to perform', choices=['run', 'results'])
-parser.add_argument('--times', type=int, default=5, help='Number of times to run each benchmark')
-parser.add_argument('--languages', type=str, nargs='+', help='Languages to run')
-parser.add_argument('--scripts', type=str, nargs='+', help='Scripts to run')
-args = parser.parse_args()
+from collections import defaultdict
 
-times = args.times
+# ---------------------------------------
+# Terminal colors
+# ---------------------------------------
+class TerminalColors:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKCYAN = '\033[96m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
 
-# Load the configuration
-configurations = []
-if args.languages:
-    for language in args.languages:
-        configurations += glob.glob('langs/' + language + '/benchmark.yml') + glob.glob('langs/' + language + '/benchmark.yaml')
-else:
-    configurations = glob.glob('langs/*/benchmark.yml') + glob.glob('langs/*/benchmark.yaml')
-configurations.sort()
+def parse_arguments():
+    parser = argparse.ArgumentParser(description='Run benchmarks')
+    parser.add_argument(
+        'action',
+        type=str,
+        help='Action to perform',
+        choices=['run', 'results']
+    )
+    parser.add_argument(
+        '--times',
+        type=int,
+        default=5,
+        help='Number of times to run each benchmark'
+    )
+    parser.add_argument(
+        '--languages',
+        type=str,
+        nargs='+',
+        help='Languages to run (subdirectories under langs/)',
+    )
+    parser.add_argument(
+        '--scripts',
+        type=str,
+        nargs='+',
+        help='Scripts to run (otherwise all scripts in config will run)'
+    )
+    parser.add_argument(
+        '-v', '--verbose',
+        action='store_true',
+        help='Print additional debug information, including final commands'
+    )
+    return parser.parse_args()
 
-scripts = ['*']
-if args.scripts:
-    scripts = args.scripts
+def load_configurations(languages):
+    configurations = []
+    if languages:
+        for language in languages:
+            configurations += (
+                glob.glob(f'langs/{language}/benchmark.yml') +
+                glob.glob(f'langs/{language}/benchmark.yaml')
+            )
+    else:
+        configurations = (
+            glob.glob('langs/*/benchmark.yml') +
+            glob.glob('langs/*/benchmark.yaml')
+        )
+    configurations.sort()
+    return configurations
 
-results = {}
 def runBenchmark(command):
     start = time.time()
     topMemory = 0
@@ -191,7 +233,12 @@ def writeResultsMarkdown(results):
 
         file.write('\n\n')
 
-if args.action == 'run':
+def actionRun(args):
+    results = {}
+
+    configurations = load_configurations(args.languages)
+    scripts = args.scripts if args.scripts else '*'
+
     for configurationFilename in configurations:
         dir = os.path.dirname(configurationFilename)
 
@@ -238,7 +285,7 @@ if args.action == 'run':
             startupResults = []
             memoryResults = []
 
-            for _ in range(times):
+            for _ in range(args.times):
                 elapsed, reported, memory = runScript(dir + '/' + run['script']['file'], run['command']['command'])
                 print("{:.3f}".format(reported), end='\t', flush=True)
 
@@ -327,10 +374,50 @@ if args.action == 'run':
     with open('.results/results.json', 'w') as file:
         json.dump(results, file, indent=2)
 
+    with open('.results/results.jsonl', 'w') as file:
+        for (scriptName, languages) in results.items():
+            for (language, configurations) in languages.items():
+                for (configuration, elapsed) in configurations.items():
+                    aggregated = {
+                        'script': scriptName,
+                        'language': language,
+                        'configuration': configuration,
+                        'tags': elapsed['tags'],
+                        'time': {
+                            'median': elapsed['time']['median'],
+                            'std_pop': elapsed['time']['stdev'],
+                            'p99': elapsed['time']['n99'],
+                            'p95': elapsed['time']['n95'],
+                            'p50': elapsed['time']['n50'],
+                            'p5': elapsed['time']['n05'],
+                        },
+                        'time_startup': {
+                            'median': elapsed['startup_time']['median'],
+                            'stdev': elapsed['startup_time']['stdev'],
+                        },
+                        'memory': {
+                            'median': elapsed['memory']['median'],
+                            'stdev': elapsed['memory']['stdev'],
+                        },
+                    }
+
+                    file.write(json.dumps(aggregated) + '\n')
+
     writeResultsMarkdown(results)
 
-elif args.action == 'results':
+def actionResults(args):
     with open('.results/results.json', 'r') as file:
         results = json.load(file)
 
     writeResultsMarkdown(results)
+
+def main():
+    args = parse_arguments()
+
+    if args.action == 'run':
+        actionRun(args)
+    elif args.action == 'results':
+        actionResults(args)
+
+if __name__ == '__main__':
+    main()

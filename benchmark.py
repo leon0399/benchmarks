@@ -16,6 +16,7 @@ import argparse
 import numpy
 
 from collections import defaultdict
+from abc import ABC, abstractmethod
 
 # ---------------------------------------
 # Terminal colors
@@ -31,37 +32,211 @@ class TerminalColors:
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
 
+
+class OutputFormat(ABC):
+    @abstractmethod
+    def prepare(self):
+        pass
+
+    @abstractmethod
+    def write(self, results):
+        pass
+
+class LiveOutputFormat(ABC):
+    @abstractmethod
+    def prepare(self):
+        pass
+
+    @abstractmethod
+    def writeSingleResult(self, result):
+        pass
+
+class JsonOutputFormat(OutputFormat):
+    def __init__(self, path):
+        self.path = path
+
+    def prepare(self):
+        os.makedirs(os.path.dirname(self.path), exist_ok=True)
+
+    def write(self, results):
+        # transform { "script": "primes/Simple", "language": "PHP", "configuration": "PHP" } into { "primes/Simple": { "PHP": { "PHP": { ... } } } }
+        formatted_results = {}
+        for result in results:
+            if result['script'] not in formatted_results:
+                formatted_results[result['script']] = {}
+
+            if result['language'] not in formatted_results[result['script']]:
+                formatted_results[result['script']][result['language']] = {}
+
+            formatted_results[result['script']][result['language']][result['configuration']] = {
+                'total_time': {
+                    'results': result['total_time']['results'],
+                    'median': result['total_time']['p50'],
+                    'stdev': result['total_time']['std_pop'],
+                    'mean': result['total_time']['mean'],
+                    'std_sample': result['total_time']['std_sample'],
+                    'n99': result['total_time']['p99'],
+                    'n95': result['total_time']['p95'],
+                    'n50': result['total_time']['p50'],
+                    'n05': result['total_time']['p5'],
+                },
+                'time': {
+                    'results': result['time']['results'],
+                    'median': result['time']['p50'],
+                    'stdev': result['time']['std_pop'],
+                    'mean': result['time']['mean'],
+                    'std_sample': result['time']['std_sample'],
+                    'n99': result['time']['p99'],
+                    'n95': result['time']['p95'],
+                    'n50': result['time']['p50'],
+                    'n05': result['time']['p5'],
+                },
+                'startup_time': {
+                    'results': result['startup_time']['results'],
+                    'median': result['startup_time']['p50'],
+                    'stdev': result['startup_time']['std_pop'],
+                    'mean': result['startup_time']['mean'],
+                    'std_sample': result['startup_time']['std_sample'],
+                    'n99': result['startup_time']['p99'],
+                    'n95': result['startup_time']['p95'],
+                    'n50': result['startup_time']['p50'],
+                    'n05': result['startup_time']['p5'],
+                },
+                'memory': {
+                    'results': result['memory']['results'],
+                    'median': result['memory']['p50'],
+                    'stdev': result['memory']['std_pop'],
+                    'mean': result['memory']['mean'],
+                    'std_sample': result['memory']['std_sample'],
+                    'n99': result['memory']['p99'],
+                    'n95': result['memory']['p95'],
+                    'n50': result['memory']['p50'],
+                    'n05': result['memory']['p5'],
+                }
+            }
+
+        with open(self.path, 'w') as file:
+            json.dump(formatted_results, file, indent=4)
+
+class JsonLinesOutputFormat(LiveOutputFormat):
+    def __init__(self, path):
+        self.path = path
+
+    def prepare(self):
+        os.makedirs(os.path.dirname(self.path), exist_ok=True)
+
+        # Clear the file
+        open(self.path, 'w').close()
+
+    def writeSingleResult(self, result):
+        with open(self.path, 'a') as file:
+            file.write(json.dumps(result) + '\n')
+
+class MarkdownOutputFormat(OutputFormat):
+    def __init__(self, path):
+        self.path = path
+
+    def prepare(self):
+        os.makedirs(os.path.dirname(self.path), exist_ok=True)
+
+    def write(self, results):
+        grouped_by_script = defaultdict(list)
+        for entry in results:
+            grouped_by_script[entry['script']].append(entry)
+
+        with open(self.path, 'w') as file:
+            file.write('# Results\n\n')
+            file.write('## Algorithms\n\n')
+
+            for script_name in sorted(grouped_by_script.keys()):
+                file.write(f'### {script_name}\n\n')
+
+                file.write('| Language | Time, s | %99 Time, s | %95 Time, s | %50 Time, s | %5 Time, s | Startup time, s | Total time, s | Memory, MiB |\n')
+                file.write('| :------- | ------: | ----------: |  ---------: |  ---------: |  --------: | --------------: | ------------: | ----------: |\n')
+
+                for entry in grouped_by_script[script_name]:
+                    languageName = entry['language'] if entry['language'] == entry['configuration'] else f'{entry["language"]} ({entry["configuration"]})'
+                    file.write(
+                        f'| {languageName} | {entry["time"]["mean"]:.3f} | {entry["time"]["p99"]:.3f} | {entry["time"]["p95"]:.3f} | {entry["time"]["p50"]:.3f} | {entry["time"]["p5"]:.3f} | {entry["startup_time"]["mean"]:.3f} | {entry["total_time"]["mean"]:.3f} | {entry["memory"]["mean"] / 1024 / 1024:.2f} |\n'
+                    )
+                
+                file.write('\n')
+
+            file.write('## Legend\n\n')
+            file.write('| Field        | Description |\n')
+            file.write('| :----------- | :---------- |\n')
+            file.write('| Time         | Time spent in the algorithm itself, reported by the program itself. |\n')
+            file.write('| Total time   | Total time spent from the start of the program to the end of the algorithm, measured by the benchmark. |\n')
+            file.write('| Startup time | Time spent from the start of the program to the start of the algorithm, measured by the benchmark (Total time - Time). |\n')
+            file.write('| Memory       | Peak memory usage during the algorithm, measured by the benchmark. |\n')
+
+def format_full_configuration_name(configuration):
+    return f"{configuration['script']} - {configuration['language']} - {configuration['configuration']}"
+
+def parse_output(value):
+    """
+    Parse an output option provided in the format FORMAT=PATH.
+    For example: jsonl=./results/results.json
+    Returns an OutputFormat object.
+    """
+
+    try:
+        fmt, path = value.split('=', 1)
+
+        if fmt == 'json':
+            return JsonOutputFormat(path)
+        elif fmt == 'jsonl':
+            return JsonLinesOutputFormat(path)
+        elif fmt == 'markdown':
+            return MarkdownOutputFormat(path)
+    except ValueError:
+        raise argparse.ArgumentTypeError("Output option must be in the format FORMAT=PATH")
+
 def parse_arguments():
     parser = argparse.ArgumentParser(description='Run benchmarks')
-    parser.add_argument(
-        'action',
-        type=str,
-        help='Action to perform',
-        choices=['run', 'results']
-    )
-    parser.add_argument(
-        '--times',
+    subparsers = parser.add_subparsers(dest='action', required=True, help='Action to perform')
+
+    run_parser = subparsers.add_parser('run', help='Run benchmarks')
+    run_parser.add_argument(
+        '-N', '--times',
         type=int,
         default=5,
         help='Number of times to run each benchmark'
     )
-    parser.add_argument(
-        '--languages',
+    run_parser.add_argument(
+        '-l', '--languages',
         type=str,
         nargs='+',
         help='Languages to run (subdirectories under langs/)',
     )
-    parser.add_argument(
+    run_parser.add_argument(
         '--scripts',
         type=str,
         nargs='+',
         help='Scripts to run (otherwise all scripts in config will run)'
     )
-    parser.add_argument(
+    run_parser.add_argument(
+        '--output', type=parse_output, action='append', default=[],
+        help='Specify output format and file path as FORMAT=PATH. '
+             'Example: --output markdown=./results/RESULTS.json'
+    )
+    run_parser.add_argument(
         '-v', '--verbose',
         action='store_true',
         help='Print additional debug information, including final commands'
     )
+    
+    transform_parser = subparsers.add_parser('transform-results', help='Generate results markdown')
+    transform_parser.add_argument(
+        '--input', type=str, required=True,
+        help='Input results file'
+    )
+    transform_parser.add_argument(
+        '--output', type=parse_output, action='append', default=[],
+        help='Specify output format and file path as FORMAT=PATH. '
+             'Example: --output markdown=./results/RESULTS.json'
+    )
+
     return parser.parse_args()
 
 def load_configurations(languages):
@@ -141,7 +316,6 @@ def getCommandInfo(commandInfo):
 
     return commandInfo
 
-
 def loadConfiguration(filename):
     conf = {}
 
@@ -183,58 +357,43 @@ def loadConfiguration(filename):
 
     return configuration
 
-def writeResultsMarkdown(results):
-    with open('RESULTS.md', 'w') as file:
-        file.write('# Results\n\n')
+def collect_statistics(values):
+    values.sort()
+    if not values:
+        return {
+            'results': [],
+            'mean': 0,
+            'stdev': 0,
+            'p99': 0,
+            'p95': 0,
+            'p50': 0,
+            'p5': 0,
+        }
 
-        file.write('## Algorithms\n\n')
+    mean = numpy.mean(values)
+    pop_std = numpy.std(values) if len(values) > 1 else 0.0
+    sample_std = numpy.std(values, ddof=1) if len(values) > 1 else 0.0
+    p99 = numpy.percentile(values, 99)
+    p95 = numpy.percentile(values, 95)
+    p50 = numpy.percentile(values, 50)
+    p5 = numpy.percentile(values, 5)
 
-        for (scriptName, languages) in results.items():
-            file.write('### %s\n\n' % (scriptName))
-
-            file.write('| Language | Time, s | %99 Time, s | %95 Time, s | %50 Time, s | %5 Time, s | Startup time, s | Total time, s | Memory, MiB |\n')
-            file.write('| :------- | ------: | ----------: |  ---------: |  ---------: |  --------: | --------------: | ------------: | ----------: |\n')
-
-            for (language, configurations) in languages.items():
-                for (configuration, elapsed) in configurations.items():
-                    langugageTitle = ('%s' % (language)) if language == configuration else ('%s (%s)' % (language, configuration))
-
-                    file.write('| %s | %s<sub>±%s</sub> | %s | %s | %s | %s | %s<sub>±%s</sub> | %s<sub>±%s</sub> | %s<sub>±%s</sub> |\n' % (
-                            langugageTitle,
-                            "{:6.3f}".format(elapsed['time']['median']),
-                            "{:.3f}".format(elapsed['time']['stdev']),
-
-                            "{:6.3f}".format(elapsed['time']['n99']),
-                            "{:6.3f}".format(elapsed['time']['n95']),
-                            "{:6.3f}".format(elapsed['time']['n50']),
-                            "{:6.3f}".format(elapsed['time']['n05']),
-
-                            "{:6.3f}".format(elapsed['startup_time']['median']),
-                            "{:.3f}".format(elapsed['startup_time']['stdev']),
-
-                            "{:6.3f}".format(elapsed['total_time']['median']),
-                            "{:.3f}".format(elapsed['total_time']['stdev']),
-
-                            "{:10.2f}".format(elapsed['memory']['median'] / 1024 / 1024),
-                            "{:.2f}".format(elapsed['memory']['stdev'] / 1024 / 1024),
-                        )
-                    )
-
-            file.write('\n\n')
-
-        file.write('## Legend\n\n')
-
-        file.write('| Field        | Description |\n')
-        file.write('| :----------- | :---------- |\n')
-        file.write('| Time         | Time spent in the algorithm itself, reported by the program itself. |\n')
-        file.write('| Total time   | Total time spent from the start of the program to the end of the algorithm, measured by the benchmark. |\n')
-        file.write('| Startup time | Time spent from the start of the program to the start of the algorithm, measured by the benchmark (Total time - Time). |\n')
-        file.write('| Memory       | Peak memory usage during the algorithm, measured by the benchmark. |\n')
-
-        file.write('\n\n')
+    return {
+        'results': values,
+        'mean': mean,
+        'std_pop': pop_std,
+        'std_sample': sample_std,
+        'p99': p99,
+        'p95': p95,
+        'p50': p50,
+        'p5': p5,
+    }
 
 def actionRun(args):
-    results = {}
+    for output in args.output:
+        output.prepare()
+
+    results = []
 
     configurations = load_configurations(args.languages)
     scripts = args.scripts if args.scripts else '*'
@@ -294,118 +453,38 @@ def actionRun(args):
                     reportedResults.append(reported)
                     memoryResults.append(memory)
 
-                    # substract reported time from total time for each entry to get startup time results
-                    for i in range(len(timeResults)):
-                        startupResults.append(timeResults[i] - reportedResults[i])
+                    startupResults = [t - r for (t, r) in zip(timeResults, reportedResults)]
 
             print()
 
             if timeResults and memoryResults:
-                timeResults.sort()
-                timeMedian = statistics.median(timeResults)
-                timeStdev = 0
-                if len(timeResults) > 1:
-                    timeStdev = statistics.stdev(timeResults)
-
-                reportedResults.sort()
-                reportedMedian = statistics.median(reportedResults)
-                reportedStdev = 0
-                if len(reportedResults) > 1:
-                    reportedStdev = statistics.stdev(reportedResults)
-
-                reportedN99 = numpy.percentile(reportedResults, 99)
-                reportedN95 = numpy.percentile(reportedResults, 95)
-                reportedN50 = numpy.percentile(reportedResults, 50)
-                reportedN05 = numpy.percentile(reportedResults, 5)
-
-                memoryResults.sort()
-                memoryMedian = statistics.median(memoryResults)
-                memoryStdev = 0
-                if len(memoryResults) > 1:
-                    memoryStdev = statistics.stdev(memoryResults)
-
-                startupResults.sort()
-                startupMedian = statistics.median(startupResults)
-                startupStdev = 0
-                if len(startupResults) > 1:
-                    startupStdev = statistics.stdev(startupResults)
-
-
                 result = {
+                    'script': run['script']['title'],
+                    'language': conf['title'],
+                    'configuration': run['command']['title'],
                     'tags': run['tags'],
-                    'total_time': {
-                        'results': timeResults,
-                        'median': timeMedian,
-                        'stdev': timeStdev,
-                    },
-                    'time': {
-                        'results': reportedResults,
-                        'median': reportedMedian,
-                        'stdev': reportedStdev,
-                        'n99': reportedN99,
-                        'n95': reportedN95,
-                        'n50': reportedN50,
-                        'n05': reportedN05,
-                    },
-                    'startup_time': {
-                        'results': startupResults,
-                        'median': startupMedian,
-                        'stdev': startupStdev,
-                    },
-                    'memory': {
-                        'results': memoryResults,
-                        'median': memoryMedian,
-                        'stdev': memoryStdev,
-                    },
+                    'total_time': collect_statistics(timeResults),
+                    'time': collect_statistics(reportedResults),
+                    'startup_time': collect_statistics(startupResults),
+                    'memory': collect_statistics(memoryResults),
                 }
 
-                print('\tFinal: {:.3f} ± {:.3f}'.format(reportedMedian, reportedStdev), flush=True)
+                print('\tFinal: {:.3f} ± {:.3f}'.format(result['time']['mean'], result['time']['std_sample']), flush=True)
 
-                if (run['script']['title'] not in results):
-                    results[run['script']['title']] = {}
-                if (conf['title'] not in results[run['script']['title']]):
-                    results[run['script']['title']][conf['title']] = {}
+                for output in args.output:
+                    if isinstance(output, LiveOutputFormat):
+                        output.writeSingleResult(result)
 
-                results[run['script']['title']][conf['title']][run['command']['title']] = result
+                results.append(result)
 
             else:
                 print('\tSkipping...')
 
-    with open('.results/results.json', 'w') as file:
-        json.dump(results, file, indent=2)
+    for output in args.output:
+        if isinstance(output, OutputFormat):
+            output.write(results)
 
-    with open('.results/results.jsonl', 'w') as file:
-        for (scriptName, languages) in results.items():
-            for (language, configurations) in languages.items():
-                for (configuration, elapsed) in configurations.items():
-                    aggregated = {
-                        'script': scriptName,
-                        'language': language,
-                        'configuration': configuration,
-                        'tags': elapsed['tags'],
-                        'time': {
-                            'median': elapsed['time']['median'],
-                            'std_pop': elapsed['time']['stdev'],
-                            'p99': elapsed['time']['n99'],
-                            'p95': elapsed['time']['n95'],
-                            'p50': elapsed['time']['n50'],
-                            'p5': elapsed['time']['n05'],
-                        },
-                        'time_startup': {
-                            'median': elapsed['startup_time']['median'],
-                            'stdev': elapsed['startup_time']['stdev'],
-                        },
-                        'memory': {
-                            'median': elapsed['memory']['median'],
-                            'stdev': elapsed['memory']['stdev'],
-                        },
-                    }
-
-                    file.write(json.dumps(aggregated) + '\n')
-
-    writeResultsMarkdown(results)
-
-def actionResults(args):
+def actionTransformResults(args):
     with open('.results/results.json', 'r') as file:
         results = json.load(file)
 
@@ -417,7 +496,9 @@ def main():
     if args.action == 'run':
         actionRun(args)
     elif args.action == 'results':
-        actionResults(args)
+        actionTransformResults(args)
+    else:
+        print(f"Unknown action: {args.action}")
 
 if __name__ == '__main__':
     main()

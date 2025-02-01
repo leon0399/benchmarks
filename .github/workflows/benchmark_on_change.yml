@@ -26,7 +26,7 @@ jobs:
           fetch-depth: 2
 
       - name: Pull Docker image
-        run: docker-compose pull benchmark
+        run: docker compose pull benchmark
 
       - name: Get changed files
         id: changed-files
@@ -40,4 +40,4 @@ jobs:
       - name: Run benchmarks for changed files
         if: steps.changed-files.outputs.any_changed == 'true'
         run: |
-          docker-compose run benchmark python3 ./run_on_changes.py ${{ steps.changed-files.outputs.all_changed_files }}
+          docker compose run benchmark python3 ./run_on_changes.py ${{ steps.changed-files.outputs.all_changed_files }}

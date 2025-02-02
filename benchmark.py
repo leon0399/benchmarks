@@ -48,7 +48,7 @@ class LiveOutputFormat(ABC):
         pass
 
     @abstractmethod
-    def writeSingleResult(self, result):
+    def write_single_result(self, result):
         pass
 
 class JsonOutputFormat(OutputFormat):
@@ -128,7 +128,7 @@ class JsonLinesOutputFormat(LiveOutputFormat):
         # Clear the file
         open(self.path, 'w').close()
 
-    def writeSingleResult(self, result):
+    def write_single_result(self, result):
         with open(self.path, 'a') as file:
             file.write(json.dumps(result) + '\n')
 
@@ -255,24 +255,24 @@ def load_configurations(languages):
     configurations.sort()
     return configurations
 
-def runBenchmark(command):
+def run_benchmark(command):
     start = time.time()
-    topMemory = 0
-    reportedDuration = -1
+    top_memory = 0
+    reported_duration = -1
 
     with subprocess.Popen(command.split(), stdout=subprocess.PIPE, stderr=subprocess.DEVNULL) as proc:
         try:
             process = psutil.Process(proc.pid)
             while proc.poll() is None:
                 memory = process.memory_info()
-                if memory.rss > topMemory:
-                    topMemory = memory.rss
+                if memory.rss > top_memory:
+                    top_memory = memory.rss
         except subprocess.TimeoutExpired:
             proc.kill()
-            return (-1, -1, topMemory)
+            return (-1, -1, top_memory)
 
         if (proc.returncode != 0):
-            return (-1, -1, topMemory)
+            return (-1, -1, top_memory)
 
         stdout = proc.communicate()[0]
         decoded = stdout.decode('utf-8')
@@ -281,42 +281,41 @@ def runBenchmark(command):
         # Find the `Execution time: %dms` line
         for line in lines:
             if 'Execution time' in line:
-                timeStr = line.split(' ')[-1]
-                timeStr = timeStr.replace('ms', '')
-                reportedDuration = float(timeStr) / 1000
+                time_str = line.split(' ')[-1]
+                time_str = time_str.replace('ms', '')
+                reported_duration = float(time_str) / 1000
                 break
             
-    scriptDuration = time.time() - start
+    script_duration = time.time() - start
 
+    return (script_duration, reported_duration, top_memory)
 
-    return (scriptDuration, reportedDuration, topMemory)
+def run_script(filename, command = './%s'):
+    return run_benchmark(command % (filename))
 
-def runScript(filename, command = './%s'):
-    return runBenchmark(command % (filename))
-
-def getScriptInfo(scriptInfo):
-    if isinstance(scriptInfo, str):
-        scriptInfo = {
-            'file': scriptInfo,
-            'title': os.path.splitext(scriptInfo)[0]
+def get_script_info(script_info):
+    if isinstance(script_info, str):
+        script_info = {
+            'file': script_info,
+            'title': os.path.splitext(script_info)[0]
         }
 
-    if 'title' not in scriptInfo:
-        scriptInfo['title'] = scriptInfo['title']
+    if 'title' not in script_info:
+        script_info['title'] = script_info['title']
 
-    return scriptInfo
+    return script_info
 
-def getCommandInfo(commandInfo):
-    if isinstance(commandInfo, str):
-        commandInfo = {
-            'title': commandInfo,
-            'command': commandInfo,
+def get_command_info(command_info):
+    if isinstance(command_info, str):
+        command_info = {
+            'title': command_info,
+            'command': command_info,
             'tags': [],
         }
 
-    return commandInfo
+    return command_info
 
-def loadConfiguration(filename):
+def load_configuration(filename):
     conf = {}
 
     with open(filename) as file:
@@ -329,22 +328,22 @@ def loadConfiguration(filename):
 
     matrix = conf['strategy']['matrix']
 
-    for scriptInfo in matrix['files']:
-        scriptInfo = getScriptInfo(scriptInfo)
+    for script_info in matrix['files']:
+        script_info = get_script_info(script_info)
 
-        for commandInfo in matrix['command']:
+        for command_info in matrix['command']:
             tags = []
-            commandInfo = getCommandInfo(commandInfo)
+            command_info = get_command_info(command_info)
 
-            if 'tags' in scriptInfo:
-                tags += scriptInfo['tags']
+            if 'tags' in script_info:
+                tags += script_info['tags']
 
-            if 'tags' in commandInfo:
-                tags += commandInfo['tags']
+            if 'tags' in command_info:
+                tags += command_info['tags']
 
             configuration['runs'].append({
-                'script': scriptInfo,
-                'command': commandInfo,
+                'script': script_info,
+                'command': command_info,
                 'tags': tags,
             })
 
@@ -389,7 +388,7 @@ def collect_statistics(values):
         'p5': p5,
     }
 
-def actionRun(args):
+def action_run(args):
     for output in args.output:
         output.prepare()
 
@@ -398,8 +397,8 @@ def actionRun(args):
     configurations = load_configurations(args.languages)
     scripts = args.scripts if args.scripts else '*'
 
-    for configurationFilename in configurations:
-        dir = os.path.dirname(configurationFilename)
+    for configuration_filename in configurations:
+        dir = os.path.dirname(configuration_filename)
 
         if (os.path.isfile(dir + '/Makefile')):
             print('Making %s' % (dir))
@@ -411,9 +410,9 @@ def actionRun(args):
                 print('Error in makefile for %s' % (dir))
                 exit(1)
 
-    for configurationFilename in configurations:
-        dir = os.path.dirname(configurationFilename)
-        conf = loadConfiguration(configurationFilename)
+    for configuration_filename in configurations:
+        dir = os.path.dirname(configuration_filename)
+        conf = load_configuration(configuration_filename)
 
         for run in conf['runs']:
             if run['script']['title'] not in scripts and '*' not in scripts:
@@ -439,41 +438,41 @@ def actionRun(args):
                 flush=True
             )
 
-            timeResults = []
-            reportedResults = []
-            startupResults = []
-            memoryResults = []
+            time_results = []
+            reported_results = []
+            startup_results = []
+            memory_results = []
 
             for _ in range(args.times):
-                elapsed, reported, memory = runScript(dir + '/' + run['script']['file'], run['command']['command'])
+                elapsed, reported, memory = run_script(dir + '/' + run['script']['file'], run['command']['command'])
                 print("{:.3f}".format(reported), end='\t', flush=True)
 
                 if (elapsed > 0):
-                    timeResults.append(elapsed)
-                    reportedResults.append(reported)
-                    memoryResults.append(memory)
+                    time_results.append(elapsed)
+                    reported_results.append(reported)
+                    memory_results.append(memory)
 
-                    startupResults = [t - r for (t, r) in zip(timeResults, reportedResults)]
+                    startup_results = [t - r for (t, r) in zip(time_results, reported_results)]
 
             print()
 
-            if timeResults and memoryResults:
+            if time_results and memory_results:
                 result = {
                     'script': run['script']['title'],
                     'language': conf['title'],
                     'configuration': run['command']['title'],
                     'tags': run['tags'],
-                    'total_time': collect_statistics(timeResults),
-                    'time': collect_statistics(reportedResults),
-                    'startup_time': collect_statistics(startupResults),
-                    'memory': collect_statistics(memoryResults),
+                    'total_time': collect_statistics(time_results),
+                    'time': collect_statistics(reported_results),
+                    'startup_time': collect_statistics(startup_results),
+                    'memory': collect_statistics(memory_results),
                 }
 
                 print('\tFinal: {:.3f} ± {:.3f}'.format(result['time']['mean'], result['time']['std_sample']), flush=True)
 
                 for output in args.output:
                     if isinstance(output, LiveOutputFormat):
-                        output.writeSingleResult(result)
+                        output.write_single_result(result)
 
                 results.append(result)
 
@@ -484,19 +483,23 @@ def actionRun(args):
         if isinstance(output, OutputFormat):
             output.write(results)
 
-def actionTransformResults(args):
-    with open('.results/results.json', 'r') as file:
+def action_transform_results(args):
+    with open(args.input) as file:
         results = json.load(file)
 
-    writeResultsMarkdown(results)
+    for output in args.output:
+        output.prepare()
+
+        if isinstance(output, OutputFormat):
+            output.write(results)
 
 def main():
     args = parse_arguments()
 
     if args.action == 'run':
-        actionRun(args)
-    elif args.action == 'results':
-        actionTransformResults(args)
+        action_run(args)
+    elif args.action == 'transform-results':
+        action_transform_results(args)
     else:
         print(f"Unknown action: {args.action}")
 

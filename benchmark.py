@@ -68,7 +68,8 @@ class JsonOutputFormat(OutputFormat):
             if result['language'] not in formatted_results[result['script']]:
                 formatted_results[result['script']][result['language']] = {}
 
-            formatted_results[result['script']][result['language']][result['configuration']] = {
+            configurationName = result['configuration'] if result['version'] == None else f'{result["configuration"]} ({result["version"]})'
+            formatted_results[result['script']][result['language']][configurationName] = {
                 'total_time': {
                     'results': result['total_time']['results'],
                     'median': result['total_time']['p50'],
@@ -155,7 +156,8 @@ class MarkdownOutputFormat(OutputFormat):
                 file.write('| :------- | ------: | ----------: |  ---------: |  ---------: |  --------: | --------------: | ------------: | ----------: |\n')
 
                 for entry in grouped_by_script[script_name]:
-                    languageName = entry['language'] if entry['language'] == entry['configuration'] else f'{entry["language"]} ({entry["configuration"]})'
+                    languageName = entry['language'] if entry['version'] == None else f'{entry["language"]} ({entry["version"]})'
+                    languageName = languageName if entry['language'] == entry['configuration'] else f'{languageName} ({entry["configuration"]})'
                     file.write(
                         f'| {languageName} | {entry["time"]["mean"]:.3f} | {entry["time"]["p99"]:.3f} | {entry["time"]["p95"]:.3f} | {entry["time"]["p50"]:.3f} | {entry["time"]["p5"]:.3f} | {entry["startup_time"]["mean"]:.3f} | {entry["total_time"]["mean"]:.3f} | {entry["memory"]["mean"] / 1024 / 1024:.2f} |\n'
                     )
@@ -505,6 +507,7 @@ def action_run(args):
                 result = {
                     'script': script_title,
                     'language': config_title,
+                    'version': version,
                     'configuration': command_title,
                     'tags': run_def.get('tags', []),
                     'total_time': collect_statistics(time_results),

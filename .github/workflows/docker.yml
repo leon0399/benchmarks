@@ -4,12 +4,14 @@ on:
   push:
     paths:
       - Dockerfile
+      - docker/**/*
     branches:
       - master
 
   pull_request:
     paths:
       - Dockerfile
+      - docker/**/*
 
 concurrency: 
   group: ${{ github.workflow }}-${{ github.ref }}

@@ -19,14 +19,30 @@ jobs:
     permissions:
       pull-requests: read
 
+    strategy:
+      fail-fast: false
+      matrix:
+        lang: 
+          - c-plus-plus
+          - c-sharp
+          - fortran
+          - go
+          - java
+          - kotlin
+          - lua
+          - node
+          - perl
+          - php
+          - python
+          - ruby
+          - rust
+          - swift
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 2
-
-      - name: Pull Docker image
-        run: docker compose pull benchmark
 
       - name: Get changed files
         id: changed-files
@@ -37,7 +53,11 @@ jobs:
             !**/*.yml
             !**/*.json
 
+      - name: Pull Docker image
+        if: ${{ steps.changed-files.outputs.any_changed == 'true' && contains(steps.changed-files.outputs.all_changed_files, format('langs/{0}/', matrix.lang)) }}
+        run: docker compose pull ${{ matrix.lang }}
+
       - name: Run benchmarks for changed files
-        if: steps.changed-files.outputs.any_changed == 'true'
+        if: ${{ steps.changed-files.outputs.any_changed == 'true' && contains(steps.changed-files.outputs.all_changed_files, format('langs/{0}/', matrix.lang)) }}
         run: |
-          docker compose run benchmark python3 ./run_on_changes.py ${{ steps.changed-files.outputs.all_changed_files }}
+          docker compose run ${{ matrix.lang }} python3 ./run_on_changes.py ${{ steps.changed-files.outputs.all_changed_files }}

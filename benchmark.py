@@ -392,7 +392,7 @@ def load_configuration(filename, config_directory):
                 if 'tags' in cmd_info:
                     run_def['tags'] += cmd_info['tags']
 
-                if 'tags' in version:
+                if version and 'tags' in version:
                     run_def['tags'] += version['tags']
 
                 runs.append(run_def)

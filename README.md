@@ -16,23 +16,23 @@ World's complete programming language benchmark.
 #### Run full suite
 
 ```bash
-docker-compose run benchmark python3 ./benchmark.py run
+docker-compose run benchmark python3 ./benchmark.py run --output jsonl=./.results/results.jsonl --output markdown=./RESULTS.md
 ```
 
 #### Run specific languages only
 
 ```bash
-docker-compose run benchmark python3 ./benchmark.py run --lang rust go php
+docker-compose run benchmark python3 ./benchmark.py run --lang rust go php --output jsonl=./.results/results.jsonl --output markdown=./RESULTS.md
 ```
 
 #### Run specific scripts only
 
 ```bash
-docker-compose run benchmark python3 ./benchmark.py run --script primes/Simple linpack/Linpack recursion/Tak
+docker-compose run benchmark python3 ./benchmark.py run --script primes/Simple linpack/Linpack recursion/Tak --output jsonl=./.results/results.jsonl --output markdown=./RESULTS.md
 ```
 
 > [!TIP]
-> You can combine options above 
+> You can combine options above
 
 ### Running manually
 

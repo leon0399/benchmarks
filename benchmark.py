@@ -315,46 +315,76 @@ def get_command_info(command_info):
 
     return command_info
 
-def load_configuration(filename):
-    conf = {}
+def load_configuration(filename, config_directory):
+    """
+    Loads a YAML configuration like the one you provided for PHP:
+      - top-level 'versions' array for commands that don't specify their own
+      - command-specific 'versions' that override the default
+      - multiple 'files' entries
+    Returns a list of runs, each run being a dict with the final command string fully substituted.
+    """
+    with open(filename, 'r') as f:
+        conf = yaml.safe_load(f)
 
-    with open(filename) as file:
-        conf = yaml.safe_load(file)
-        file.close()
-
-    configuration = {}
-    configuration['title'] = conf['title']
-    configuration['runs'] = []
-
+    config_title = conf['title']
     matrix = conf['strategy']['matrix']
+    
+    # The global default versions
+    global_versions = matrix.get('versions', [])
 
-    for script_info in matrix['files']:
-        script_info = get_script_info(script_info)
+    commands = matrix.get('command', [])
+    files = matrix.get('files', [])
 
-        for command_info in matrix['command']:
-            tags = []
-            command_info = get_command_info(command_info)
+    runs = []
 
-            if 'tags' in script_info:
-                tags += script_info['tags']
+    for script in files:
+        # We'll assume it's just a string like "primes/Simple.php"
+        # so we can build the script_title easily
+        script_title = os.path.splitext(script)[0]
 
-            if 'tags' in command_info:
-                tags += command_info['tags']
+        # Build the full path to the file, so {file} can be replaced
+        # if your code expects an absolute path, do os.path.abspath here
+        full_script_path = os.path.join(config_directory, script)
 
-            configuration['runs'].append({
-                'script': script_info,
-                'command': command_info,
-                'tags': tags,
-            })
+        for cmd_info in commands:
+            # Each cmd_info might have its own versions or rely on global_versions
+            command_versions = cmd_info.get('versions', global_versions)
+            
+            # If no versions, we can treat as [None] to create one run
+            if not command_versions:
+                command_versions = [None]
+            
+            command_str_template = cmd_info['command']
+            command_title = cmd_info['title']
 
-    if 'exclude' in matrix:
-        for exclude in matrix['exclude']:
-            configuration['runs'] = list(filter(
-                lambda run : not (run['command']['title'] == exclude['command'] and run['script']['title'] == exclude['file']),
-                configuration['runs']
-            ))
+            # For each version in either the command's own or the global list
+            for version in command_versions:
+                final_command = command_str_template
 
-    return configuration
+                # If version is set and the template has {version}, replace it
+                if version and '{version}' in final_command:
+                    final_command = final_command.replace('{version}', str(version))
+
+                # If {file} is present, replace it with the actual file path
+                if '{file}' in final_command:
+                    final_command = final_command.replace('{file}', full_script_path)
+
+                run_def = {
+                    'config_title': config_title,
+                    'script_file': script,  # or full_script_path if you prefer
+                    'script_title': script_title, 
+                    'command_title': command_title,
+                    'command_str': final_command,
+                    'version': str(version) if version else None
+                }
+
+                # If there are tags in the command, you might store them here
+                if 'tags' in cmd_info:
+                    run_def['tags'] = cmd_info['tags']
+
+                runs.append(run_def)
+
+    return runs
 
 def collect_statistics(values):
     values.sort()
@@ -388,15 +418,7 @@ def collect_statistics(values):
         'p5': p5,
     }
 
-def action_run(args):
-    for output in args.output:
-        output.prepare()
-
-    results = []
-
-    configurations = load_configurations(args.languages)
-    scripts = args.scripts if args.scripts else '*'
-
+def prepare_benchmarks(configurations):
     for configuration_filename in configurations:
         dir = os.path.dirname(configuration_filename)
 
@@ -410,33 +432,56 @@ def action_run(args):
                 print('Error in makefile for %s' % (dir))
                 exit(1)
 
-    for configuration_filename in configurations:
-        dir = os.path.dirname(configuration_filename)
-        conf = load_configuration(configuration_filename)
+def action_run(args):
+    for output in args.output:
+        output.prepare()
 
-        for run in conf['runs']:
-            if run['script']['title'] not in scripts and '*' not in scripts:
+    configurations = load_configurations(args.languages)
+    prepare_benchmarks(configurations)
+
+    scripts_filter = args.scripts if args.scripts else '*'
+
+    results = []
+
+    for cfg_file in configurations:
+        dir = os.path.dirname(cfg_file)
+        runs = load_configuration(cfg_file, dir)
+
+        for run_def in runs:
+            script_file = run_def['script_file']
+            script_title = run_def['script_title']
+            config_title = run_def['config_title']
+            command_title = run_def['command_title']
+            command_str = run_def['command_str']
+            version = run_def['version']
+
+            # Skip if user specifically said skip:script_name
+            if f"skip:{script_title}" in scripts_filter:
                 continue
 
-            split = run['command']['command'].split()
-            executable = split[0]
+            # If user specified scripts, skip if not in them
+            if (script_title not in scripts_filter) and ('*' not in scripts_filter):
+                continue
 
+            # Possibly fix the command if first token is not a file but found via 'which'
+            split_cmd = command_str.split()
+            executable = split_cmd[0]
             if not os.path.isfile(executable):
-                executable, err = subprocess.Popen(['which', executable], stdout=subprocess.PIPE).communicate()
+                found_executable, _ = subprocess.Popen(['which', executable], stdout=subprocess.PIPE).communicate()
+                if found_executable:
+                    split_cmd[0] = found_executable.decode("utf-8").strip()
+                    command_str = ' '.join(split_cmd)
 
-                if executable:
-                    split[0] = executable.decode("utf-8").replace('\n', '')
-                    run['command']['command'] = ' '.join(split)
-
-            print(
-                'Running: %s - %s - %s:' % (
-                    conf['title'],
-                    run['script']['title'],
-                    run['command']['title'],
-                ),
-                end='\n\t',
-                flush=True
-            )
+            if version:
+                print(
+                    f"Running {config_title} (v{version or ''}) - {script_title} - {command_title}:",
+                    end='\n\t', flush=True
+                )
+            else:
+                print(
+                    f"Running {config_title} - {script_title} - {command_title}:",
+                    end='\n\t', flush=True
+                )
 
             time_results = []
             reported_results = []
@@ -444,8 +489,7 @@ def action_run(args):
             memory_results = []
 
             for _ in range(args.times):
-                command = run['command']['command'].replace('{file}', dir + '/' + run['script']['file'])
-                elapsed, reported, memory = run_benchmark(command)
+                elapsed, reported, memory = run_benchmark(command_str)
                 print("{:.3f}".format(reported), end='\t', flush=True)
 
                 if (elapsed > 0):
@@ -459,10 +503,10 @@ def action_run(args):
 
             if time_results and memory_results:
                 result = {
-                    'script': run['script']['title'],
-                    'language': conf['title'],
-                    'configuration': run['command']['title'],
-                    'tags': run['tags'],
+                    'script': script_title,
+                    'language': config_title,
+                    'configuration': command_title,
+                    'tags': run_def.get('tags', []),
                     'total_time': collect_statistics(time_results),
                     'time': collect_statistics(reported_results),
                     'startup_time': collect_statistics(startup_results),

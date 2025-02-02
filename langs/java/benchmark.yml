@@ -4,9 +4,9 @@ strategy:
   matrix:
     command:
       - title: 'Java'
-        command: 'java -jar %s.jar'
+        command: 'java -jar {file}.jar'
       - title: 'GraalVM'
-        command: 'graalvm.java -jar %s.jar'
+        command: 'graalvm.java -jar {file}.jar'
         tags:
           - GraalVM
 

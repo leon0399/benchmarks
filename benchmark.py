@@ -444,7 +444,8 @@ def action_run(args):
             memory_results = []
 
             for _ in range(args.times):
-                elapsed, reported, memory = run_script(dir + '/' + run['script']['file'], run['command']['command'])
+                command = run['command']['command'].replace('{file}', dir + '/' + run['script']['file'])
+                elapsed, reported, memory = run_benchmark(command)
                 print("{:.3f}".format(reported), end='\t', flush=True)
 
                 if (elapsed > 0):

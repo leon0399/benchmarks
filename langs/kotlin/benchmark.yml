@@ -4,9 +4,9 @@ strategy:
   matrix:
     command:
       - title: 'JVM'
-        command: 'java -jar %s.jar'
+        command: 'java -jar {file}.jar'
       - title: 'Native'
-        command: './%s.kexe'
+        command: './{file}.kexe'
 
     files:
       - primes/Simple

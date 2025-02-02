@@ -4,9 +4,9 @@ strategy:
   matrix:
     command:
       - title: 'clang'
-        command: './%s-clang'
+        command: './{file}-clang'
       - title: 'gcc'
-        command: './%s-gcc'
+        command: './{file}-gcc'
 
     files:
       - primes/Simple

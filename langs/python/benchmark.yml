@@ -4,13 +4,13 @@ strategy:
   matrix:
     command:
       - title: 'CPython'
-        command: 'python3 %s.py'
+        command: 'python3 {file}.py'
       - title: 'PyPy'
-        command: 'pypy3 %s.py'
+        command: 'pypy3 {file}.py'
         tags:
           - Alternative
       - title: 'Numba'
-        command: 'numba %s-Numba.py'
+        command: 'numba {file}-Numba.py'
         tags:
           - Alternative
           - JIT

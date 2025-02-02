@@ -3,17 +3,37 @@ title: 'PHP'
 strategy:
   matrix:
     versions:
-      - 5.6
-      - 7.0
-      - 7.1
-      - 7.2
-      - 7.3
-      - 7.4
-      - 8.0
-      - 8.1
-      - 8.2
-      - 8.3
-      - 8.4
+      - version: 5.6
+        tags:
+          - Old
+      - version: 7.0
+        tags:
+          - Old
+      - version: 7.1
+        tags:
+          - Old
+      - version: 7.2
+        tags:
+          - Old
+      - version: 7.3
+        tags:
+          - Old
+      - version: 7.4
+        tags:
+          - Old
+      - version: 8.0
+        tags:
+          - Old
+      - version: 8.1
+        tags:
+          - Old
+      - version: 8.2
+        tags:
+          - Old
+      - version: 8.3
+        tags:
+          - Old
+      - version: 8.4
 
     command:
       - title: 'PHP'
@@ -22,22 +42,38 @@ strategy:
       - title: 'JIT: tracing'
         command: 'php{version} -dxdebug.mode=off -dopcache.enable_cli=1 -dopcache.jit_buffer_size=100M -dopcache.jit=tracing --file {file}'
         versions:
-          - 8.0
-          - 8.1
-          - 8.2
-          - 8.3
-          - 8.4
+          - version: 8.0
+            tags:
+              - Old
+          - version: 8.1
+            tags:
+              - Old
+          - version: 8.2
+            tags:
+              - Old
+          - version: 8.3
+            tags:
+              - Old
+          - version: 8.4
         tags:
           - JIT
 
       - title: 'JIT: function'
         command: 'php{version} -dxdebug.mode=off -dopcache.enable_cli=1 -dopcache.jit_buffer_size=100M -dopcache.jit=function --file {file}'
         versions:
-          - 8.0
-          - 8.1
-          - 8.2
-          - 8.3
-          - 8.4
+          - version: 8.0
+            tags:
+              - Old
+          - version: 8.1
+            tags:
+              - Old
+          - version: 8.2
+            tags:
+              - Old
+          - version: 8.3
+            tags:
+              - Old
+          - version: 8.4
         tags:
           - JIT
 

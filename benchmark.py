@@ -59,7 +59,6 @@ class JsonOutputFormat(OutputFormat):
         os.makedirs(os.path.dirname(self.path), exist_ok=True)
 
     def write(self, results):
-        # transform { "script": "primes/Simple", "language": "PHP", "configuration": "PHP" } into { "primes/Simple": { "PHP": { "PHP": { ... } } } }
         formatted_results = {}
         for result in results:
             if result['script'] not in formatted_results:
@@ -68,7 +67,10 @@ class JsonOutputFormat(OutputFormat):
             if result['language'] not in formatted_results[result['script']]:
                 formatted_results[result['script']][result['language']] = {}
 
-            configurationName = result['configuration'] if result['version'] == None else f'{result["configuration"]} ({result["version"]})'
+            configurationName = result['configuration']
+            if result['version'] != None and 'Old' in result['tags']:
+                configurationName = f'{result["configuration"]} ({result["version"]})'
+            
             formatted_results[result['script']][result['language']][configurationName] = {
                 'total_time': {
                     'results': result['total_time']['results'],
@@ -363,9 +365,14 @@ def load_configuration(filename, config_directory):
             for version in command_versions:
                 final_command = command_str_template
 
+                if isinstance(version, str):
+                    version = {
+                        'version': version
+                    }
+
                 # If version is set and the template has {version}, replace it
                 if version and '{version}' in final_command:
-                    final_command = final_command.replace('{version}', str(version))
+                    final_command = final_command.replace('{version}', str(version['version']))
 
                 # If {file} is present, replace it with the actual file path
                 if '{file}' in final_command:
@@ -377,12 +384,16 @@ def load_configuration(filename, config_directory):
                     'script_title': script_title, 
                     'command_title': command_title,
                     'command_str': final_command,
-                    'version': str(version) if version else None
+                    'version': str(version['version']) if version else None,
+                    'tags': [],
                 }
 
                 # If there are tags in the command, you might store them here
                 if 'tags' in cmd_info:
-                    run_def['tags'] = cmd_info['tags']
+                    run_def['tags'] += cmd_info['tags']
+
+                if 'tags' in version:
+                    run_def['tags'] += version['tags']
 
                 runs.append(run_def)
 

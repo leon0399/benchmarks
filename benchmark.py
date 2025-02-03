@@ -487,7 +487,7 @@ def action_run(args):
 
             if version:
                 print(
-                    f"Running {config_title} (v{version or ''}) - {script_title} - {command_title}:",
+                    f"Running {config_title} ({version or ''}) - {script_title} - {command_title}:",
                     end='\n\t', flush=True
                 )
             else:

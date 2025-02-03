@@ -3,12 +3,35 @@ title: 'Java'
 strategy:
   matrix:
     command:
-      - title: 'Java'
-        command: 'java -jar {file}.jar'
+      - title: 'OpenJDK'
+        command: 'openjdk{version}.java -jar {file}.jar'
+        versions:
+          - version: '21'
+            tags:
+              - Old
+          - version: '22'
+            tags:
+              - Old
+          - version: '23'
+
+      - title: 'Oracle JDK'
+        command: 'oracle-jdk{version}.java -jar {file}.jar'
+        versions:
+          - version: '21'
+            tags:
+              - Old
+          - version: '23'
+
       - title: 'GraalVM'
-        command: 'graalvm.java -jar {file}.jar'
-        tags:
-          - GraalVM
+        command: 'oracle-graalvm{version}.java -jar {file}.jar'
+        versions:
+          - version: '21'
+            tags:
+              - Old
+              - GraalVM
+          - version: '23'
+            tags:
+              - GraalVM
 
     files:
       - primes/Simple

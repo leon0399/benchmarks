@@ -65,16 +65,12 @@ services:
     build:
       context: .
       dockerfile: ./docker/java/Dockerfile
-    depends_on:
-      - base
 
   kotlin:
     <<: *base
     image: ghcr.io/leon0399/benchmarks-kotlin:latest
     build:
       context: ./docker/kotlin
-    depends_on:
-      - java
 
   lua:
     <<: *base

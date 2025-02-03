@@ -4,7 +4,7 @@ strategy:
   matrix:
     command:
       - title: 'Perl'
-        command: 'perl ./%s'
+        command: 'perl ./{file}'
 
     files:
       - primes/Simple.pl

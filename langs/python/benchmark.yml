@@ -4,13 +4,38 @@ strategy:
   matrix:
     command:
       - title: 'CPython'
-        command: 'python3 %s.py'
+        command: 'env PYENV_VERSION={version} pyenv exec python {file}.py'
+        versions:
+          - version: 3.6
+            tags:
+              - Old
+          - version: 3.7
+            tags:
+              - Old
+          - version: 3.8
+            tags:
+              - Old
+          - version: 3.9
+            tags:
+              - Old
+          - version: '3.10'
+            tags:
+              - Old
+          - version: 3.11
+            tags:
+              - Old
+          - version: 3.12
+            tags:
+              - Old
+          - version: 3.13
+
       - title: 'PyPy'
-        command: 'pypy3 %s.py'
+        command: 'pypy3 {file}.py'
         tags:
           - Alternative
+  
       - title: 'Numba'
-        command: 'numba %s-Numba.py'
+        command: 'numba {file}-Numba.py'
         tags:
           - Alternative
           - JIT

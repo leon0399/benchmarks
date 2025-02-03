@@ -4,15 +4,10 @@ strategy:
   matrix:
     command:
       - title: 'clang'
-        command: './%s-clang'
-      # - title: 'clang & static'
-      #   command: './%s-clang-static'
+        command: './{file}-clang'
+
       - title: 'gcc'
-        command: './%s-gcc'
-      # - title: 'gcc & static'
-      #   command: './%s-gcc-static'
-      # - title: 'GraalVM'
-      #   command: 'graalvm.lli %s-graalvm'
+        command: './{file}-gcc'
 
     files:
       - primes/Simple

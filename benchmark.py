@@ -48,7 +48,7 @@ class LiveOutputFormat(ABC):
         pass
 
     @abstractmethod
-    def writeSingleResult(self, result):
+    def write_single_result(self, result):
         pass
 
 class JsonOutputFormat(OutputFormat):
@@ -59,7 +59,6 @@ class JsonOutputFormat(OutputFormat):
         os.makedirs(os.path.dirname(self.path), exist_ok=True)
 
     def write(self, results):
-        # transform { "script": "primes/Simple", "language": "PHP", "configuration": "PHP" } into { "primes/Simple": { "PHP": { "PHP": { ... } } } }
         formatted_results = {}
         for result in results:
             if result['script'] not in formatted_results:
@@ -68,7 +67,11 @@ class JsonOutputFormat(OutputFormat):
             if result['language'] not in formatted_results[result['script']]:
                 formatted_results[result['script']][result['language']] = {}
 
-            formatted_results[result['script']][result['language']][result['configuration']] = {
+            configurationName = result['configuration']
+            if result['version'] != None and 'Old' in result['tags']:
+                configurationName = f'{result["configuration"]} ({result["version"]})'
+            
+            formatted_results[result['script']][result['language']][configurationName] = {
                 'total_time': {
                     'results': result['total_time']['results'],
                     'median': result['total_time']['p50'],
@@ -128,7 +131,7 @@ class JsonLinesOutputFormat(LiveOutputFormat):
         # Clear the file
         open(self.path, 'w').close()
 
-    def writeSingleResult(self, result):
+    def write_single_result(self, result):
         with open(self.path, 'a') as file:
             file.write(json.dumps(result) + '\n')
 
@@ -155,7 +158,8 @@ class MarkdownOutputFormat(OutputFormat):
                 file.write('| :------- | ------: | ----------: |  ---------: |  ---------: |  --------: | --------------: | ------------: | ----------: |\n')
 
                 for entry in grouped_by_script[script_name]:
-                    languageName = entry['language'] if entry['language'] == entry['configuration'] else f'{entry["language"]} ({entry["configuration"]})'
+                    languageName = entry['language'] if entry['version'] == None else f'{entry["language"]} ({entry["version"]})'
+                    languageName = languageName if entry['language'] == entry['configuration'] else f'{languageName} ({entry["configuration"]})'
                     file.write(
                         f'| {languageName} | {entry["time"]["mean"]:.3f} | {entry["time"]["p99"]:.3f} | {entry["time"]["p95"]:.3f} | {entry["time"]["p50"]:.3f} | {entry["time"]["p5"]:.3f} | {entry["startup_time"]["mean"]:.3f} | {entry["total_time"]["mean"]:.3f} | {entry["memory"]["mean"] / 1024 / 1024:.2f} |\n'
                     )
@@ -255,24 +259,24 @@ def load_configurations(languages):
     configurations.sort()
     return configurations
 
-def runBenchmark(command):
+def run_benchmark(command):
     start = time.time()
-    topMemory = 0
-    reportedDuration = -1
+    top_memory = 0
+    reported_duration = -1
 
     with subprocess.Popen(command.split(), stdout=subprocess.PIPE, stderr=subprocess.DEVNULL) as proc:
         try:
             process = psutil.Process(proc.pid)
             while proc.poll() is None:
                 memory = process.memory_info()
-                if memory.rss > topMemory:
-                    topMemory = memory.rss
+                if memory.rss > top_memory:
+                    top_memory = memory.rss
         except subprocess.TimeoutExpired:
             proc.kill()
-            return (-1, -1, topMemory)
+            return (-1, -1, top_memory)
 
         if (proc.returncode != 0):
-            return (-1, -1, topMemory)
+            return (-1, -1, top_memory)
 
         stdout = proc.communicate()[0]
         decoded = stdout.decode('utf-8')
@@ -281,81 +285,119 @@ def runBenchmark(command):
         # Find the `Execution time: %dms` line
         for line in lines:
             if 'Execution time' in line:
-                timeStr = line.split(' ')[-1]
-                timeStr = timeStr.replace('ms', '')
-                reportedDuration = float(timeStr) / 1000
+                time_str = line.split(' ')[-1]
+                time_str = time_str.replace('ms', '')
+                reported_duration = float(time_str) / 1000
                 break
             
-    scriptDuration = time.time() - start
+    script_duration = time.time() - start
 
+    return (script_duration, reported_duration, top_memory)
 
-    return (scriptDuration, reportedDuration, topMemory)
+def run_script(filename, command = './%s'):
+    return run_benchmark(command % (filename))
 
-def runScript(filename, command = './%s'):
-    return runBenchmark(command % (filename))
-
-def getScriptInfo(scriptInfo):
-    if isinstance(scriptInfo, str):
-        scriptInfo = {
-            'file': scriptInfo,
-            'title': os.path.splitext(scriptInfo)[0]
+def get_script_info(script_info):
+    if isinstance(script_info, str):
+        script_info = {
+            'file': script_info,
+            'title': os.path.splitext(script_info)[0]
         }
 
-    if 'title' not in scriptInfo:
-        scriptInfo['title'] = scriptInfo['title']
+    if 'title' not in script_info:
+        script_info['title'] = script_info['title']
 
-    return scriptInfo
+    return script_info
 
-def getCommandInfo(commandInfo):
-    if isinstance(commandInfo, str):
-        commandInfo = {
-            'title': commandInfo,
-            'command': commandInfo,
+def get_command_info(command_info):
+    if isinstance(command_info, str):
+        command_info = {
+            'title': command_info,
+            'command': command_info,
             'tags': [],
         }
 
-    return commandInfo
+    return command_info
 
-def loadConfiguration(filename):
-    conf = {}
+def load_configuration(filename, config_directory):
+    """
+    Loads a YAML configuration like the one you provided for PHP:
+      - top-level 'versions' array for commands that don't specify their own
+      - command-specific 'versions' that override the default
+      - multiple 'files' entries
+    Returns a list of runs, each run being a dict with the final command string fully substituted.
+    """
+    with open(filename, 'r') as f:
+        conf = yaml.safe_load(f)
 
-    with open(filename) as file:
-        conf = yaml.safe_load(file)
-        file.close()
-
-    configuration = {}
-    configuration['title'] = conf['title']
-    configuration['runs'] = []
-
+    config_title = conf['title']
     matrix = conf['strategy']['matrix']
+    
+    # The global default versions
+    global_versions = matrix.get('versions', [])
 
-    for scriptInfo in matrix['files']:
-        scriptInfo = getScriptInfo(scriptInfo)
+    commands = matrix.get('command', [])
+    files = matrix.get('files', [])
 
-        for commandInfo in matrix['command']:
-            tags = []
-            commandInfo = getCommandInfo(commandInfo)
+    runs = []
 
-            if 'tags' in scriptInfo:
-                tags += scriptInfo['tags']
+    for script in files:
+        # We'll assume it's just a string like "primes/Simple.php"
+        # so we can build the script_title easily
+        script_title = os.path.splitext(script)[0]
 
-            if 'tags' in commandInfo:
-                tags += commandInfo['tags']
+        # Build the full path to the file, so {file} can be replaced
+        # if your code expects an absolute path, do os.path.abspath here
+        full_script_path = os.path.join(config_directory, script)
 
-            configuration['runs'].append({
-                'script': scriptInfo,
-                'command': commandInfo,
-                'tags': tags,
-            })
+        for cmd_info in commands:
+            # Each cmd_info might have its own versions or rely on global_versions
+            command_versions = cmd_info.get('versions', global_versions)
+            
+            # If no versions, we can treat as [None] to create one run
+            if not command_versions:
+                command_versions = [None]
+            
+            command_str_template = cmd_info['command']
+            command_title = cmd_info['title']
 
-    if 'exclude' in matrix:
-        for exclude in matrix['exclude']:
-            configuration['runs'] = list(filter(
-                lambda run : not (run['command']['title'] == exclude['command'] and run['script']['title'] == exclude['file']),
-                configuration['runs']
-            ))
+            # For each version in either the command's own or the global list
+            for version in command_versions:
+                final_command = command_str_template
 
-    return configuration
+                if isinstance(version, str):
+                    version = {
+                        'version': version
+                    }
+
+                # If version is set and the template has {version}, replace it
+                if version and '{version}' in final_command:
+                    final_command = final_command.replace('{version}', str(version['version']))
+
+                # If {file} is present, replace it with the actual file path
+                if '{file}' in final_command:
+                    final_command = final_command.replace('{file}', full_script_path)
+
+                run_def = {
+                    'config_title': config_title,
+                    'script_file': script,  # or full_script_path if you prefer
+                    'script_title': script_title, 
+                    'command_title': command_title,
+                    'command_str': final_command,
+                    'version': str(version['version']) if version else None,
+                    'tags': [],
+                }
+
+                # If there are tags in the command, you might store them here
+                if 'tags' in cmd_info:
+                    run_def['tags'] += cmd_info['tags']
+
+                if version and 'tags' in version:
+                    run_def['tags'] += version['tags']
+
+                runs.append(run_def)
+
+    return runs
 
 def collect_statistics(values):
     values.sort()
@@ -389,17 +431,9 @@ def collect_statistics(values):
         'p5': p5,
     }
 
-def actionRun(args):
-    for output in args.output:
-        output.prepare()
-
-    results = []
-
-    configurations = load_configurations(args.languages)
-    scripts = args.scripts if args.scripts else '*'
-
-    for configurationFilename in configurations:
-        dir = os.path.dirname(configurationFilename)
+def prepare_benchmarks(configurations):
+    for configuration_filename in configurations:
+        dir = os.path.dirname(configuration_filename)
 
         if (os.path.isfile(dir + '/Makefile')):
             print('Making %s' % (dir))
@@ -411,69 +445,93 @@ def actionRun(args):
                 print('Error in makefile for %s' % (dir))
                 exit(1)
 
-    for configurationFilename in configurations:
-        dir = os.path.dirname(configurationFilename)
-        conf = loadConfiguration(configurationFilename)
+def action_run(args):
+    for output in args.output:
+        output.prepare()
 
-        for run in conf['runs']:
-            if run['script']['title'] not in scripts and '*' not in scripts:
+    configurations = load_configurations(args.languages)
+    prepare_benchmarks(configurations)
+
+    scripts_filter = args.scripts if args.scripts else '*'
+
+    results = []
+
+    for cfg_file in configurations:
+        dir = os.path.dirname(cfg_file)
+        runs = load_configuration(cfg_file, dir)
+
+        for run_def in runs:
+            script_file = run_def['script_file']
+            script_title = run_def['script_title']
+            config_title = run_def['config_title']
+            command_title = run_def['command_title']
+            command_str = run_def['command_str']
+            version = run_def['version']
+
+            # Skip if user specifically said skip:script_name
+            if f"skip:{script_title}" in scripts_filter:
                 continue
 
-            split = run['command']['command'].split()
-            executable = split[0]
+            # If user specified scripts, skip if not in them
+            if (script_title not in scripts_filter) and ('*' not in scripts_filter):
+                continue
 
+            # Possibly fix the command if first token is not a file but found via 'which'
+            split_cmd = command_str.split()
+            executable = split_cmd[0]
             if not os.path.isfile(executable):
-                executable, err = subprocess.Popen(['which', executable], stdout=subprocess.PIPE).communicate()
+                found_executable, _ = subprocess.Popen(['which', executable], stdout=subprocess.PIPE).communicate()
+                if found_executable:
+                    split_cmd[0] = found_executable.decode("utf-8").strip()
+                    command_str = ' '.join(split_cmd)
 
-                if executable:
-                    split[0] = executable.decode("utf-8").replace('\n', '')
-                    run['command']['command'] = ' '.join(split)
+            if version:
+                print(
+                    f"Running {config_title} ({version or ''}) - {script_title} - {command_title}:",
+                    end='\n\t', flush=True
+                )
+            else:
+                print(
+                    f"Running {config_title} - {script_title} - {command_title}:",
+                    end='\n\t', flush=True
+                )
 
-            print(
-                'Running: %s - %s - %s:' % (
-                    conf['title'],
-                    run['script']['title'],
-                    run['command']['title'],
-                ),
-                end='\n\t',
-                flush=True
-            )
-
-            timeResults = []
-            reportedResults = []
-            startupResults = []
-            memoryResults = []
+            time_results = []
+            reported_results = []
+            startup_results = []
+            memory_results = []
 
             for _ in range(args.times):
-                elapsed, reported, memory = runScript(dir + '/' + run['script']['file'], run['command']['command'])
+                elapsed, reported, memory = run_benchmark(command_str)
                 print("{:.3f}".format(reported), end='\t', flush=True)
 
                 if (elapsed > 0):
-                    timeResults.append(elapsed)
-                    reportedResults.append(reported)
-                    memoryResults.append(memory)
+                    time_results.append(elapsed)
+                    reported_results.append(reported)
+                    memory_results.append(memory)
 
-                    startupResults = [t - r for (t, r) in zip(timeResults, reportedResults)]
+                    startup_results = [t - r for (t, r) in zip(time_results, reported_results)]
 
             print()
 
-            if timeResults and memoryResults:
+            if time_results and memory_results:
                 result = {
-                    'script': run['script']['title'],
-                    'language': conf['title'],
-                    'configuration': run['command']['title'],
-                    'tags': run['tags'],
-                    'total_time': collect_statistics(timeResults),
-                    'time': collect_statistics(reportedResults),
-                    'startup_time': collect_statistics(startupResults),
-                    'memory': collect_statistics(memoryResults),
+                    'script': script_title,
+                    'language': config_title,
+                    'version': version,
+                    'configuration': command_title,
+                    'tags': run_def.get('tags', []),
+                    'total_time': collect_statistics(time_results),
+                    'time': collect_statistics(reported_results),
+                    'startup_time': collect_statistics(startup_results),
+                    'memory': collect_statistics(memory_results),
                 }
 
                 print('\tFinal: {:.3f} ± {:.3f}'.format(result['time']['mean'], result['time']['std_sample']), flush=True)
 
                 for output in args.output:
                     if isinstance(output, LiveOutputFormat):
-                        output.writeSingleResult(result)
+                        output.write_single_result(result)
 
                 results.append(result)
 
@@ -484,19 +542,23 @@ def actionRun(args):
         if isinstance(output, OutputFormat):
             output.write(results)
 
-def actionTransformResults(args):
-    with open('.results/results.json', 'r') as file:
+def action_transform_results(args):
+    with open(args.input) as file:
         results = json.load(file)
 
-    writeResultsMarkdown(results)
+    for output in args.output:
+        output.prepare()
+
+        if isinstance(output, OutputFormat):
+            output.write(results)
 
 def main():
     args = parse_arguments()
 
     if args.action == 'run':
-        actionRun(args)
-    elif args.action == 'results':
-        actionTransformResults(args)
+        action_run(args)
+    elif args.action == 'transform-results':
+        action_transform_results(args)
     else:
         print(f"Unknown action: {args.action}")
 

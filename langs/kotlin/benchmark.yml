@@ -2,11 +2,21 @@ title: 'Kotlin'
 
 strategy:
   matrix:
+    versions:
+      - version: 1.9
+        tags:
+          - Old
+      - version: 2.0
+        tags:
+          - Old
+      - version: 2.1
+
     command:
       - title: 'JVM'
-        command: 'java -jar %s.jar'
+        command: 'java -jar {file}.{version}.jar'
+
       - title: 'Native'
-        command: './%s.kexe'
+        command: './{file}.{version}.kexe'
 
     files:
       - primes/Simple

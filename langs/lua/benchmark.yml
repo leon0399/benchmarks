@@ -4,9 +4,9 @@ strategy:
   matrix:
     command:
       - title: 'Lua'
-        command: 'lua %s'
+        command: 'lua {file}'
       - title: 'LuaJIT'
-        command: 'luajit %s'
+        command: 'luajit {file}'
         tags:
           - JIT
 

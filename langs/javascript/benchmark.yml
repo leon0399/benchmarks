@@ -4,9 +4,9 @@ strategy:
   matrix:
     command:
       - title: 'Node'
-        command: 'node %s'
+        command: 'node {file}'
       - title: 'GraalVM'
-        command: 'graalvm.node %s'
+        command: 'graalvm.node {file}'
         tags:
           - GraalVM
 

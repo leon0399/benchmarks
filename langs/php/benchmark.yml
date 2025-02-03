@@ -2,15 +2,78 @@ title: 'PHP'
 
 strategy:
   matrix:
+    versions:
+      - version: 5.6
+        tags:
+          - Old
+      - version: 7.0
+        tags:
+          - Old
+      - version: 7.1
+        tags:
+          - Old
+      - version: 7.2
+        tags:
+          - Old
+      - version: 7.3
+        tags:
+          - Old
+      - version: 7.4
+        tags:
+          - Old
+      - version: 8.0
+        tags:
+          - Old
+      - version: 8.1
+        tags:
+          - Old
+      - version: 8.2
+        tags:
+          - Old
+      - version: 8.3
+        tags:
+          - Old
+      - version: 8.4
+
     command:
       - title: 'PHP'
-        command: 'php -dxdebug.mode=off -dopcache.enable_cli=0 --file %s'
+        command: 'php{version} -dxdebug.mode=off -dopcache.enable_cli=0 --file {file}'
+
       - title: 'JIT: tracing'
-        command: 'php -dxdebug.mode=off -dopcache.enable_cli=1 -dopcache.jit_buffer_size=100M -dopcache.jit=tracing --file %s'
+        command: 'php{version} -dxdebug.mode=off -dopcache.enable_cli=1 -dopcache.jit_buffer_size=100M -dopcache.jit=tracing --file {file}'
+        versions:
+          - version: 8.0
+            tags:
+              - Old
+          - version: 8.1
+            tags:
+              - Old
+          - version: 8.2
+            tags:
+              - Old
+          - version: 8.3
+            tags:
+              - Old
+          - version: 8.4
         tags:
           - JIT
+
       - title: 'JIT: function'
-        command: 'php -dxdebug.mode=off -dopcache.enable_cli=1 -dopcache.jit_buffer_size=100M -dopcache.jit=function --file %s'
+        command: 'php{version} -dxdebug.mode=off -dopcache.enable_cli=1 -dopcache.jit_buffer_size=100M -dopcache.jit=function --file {file}'
+        versions:
+          - version: 8.0
+            tags:
+              - Old
+          - version: 8.1
+            tags:
+              - Old
+          - version: 8.2
+            tags:
+              - Old
+          - version: 8.3
+            tags:
+              - Old
+          - version: 8.4
         tags:
           - JIT
 

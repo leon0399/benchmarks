@@ -9,6 +9,41 @@ World's complete programming language benchmark.
 
 > See [`RESULTS.md`](RESULTS.md)
 
+## Algorithms
+
+The benchmark suite covers a variety of individual scripts grouped by algorithm family:
+
+- **collatz/MaxSequence** – find the number below a limit that produces the longest Collatz sequence.
+- **linpack/Linpack** – solve a dense system of linear equations from the LINPACK benchmark.
+- **mandelbrot/Simple** – render an ASCII Mandelbrot set.
+- **primes/Atkin** – generate primes using the Sieve of Atkin.
+- **primes/Simple** – generate primes via straightforward trial division.
+- **recursion/Tak** – compute the Tak function to test deep recursion.
+- **treap/Naive** – exercise inserts and deletes on a treap data structure.
+
+### Implementations
+
+The following table shows which languages include implementations of each algorithm.
+
+| Language | collatz/MaxSequence | linpack/Linpack | mandelbrot/Simple | primes/Atkin | primes/Simple | recursion/Tak | treap/Naive |
+|---|---|---|---|---|---|---|---|
+| c | ❌ | ❌ | ❌ | ❌ | ✅ | ❌ | ❌ |
+| c-plus-plus | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| c-sharp | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| fortran | ❌ | ❌ | ❌ | ❌ | ✅ | ❌ | ❌ |
+| go | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| java | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| javascript | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| kotlin | ❌ | ❌ | ❌ | ❌ | ✅ | ❌ | ✅ |
+| lua | ❌ | ❌ | ✅ | ❌ | ✅ | ✅ | ✅ |
+| perl | ❌ | ❌ | ❌ | ❌ | ✅ | ✅ | ❌ |
+| php | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| python | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| ruby | ✅ | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| rust | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ |
+| swift | ❌ | ❌ | ❌ | ❌ | ✅ | ❌ | ❌ |
+| zig | ❌ | ❌ | ❌ | ❌ | ✅ | ❌ | ❌ |
+
 ## Running benchmark
 
 ### Docker

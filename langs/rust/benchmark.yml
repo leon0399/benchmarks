@@ -13,4 +13,6 @@ strategy:
       - collatz/MaxSequence
 
       - mandelbrot/Simple
+      - recursion/Tak
+
       - linpack/Linpack

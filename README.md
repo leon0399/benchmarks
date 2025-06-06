@@ -40,7 +40,7 @@ The following table shows which languages include implementations of each algori
 | php | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
 | python | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
 | ruby | ✅ | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ |
-| rust | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ |
+| rust | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ |
 | swift | ❌ | ❌ | ❌ | ❌ | ✅ | ❌ | ❌ |
 | zig | ❌ | ❌ | ❌ | ❌ | ✅ | ❌ | ❌ |
 

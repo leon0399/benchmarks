@@ -5,6 +5,9 @@ services:
     image: ghcr.io/leon0399/benchmarks-base:latest
     build:
       context: ./docker/_base
+      cache_from:
+        - type=registry,ref=ghcr.io/leon0399/benchmarks-base:buildcache
+        - type=registry,ref=ghcr.io/leon0399/benchmarks-base:latest
     command: ./docker-entrypoint.sh
     tty: true
     stdin_open: true
@@ -20,6 +23,9 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      cache_from:
+        - type=registry,ref=ghcr.io/leon0399/benchmarks:buildcache
+        - type=registry,ref=ghcr.io/leon0399/benchmarks:latest
     depends_on:
       - base
 
@@ -29,6 +35,9 @@ services:
     build:
       context: .
       dockerfile: ./docker/c-plus-plus/Dockerfile
+      cache_from:
+        - type=registry,ref=ghcr.io/leon0399/benchmarks-c-plus-plus:buildcache
+        - type=registry,ref=ghcr.io/leon0399/benchmarks-c-plus-plus:latest
     depends_on:
       - base
 
@@ -38,6 +47,9 @@ services:
     build:
       context: .
       dockerfile: ./docker/c-sharp/Dockerfile
+      cache_from:
+        - type=registry,ref=ghcr.io/leon0399/benchmarks-c-sharp:buildcache
+        - type=registry,ref=ghcr.io/leon0399/benchmarks-c-sharp:latest
     depends_on:
       - base
 
@@ -47,6 +59,9 @@ services:
     build:
       context: .
       dockerfile: ./docker/fortran/Dockerfile
+      cache_from:
+        - type=registry,ref=ghcr.io/leon0399/benchmarks-fortran:buildcache
+        - type=registry,ref=ghcr.io/leon0399/benchmarks-fortran:latest
     depends_on:
       - base
 
@@ -56,6 +71,9 @@ services:
     build:
       context: .
       dockerfile: ./docker/go/Dockerfile
+      cache_from:
+        - type=registry,ref=ghcr.io/leon0399/benchmarks-go:buildcache
+        - type=registry,ref=ghcr.io/leon0399/benchmarks-go:latest
     depends_on:
       - base
 
@@ -65,12 +83,18 @@ services:
     build:
       context: .
       dockerfile: ./docker/java/Dockerfile
+      cache_from:
+        - type=registry,ref=ghcr.io/leon0399/benchmarks-java:buildcache
+        - type=registry,ref=ghcr.io/leon0399/benchmarks-java:latest
 
   kotlin:
     <<: *base
     image: ghcr.io/leon0399/benchmarks-kotlin:latest
     build:
       context: ./docker/kotlin
+      cache_from:
+        - type=registry,ref=ghcr.io/leon0399/benchmarks-kotlin:buildcache
+        - type=registry,ref=ghcr.io/leon0399/benchmarks-kotlin:latest
 
   lua:
     <<: *base
@@ -78,6 +102,9 @@ services:
     build:
       context: .
       dockerfile: ./docker/lua/Dockerfile
+      cache_from:
+        - type=registry,ref=ghcr.io/leon0399/benchmarks-lua:buildcache
+        - type=registry,ref=ghcr.io/leon0399/benchmarks-lua:latest
     depends_on:
       - base
 
@@ -87,15 +114,21 @@ services:
     build:
       context: .
       dockerfile: ./docker/javascript/Dockerfile
+      cache_from:
+        - type=registry,ref=ghcr.io/leon0399/benchmarks-javascript:buildcache
+        - type=registry,ref=ghcr.io/leon0399/benchmarks-javascript:latest
     depends_on:
       - base
 
-  php: 
+  php:
     <<: *base
     image: ghcr.io/leon0399/benchmarks-php:latest
     build:
       context: .
       dockerfile: ./docker/php/Dockerfile
+      cache_from:
+        - type=registry,ref=ghcr.io/leon0399/benchmarks-php:buildcache
+        - type=registry,ref=ghcr.io/leon0399/benchmarks-php:latest
     depends_on:
       - base
 
@@ -105,6 +138,9 @@ services:
     build:
       context: .
       dockerfile: ./docker/perl/Dockerfile
+      cache_from:
+        - type=registry,ref=ghcr.io/leon0399/benchmarks-perl:buildcache
+        - type=registry,ref=ghcr.io/leon0399/benchmarks-perl:latest
     depends_on:
       - base
 
@@ -114,6 +150,9 @@ services:
     build:
       context: .
       dockerfile: ./docker/python/Dockerfile
+      cache_from:
+        - type=registry,ref=ghcr.io/leon0399/benchmarks-python:buildcache
+        - type=registry,ref=ghcr.io/leon0399/benchmarks-python:latest
     depends_on:
       - base
 
@@ -123,6 +162,9 @@ services:
     build:
       context: .
       dockerfile: ./docker/ruby/Dockerfile
+      cache_from:
+        - type=registry,ref=ghcr.io/leon0399/benchmarks-ruby:buildcache
+        - type=registry,ref=ghcr.io/leon0399/benchmarks-ruby:latest
     depends_on:
       - base
 
@@ -132,6 +174,9 @@ services:
     build:
       context: .
       dockerfile: ./docker/rust/Dockerfile
+      cache_from:
+        - type=registry,ref=ghcr.io/leon0399/benchmarks-rust:buildcache
+        - type=registry,ref=ghcr.io/leon0399/benchmarks-rust:latest
     depends_on:
       - base
 
@@ -141,5 +186,8 @@ services:
     build:
       context: .
       dockerfile: ./docker/swift/Dockerfile
+      cache_from:
+        - type=registry,ref=ghcr.io/leon0399/benchmarks-swift:buildcache
+        - type=registry,ref=ghcr.io/leon0399/benchmarks-swift:latest
     depends_on:
       - base

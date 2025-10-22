@@ -38,14 +38,6 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Cache Docker layers
-        uses: actions/cache@v4
-        with:
-          path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-base-buildx-${{ hashFiles('docker/_base/Dockerfile') }}
-          restore-keys: |
-            ${{ runner.os }}-base-buildx-
-
       - name: Login to DockerHub
         uses: docker/login-action@v3
         with:
@@ -64,10 +56,9 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: |
-            ${{ steps.meta.outputs.tags }}
-            ghcr.io/${{ github.repository }}-base:latest
-            type=local,src=/tmp/.buildx-cache
-          cache-to: type=local,dest=/tmp/.buildx-cache
+            type=registry,ref=ghcr.io/${{ github.repository }}-base:buildcache
+            type=registry,ref=ghcr.io/${{ github.repository }}-base:latest
+          cache-to: type=registry,ref=ghcr.io/${{ github.repository }}-base:buildcache,mode=max
 
   build-langs:
     runs-on: ubuntu-latest
@@ -125,14 +116,6 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Cache Docker layers
-        uses: actions/cache@v4
-        with:
-          path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-${{ matrix.lang }}-buildx-${{ hashFiles(format('docker/{0}/Dockerfile', matrix.lang)) }}
-          restore-keys: |
-            ${{ runner.os }}-${{ matrix.lang }}-buildx-
-
       - name: Login to DockerHub
         uses: docker/login-action@v3
         with:
@@ -151,10 +134,9 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: |
-            ${{ steps.meta.outputs.tags }}
-            ghcr.io/${{ github.repository }}-${{ matrix.lang }}:latest
-            type=local,src=/tmp/.buildx-cache
-          cache-to: type=local,dest=/tmp/.buildx-cache
+            type=registry,ref=ghcr.io/${{ github.repository }}-${{ matrix.lang }}:buildcache
+            type=registry,ref=ghcr.io/${{ github.repository }}-${{ matrix.lang }}:latest
+          cache-to: type=registry,ref=ghcr.io/${{ github.repository }}-${{ matrix.lang }}:buildcache,mode=max
           build-args: |
             BASE_IMAGE=ghcr.io/${{ github.repository }}-base:${{ github.ref == format('refs/heads/{0}', 'master') && 'latest' || format('pr-{0}', github.event.number) }}
 
@@ -194,14 +176,6 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Cache Docker layers
-        uses: actions/cache@v4
-        with:
-          path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-buildx-${{ hashFiles('Dockerfile') }}
-          restore-keys: |
-            ${{ runner.os }}-buildx-
-
       - name: Login to DockerHub
         uses: docker/login-action@v3
         with:
@@ -220,9 +194,8 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: |
-            ${{ steps.meta.outputs.tags }}
-            ghcr.io/${{ github.repository }}:latest
-            type=local,src=/tmp/.buildx-cache
-          cache-to: type=local,dest=/tmp/.buildx-cache
+            type=registry,ref=ghcr.io/${{ github.repository }}:buildcache
+            type=registry,ref=ghcr.io/${{ github.repository }}:latest
+          cache-to: type=registry,ref=ghcr.io/${{ github.repository }}:buildcache,mode=max
           build-args: |
             BASE_IMAGE=ghcr.io/${{ github.repository }}-base:${{ github.ref == format('refs/heads/{0}', 'master') && 'latest' || format('pr-{0}', github.event.number) }}

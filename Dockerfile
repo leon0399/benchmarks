@@ -48,8 +48,9 @@ ENV PATH="/opt/node-v$NODE-linux-x64/bin/:${PATH}"
 
 # Java
 ARG JDK=23
+ARG JDK_VERSION=23.0.2
 RUN mkdir jdk-${JDK} \
- && wget --progress=dot:giga -O - https://download.oracle.com/java/${JDK}/latest/jdk-${JDK}_linux-x64_bin.tar.gz | tar -xz --directory jdk-${JDK} --strip-components 1
+ && wget --progress=dot:giga -O - https://download.oracle.com/java/${JDK}/archive/jdk-${JDK_VERSION}_linux-x64_bin.tar.gz | tar -xz --directory jdk-${JDK} --strip-components 1
 ENV PATH="/opt/jdk-${JDK}/bin:${PATH}"
 
 # Go

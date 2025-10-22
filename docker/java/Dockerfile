@@ -18,10 +18,10 @@ RUN mkdir openjdk-21 && \
 
 # Oracle JDK
 RUN mkdir jdk-21 && \
-    wget --progress=dot:giga -O - https://download.oracle.com/java/21/latest/jdk-21_linux-x64_bin.tar.gz \
+    wget --progress=dot:giga -O - https://download.oracle.com/java/21/archive/jdk-21.0.2_linux-x64_bin.tar.gz \
     | tar -xz --directory jdk-21 --strip-components 1 \
  && mkdir jdk-23 && \
-    wget --progress=dot:giga -O - https://download.oracle.com/java/23/latest/jdk-23_linux-x64_bin.tar.gz \
+    wget --progress=dot:giga -O - https://download.oracle.com/java/23/archive/jdk-23.0.2_linux-x64_bin.tar.gz \
     | tar -xz --directory jdk-23 --strip-components 1 \
  && ln -s /opt/jdk-21/bin/java /usr/bin/oracle-jdk21.java && ln -s /opt/jdk-21/bin/javac /usr/bin/oracle-jdk21.javac && ln -s /opt/jdk-21/bin/jar /usr/bin/oracle-jdk21.jar \
  && ln -s /opt/jdk-23/bin/java /usr/bin/oracle-jdk23.java && ln -s /opt/jdk-23/bin/javac /usr/bin/oracle-jdk23.javac && ln -s /opt/jdk-23/bin/jar /usr/bin/oracle-jdk23.jar

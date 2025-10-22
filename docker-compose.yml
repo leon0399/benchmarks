@@ -81,12 +81,12 @@ services:
     depends_on:
       - base
 
-  node:
+  javascript:
     <<: *base
-    image: ghcr.io/leon0399/benchmarks-node:latest
+    image: ghcr.io/leon0399/benchmarks-javascript:latest
     build:
       context: .
-      dockerfile: ./docker/node/Dockerfile
+      dockerfile: ./docker/javascript/Dockerfile
     depends_on:
       - base
 

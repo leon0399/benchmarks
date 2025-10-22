@@ -5,10 +5,18 @@ strategy:
     command:
       - title: 'Node'
         command: 'node {file}'
-      - title: 'GraalVM'
-        command: 'graalvm.node {file}'
+      # - title: 'GraalVM'
+      #   command: 'graalvm.node {file}'
+      #   tags:
+      #     - GraalVM
+      - title: 'Deno'
+        command: 'deno run --allow-all {file}'
         tags:
-          - GraalVM
+          - Alternative
+      - title: 'Bun'
+        command: 'bun {file}'
+        tags:
+          - Alternative
 
     files:
       - linpack/Linpack.js

@@ -14,3 +14,4 @@ strategy:
 
     files:
       - primes/Simple
+      - primes/Atkin

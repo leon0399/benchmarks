@@ -77,7 +77,7 @@ jobs:
           - java
           - kotlin
           - lua
-          - node
+          - javascript
           - perl
           - php
           - python

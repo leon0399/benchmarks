@@ -16,18 +16,21 @@ RUN mkdir $NVM_DIR \
  && nvm install 22 \
  && nvm install 23 \
  && nvm install 24 \
- && nvm install 25 \
+ && nvm install 25.0.0 \
  # Mark latest version as primary
- && nvm alias default 25 \
+ && nvm alias default 25.0.0 \
  && nvm use default
 
+ENV NODE_PATH=$NVM_DIR/versions/node/v25.0.0/lib/node_modules \
+    PATH=$NVM_DIR/versions/node/v25.0.0/bin:$PATH
+
 RUN --mount=type=cache,target=/var/cache/downloads \
-    mkdir bun1.2 && wget --progress=dot:giga -O /var/cache/downloads/bun1.2.zip https://github.com/oven-sh/bun/releases/download/bun-v1.2.23/bun-linux-aarch64.zip && unzip /var/cache/downloads/bun1.2.zip -d bun1.2 \
- && mkdir bun1.3 && wget --progress=dot:giga -O /var/cache/downloads/bun1.3.zip https://github.com/oven-sh/bun/releases/download/bun-v1.3.1/bun-linux-aarch64.zip && unzip /var/cache/downloads/bun1.3.zip -d bun1.3 \
- && ln -s /opt/bun1.2/bun /usr/bin/bun1.2 \
- && ln -s /opt/bun1.3/bun /usr/bin/bun1.3 \
+    mkdir bun1.2 && wget --progress=dot:giga -O /var/cache/downloads/bun1.2.zip https://github.com/oven-sh/bun/releases/download/bun-v1.2.23/bun-linux-x64.zip && unzip /var/cache/downloads/bun1.2.zip -d bun1.2 \
+ && mkdir bun1.3 && wget --progress=dot:giga -O /var/cache/downloads/bun1.3.zip https://github.com/oven-sh/bun/releases/download/bun-v1.3.1/bun-linux-x64.zip && unzip /var/cache/downloads/bun1.3.zip -d bun1.3 \
+ && ln -s /opt/bun1.2/bun-linux-x64/bun /usr/bin/bun1.2 \
+ && ln -s /opt/bun1.3/bun-linux-x64/bun /usr/bin/bun1.3 \
  # Mark latest version as primary
- && ln -s /opt/bun1.3/bun /usr/bin/bun
+ && ln -s /opt/bun1.3/bun-linux-x64/bun /usr/bin/bun
 
 RUN --mount=type=cache,target=/var/cache/downloads \
     mkdir deno2.4 && wget --progress=dot:giga -O /var/cache/downloads/deno2.4.zip https://github.com/denoland/deno/releases/download/v2.4.5/deno-x86_64-unknown-linux-gnu.zip && unzip /var/cache/downloads/deno2.4.zip -d deno2.4 \

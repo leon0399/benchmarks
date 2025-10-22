@@ -59,6 +59,7 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: |
             type=registry,ref=ghcr.io/${{ github.repository }}-base:buildcache
+            type=registry,ref=ghcr.io/${{ github.repository }}-base:${{ steps.meta.outputs.version }}
             type=registry,ref=ghcr.io/${{ github.repository }}-base:latest
           cache-to: type=registry,ref=ghcr.io/${{ github.repository }}-base:buildcache,mode=max
 
@@ -137,6 +138,7 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: |
             type=registry,ref=ghcr.io/${{ github.repository }}-${{ matrix.lang }}:buildcache
+            type=registry,ref=ghcr.io/${{ github.repository }}-${{ matrix.lang }}:${{ steps.meta.outputs.version }}
             type=registry,ref=ghcr.io/${{ github.repository }}-${{ matrix.lang }}:latest
           cache-to: type=registry,ref=ghcr.io/${{ github.repository }}-${{ matrix.lang }}:buildcache,mode=max
           build-args: |
@@ -197,6 +199,7 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: |
             type=registry,ref=ghcr.io/${{ github.repository }}:buildcache
+            type=registry,ref=ghcr.io/${{ github.repository }}:${{ steps.meta.outputs.version }}
             type=registry,ref=ghcr.io/${{ github.repository }}:latest
           cache-to: type=registry,ref=ghcr.io/${{ github.repository }}:buildcache,mode=max
           build-args: |

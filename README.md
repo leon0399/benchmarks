@@ -42,7 +42,7 @@ The following table shows which languages include implementations of each algori
 | ruby | ✅ | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ |
 | rust | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ |
 | swift | ❌ | ❌ | ❌ | ✅ | ✅ | ❌ | ❌ |
-| zig | ❌ | ❌ | ❌ | ❌ | ✅ | ❌ | ❌ |
+| zig | ❌ | ❌ | ❌ | ✅ | ✅ | ❌ | ❌ |
 
 ## Running benchmark
 

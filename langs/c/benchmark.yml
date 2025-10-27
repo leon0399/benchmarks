@@ -10,3 +10,5 @@ strategy:
 
     files:
       - primes/Simple
+      - primes/Atkin
+      - recursion/Tak

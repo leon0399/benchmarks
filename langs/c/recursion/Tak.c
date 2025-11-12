@@ -23,7 +23,7 @@ int main() {
     end_time = clock();
     duration = ((double)(end_time - start_time)) / CLOCKS_PER_SEC * 1000.0;
 
-    printf("Execution time: %.2f ms\n", duration);
+    printf("Execution time: %.2fms\n", duration);
 
     return 0;
 }

@@ -99,4 +99,4 @@ python3 ./benchmark.py
 | ruby        | ✅ | ✅ |
 | rust        | ✅ | ✅ |
 | swift       | ✅ | ✅ |
-| zig         | ❌ | ✅ |
+| zig         | ✅ | ✅ |

@@ -203,3 +203,15 @@ services:
         - type=registry,ref=ghcr.io/leon0399/benchmarks-swift:latest
     depends_on:
       - base
+
+  zig:
+    <<: *base
+    image: ghcr.io/leon0399/benchmarks-zig:latest
+    build:
+      context: .
+      dockerfile: ./docker/zig/Dockerfile
+      cache_from:
+        - type=registry,ref=ghcr.io/leon0399/benchmarks-zig:buildcache
+        - type=registry,ref=ghcr.io/leon0399/benchmarks-zig:latest
+    depends_on:
+      - base

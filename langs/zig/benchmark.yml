@@ -1,0 +1,10 @@
+title: 'Zig'
+
+strategy:
+  matrix:
+    command:
+      - title: 'Zig'
+        command: './{file}'
+
+    files:
+      - primes/Simple

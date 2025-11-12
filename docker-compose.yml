@@ -29,6 +29,18 @@ services:
     depends_on:
       - base
 
+  c:
+    <<: *base
+    image: ghcr.io/leon0399/benchmarks-c:latest
+    build:
+      context: .
+      dockerfile: ./docker/c/Dockerfile
+      cache_from:
+        - type=registry,ref=ghcr.io/leon0399/benchmarks-c:buildcache
+        - type=registry,ref=ghcr.io/leon0399/benchmarks-c:latest
+    depends_on:
+      - base
+
   c-plus-plus:
     <<: *base
     image: ghcr.io/leon0399/benchmarks-c-plus-plus:latest

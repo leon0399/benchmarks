@@ -74,3 +74,29 @@ docker-compose run benchmark python3 ./benchmark.py run --script primes/Simple l
 ```bash
 python3 ./benchmark.py
 ```
+
+
+## Infrastructure
+
+### Docker Images
+
+<!-- TODO: add versions info -->
+
+| Language    | Separate Image | AIO Image |
+| :---------- | :------------: | :-------: |
+| c           | ✅ | ✅ | 
+| c-plus-plus | ✅ | ✅ |
+| c-sharp     | ✅ | ✅ |
+| fortran     | ✅ | ✅ |
+| go          | ✅ | ✅ |
+| java        | ✅ | ✅ |
+| javascript  | ✅ | ✅ |
+| kotlin      | ✅ | ✅ |
+| lua         | ✅ | ✅ |
+| perl        | ✅ | ✅ |
+| php         | ✅ | ✅ |
+| python      | ✅ | ✅ |
+| ruby        | ✅ | ✅ |
+| rust        | ✅ | ✅ |
+| swift       | ✅ | ✅ |
+| zig         | ❌ | ✅ |

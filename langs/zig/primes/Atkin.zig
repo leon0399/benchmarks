@@ -77,21 +77,21 @@ const Sieve = struct {
 
     fn step1(self: *Sieve, x: i32, y: i32) void {
         const n = (4 * x * x) + (y * y);
-        if (n <= self.limit and (n % 12 == 1 or n % 12 == 5)) {
+        if (n <= self.limit and (@rem(n, 12) == 1 or @rem(n, 12) == 5)) {
             self.prime[@intCast(n)] = !self.prime[@intCast(n)];
         }
     }
 
     fn step2(self: *Sieve, x: i32, y: i32) void {
         const n = (3 * x * x) + (y * y);
-        if (n <= self.limit and n % 12 == 7) {
+        if (n <= self.limit and @rem(n, 12) == 7) {
             self.prime[@intCast(n)] = !self.prime[@intCast(n)];
         }
     }
 
     fn step3(self: *Sieve, x: i32, y: i32) void {
         const n = (3 * x * x) - (y * y);
-        if (x > y and n <= self.limit and n % 12 == 11) {
+        if (x > y and n <= self.limit and @rem(n, 12) == 11) {
             self.prime[@intCast(n)] = !self.prime[@intCast(n)];
         }
     }

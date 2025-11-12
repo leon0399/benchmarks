@@ -7,4 +7,5 @@ strategy:
         command: './{file}'
 
     files:
+      - primes/Atkin
       - primes/Simple

@@ -4,11 +4,13 @@
 
 This is a comprehensive programming language benchmark suite comparing performance across 16+ languages using **identical algorithm implementations**. The core principle is exact logical implementation across all languages to ensure fair performance comparison.
 
-## Critical: Always Reference AGENTS.md
+## Essential Reading
 
-**BEFORE implementing or reviewing any benchmark code, you MUST read and follow the guidelines in `/AGENTS.md`.**
+**Before implementing or reviewing benchmark code:**
+- `/CONTRIBUTING.md` – General contribution guidelines (read this first)
+- `/AGENTS.md` – AI agent-specific workflow instructions
 
-Key requirements from AGENTS.md:
+Key requirements:
 - All implementations must follow the **exact same logic** as reference implementations (PHP, C++, Python)
 - Study reference implementations in `langs/php/`, `langs/c-plus-plus/`, and `langs/python/` before implementing
 - Verify algorithmic equivalence: same loop structures, data structures, and operation order
@@ -25,7 +27,8 @@ benchmarks/
 │   │   ├── <algorithm>/      # Algorithm implementations
 │   │   │   └── <Name>.<ext>  # Must match exact algorithm name
 ├── .github/                  # CI/CD workflows
-├── AGENTS.md                 # **PRIMARY** implementation guidelines
+├── CONTRIBUTING.md           # General contribution guidelines
+├── AGENTS.md                 # AI agent-specific instructions
 ├── README.md                 # Implementation status table
 ├── RESULTS.md                # Benchmark results
 └── benchmark.py              # Main benchmark runner
@@ -107,6 +110,7 @@ This benchmark compares language performance with identical algorithms, not deve
 ## Additional Resources
 
 - Reference implementations: `langs/php/`, `langs/c-plus-plus/`, `langs/python/`
-- Detailed guidelines: `/AGENTS.md` (always reference this first)
+- General guidelines: `/CONTRIBUTING.md`
+- AI agent workflows: `/AGENTS.md`
 - Implementation tracking: Issue #65 and sub-issues
 - Results: `RESULTS.md`

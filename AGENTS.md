@@ -1,6 +1,8 @@
 # AGENTS.md
 
-This file provides guidance for AI coding agents working on the Complete Benchmark project.
+This file provides guidance for **AI coding agents** working on the Complete Benchmark project.
+
+**For human contributors:** Please refer to [CONTRIBUTING.md](CONTRIBUTING.md) for general contribution guidelines.
 
 ## Project Overview
 
@@ -21,10 +23,14 @@ benchmarks/
 │   │   ├── benchmark.yml  # Benchmark configuration for this language
 │   │   ├── <algorithm>/   # Algorithm implementations
 │   │   │   └── <Name>.<ext>
+├── CONTRIBUTING.md        # General contribution guidelines (for humans)
+├── AGENTS.md              # This file - AI agent-specific instructions
 ├── README.md              # Main documentation with implementation status table
 ├── RESULTS.md             # Benchmark results
 └── benchmark.py           # Main benchmark runner
 ```
+
+**Note:** Many general guidelines (file structure, testing, algorithm families) are documented in [CONTRIBUTING.md](CONTRIBUTING.md). This file focuses on AI agent-specific workflows and automation.
 
 ## Critical Rules for Adding Implementations
 
@@ -237,6 +243,7 @@ Example patterns:
 ## Getting Help
 
 - Check existing implementations in `langs/` for examples
+- Review [CONTRIBUTING.md](CONTRIBUTING.md) for general guidelines
 - Review tracking issues: See issue #65 for language-specific tracking issues
 - Each language has sub-issues for individual algorithms with detailed requirements
 - Study reference implementations (PHP, C++, Python) carefully before implementing

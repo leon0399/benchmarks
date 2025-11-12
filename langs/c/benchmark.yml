@@ -10,3 +10,4 @@ strategy:
 
     files:
       - primes/Simple
+      - recursion/Tak

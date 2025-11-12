@@ -27,7 +27,7 @@ The following table shows which languages include implementations of each algori
 
 | Language | collatz/MaxSequence | linpack/Linpack | mandelbrot/Simple | primes/Atkin | primes/Simple | recursion/Tak | treap/Naive |
 |---|---|---|---|---|---|---|---|
-| c | ❌ | ❌ | ❌ | ❌ | ✅ | ❌ | ❌ |
+| c | ❌ | ❌ | ❌ | ❌ | ✅ | ✅ | ❌ |
 | c-plus-plus | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
 | c-sharp | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
 | fortran | ❌ | ❌ | ❌ | ❌ | ✅ | ❌ | ❌ |

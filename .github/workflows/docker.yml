@@ -86,6 +86,7 @@ jobs:
           - ruby
           - rust
           - swift
+          - zig
 
     steps:
       - name: Checkout

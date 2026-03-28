@@ -28,7 +28,7 @@ jobs:
 
       - name: Docker Metadata
         id: meta
-        uses: docker/metadata-action@v5
+        uses: docker/metadata-action@v6
         with:
           images: ghcr.io/${{ github.repository }}-base
           tags: |
@@ -94,7 +94,7 @@ jobs:
 
       - name: Docker Metadata for Base image
         id: meta-base
-        uses: docker/metadata-action@v5
+        uses: docker/metadata-action@v6
         with:
           images: ghcr.io/${{ github.repository }}-base
           tags: |
@@ -109,7 +109,7 @@ jobs:
 
       - name: Docker Metadata
         id: meta
-        uses: docker/metadata-action@v5
+        uses: docker/metadata-action@v6
         with:
           images: ghcr.io/${{ github.repository }}-${{ matrix.lang }}
           tags: |
@@ -155,7 +155,7 @@ jobs:
 
       - name: Docker Metadata for Base image
         id: meta-base
-        uses: docker/metadata-action@v5
+        uses: docker/metadata-action@v6
         with:
           images: ghcr.io/${{ github.repository }}-base
           tags: |
@@ -170,7 +170,7 @@ jobs:
 
       - name: Docker Metadata
         id: meta
-        uses: docker/metadata-action@v5
+        uses: docker/metadata-action@v6
         with:
           images: ghcr.io/${{ github.repository }}
           tags: |
